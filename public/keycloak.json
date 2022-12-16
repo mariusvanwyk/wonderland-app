@@ -1,0 +1,8 @@
+{
+  "realm": "wonderland",
+  "auth-server-url": "https://localhost:9443",
+  "ssl-required": "external",
+  "resource": "wonderland-app",
+  "public-client": true,
+  "confidential-port": 0
+}
