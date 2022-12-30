@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, CloseButton, Form, Modal, Toast, ToastContainer} from "react-bootstrap";
 import {VehicleCategory} from "./model";
 import VehicleCategoryForm from "./VehicleCategoryForm";
-import HttpService from "../services/HttpService";
+import HttpService from "../../../services/HttpService";
 
 type Properties = {
     selected: VehicleCategory,

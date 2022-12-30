@@ -10,7 +10,7 @@ import Home from "./Home";
 import NavigationBar from "./NavigationBar";
 import Error from "../Error";
 import About from "../About";
-import VehicleCategories from "../admin/VehicleCategories";
+import VehicleCategories from "./admin/vehicleCategories/VehicleCategories";
 import Me from "./Me";
 
 const router = createBrowserRouter([

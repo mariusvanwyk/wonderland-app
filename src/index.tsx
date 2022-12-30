@@ -5,14 +5,16 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import UserService from "./services/UserService";
 import HttpService from "./services/HttpService";
+import AuthenticationNotPossible from "./components/AuthenticationNotPossible";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
 const renderApp = () => root.render(<App/>)
+const renderError = () => root.render(<AuthenticationNotPossible/>)
 
-UserService.initKeycloak(renderApp);
+UserService.initKeycloak(renderApp, renderError);
 HttpService.configure();
 
 // If you want to start measuring performance in your app, pass a function

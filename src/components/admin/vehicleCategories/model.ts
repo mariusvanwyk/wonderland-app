@@ -41,8 +41,8 @@ export type Link = {
 
 export interface VehicleCategoriesPage {
     _embedded: EmbeddedVehicleCategories
-    _links?: PageLinks
-    page?: Page
+    // _links: PageLinks
+    page: Page
 }
 
 export type Page = {

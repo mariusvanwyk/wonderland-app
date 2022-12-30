@@ -7,11 +7,11 @@ const _kc = new Keycloak('/keycloak.json');
  *
  * @param onAuthenticatedCallback
  */
-const initKeycloak = (onAuthenticatedCallback: any) => {
+const initKeycloak = (onAuthenticatedCallback: any, onAuthenticatedErrorCallback: any) => {
     _kc.init({
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
         pkceMethod: 'S256',
+        checkLoginIframe: true
     })
         .then((authenticated) => {
             if (!authenticated) {
@@ -19,7 +19,10 @@ const initKeycloak = (onAuthenticatedCallback: any) => {
             }
             onAuthenticatedCallback();
         })
-        .catch(console.error);
+        .catch((error) => {
+            console.error(error);
+            onAuthenticatedErrorCallback();
+        });
 };
 
 const doLogin = _kc.login;

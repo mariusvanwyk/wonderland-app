@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Modal, Toast, ToastContainer} from "react-bootstrap";
 import {VehicleCategory} from "./model";
 import VehicleCategoryForm from "./VehicleCategoryForm";
-import HttpService from "../services/HttpService";
+import HttpService from "../../../services/HttpService";
 
 type Properties = {
     onAdd: (category: VehicleCategory) => void;

@@ -3,10 +3,14 @@ import {Col, Row} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import VehicleCategoryDetails from "./VehicleCategoryDetails";
 import VehicleCategoriesList from "./VehicleCategoriesList";
-import {VehicleCategory} from './model'
+import {VehicleCategoriesPage, VehicleCategory} from './model'
+import {CategoriesServices, VehicleCategoriesServices} from "./VehicleCategoriesServices";
+import {AxiosResponse} from "axios";
 
 
 function VehicleCategories() {
+
+    const services: CategoriesServices<AxiosResponse<VehicleCategoriesPage>> = new VehicleCategoriesServices();
 
     const [selected, setSelected] = useState<VehicleCategory | null | undefined>();
     const [refreshTime, setRefreshTime] = useState<number>(Date.now())
@@ -39,6 +43,7 @@ function VehicleCategories() {
                                            onAdd={(newCategory) => onAdd(newCategory)}
                                            onRefresh={() => refreshCategories()}
                                            refreshTimeRequest={refreshTime}
+                                           services={services}
 
                     />
                 </Col>
