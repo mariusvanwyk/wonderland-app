@@ -11,7 +11,7 @@ const initKeycloak = (onAuthenticatedCallback: any, onAuthenticatedErrorCallback
     _kc.init({
         onLoad: 'check-sso',
         pkceMethod: 'S256',
-        checkLoginIframe: true
+        checkLoginIframe: false
     })
         .then((authenticated) => {
             if (!authenticated) {

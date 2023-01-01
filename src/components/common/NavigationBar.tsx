@@ -1,10 +1,10 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import UserService from "../services/UserService";
+import UserService from "../../services/UserService";
 import {NavDropdown} from "react-bootstrap";
 
-function NavigationBar() {
+const NavigationBar = () => {
     return (
         <Navbar bg={"dark"} variant={"dark"} expand={"lg"}>
             <Container fluid>
@@ -15,7 +15,7 @@ function NavigationBar() {
                     </Navbar.Text>
                     {UserService.isAdmin() &&
                         <Nav>
-                            <NavDropdown title="Admin" id="basic-nav-dropdown" drop={"start"}>
+                            <NavDropdown title="Admin" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="/vehicle-categories">Vehicle Categories</NavDropdown.Item>
                                 <NavDropdown.Divider/>
                                 <NavDropdown.Item>Vehicles</NavDropdown.Item>

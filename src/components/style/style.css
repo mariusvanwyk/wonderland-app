@@ -1,0 +1,8 @@
+.content {
+    height: calc(100% - 56px) !important;
+}
+
+button, select, a, input {
+    box-shadow: none !important;
+    outline: none !important;
+}

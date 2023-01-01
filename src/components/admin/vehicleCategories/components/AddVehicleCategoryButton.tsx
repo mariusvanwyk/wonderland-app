@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
 import {Button, Modal, Toast, ToastContainer} from "react-bootstrap";
-import {VehicleCategory} from "./model";
 import VehicleCategoryForm from "./VehicleCategoryForm";
-import HttpService from "../../../services/HttpService";
+import {VehicleCategory} from "../../../model/VehicleCategory";
+import {CategoriesServices, VehicleCategoriesServices} from "../VehicleCategoriesServices";
 
 type Properties = {
-    onAdd: (category: VehicleCategory) => void;
+    onAdd: (id: number) => void;
 }
 
-const newVehicleCategory: VehicleCategory = new VehicleCategory(-1, "", 0, "#ffffff", "", true)
+const newVehicleCategory: VehicleCategory = new VehicleCategory()
+const services: CategoriesServices = new VehicleCategoriesServices();
 
 const AddVehicleCategoryButton = ({onAdd}: Properties) => {
     const [showModal, setShowModal] = useState(false);
@@ -25,11 +26,10 @@ const AddVehicleCategoryButton = ({onAdd}: Properties) => {
         let errors = category.validate();
 
         if (errors.length === 0) {
-            HttpService.getAxiosClient().post<VehicleCategory>('/api/v1/vehicleCategories', category)
+            services.addVehicleCategory(category)
                 .then(function (response) {
-                    onAdd(response.data);
+                    onAdd(response.data.id);
                     closeModal();
-                    console.log(response);
 
                 })
                 .catch(function (error) {
@@ -58,25 +58,28 @@ const AddVehicleCategoryButton = ({onAdd}: Properties) => {
 
     return (
         <>
-            <Button variant="primary" title={"Add a new Vehicle Category"} className={"me-1"} size={"sm"}
-                    onClick={() => setShowModal(true)}>
-                <i className={"bi bi-plus-circle"}></i>
+            <Button variant="success" title={"Add a new Vehicle Category"} size={"sm"}
+                    onClick={() => setShowModal(true)} accessKey={"n"}>
+                New
             </Button>
             <Modal show={showModal}
                    onHide={() => closeModal()}
                    onShow={() => handleShowModal()}
-                   onBackdropClick={() => closeModal()}>
+                   onBackdropClick={() => closeModal()}
+                   scrollable={true}
+                   centered={true}>
                 <Modal.Header closeButton>
                     <Modal.Title>{"Add new  category"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <VehicleCategoryForm formCategory={category} onUpdate={(category) => setCategory(category)}/>
+                    <VehicleCategoryForm showTechnical={false} formCategory={category}
+                                         onUpdate={(category) => setCategory(category)}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => closeModal()}>
                         Close
                     </Button>
-                    <Button variant="success" onClick={() => handleAddConfirmation()}>
+                    <Button variant="success" onClick={() => handleAddConfirmation()} accessKey={"a"}>
                         Add
                     </Button>
                 </Modal.Footer>
