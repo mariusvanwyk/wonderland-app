@@ -3,19 +3,22 @@ import {Button, Card, CloseButton, Modal, Toast, ToastContainer} from "react-boo
 import {VehicleCategory} from "../../../model/VehicleCategory";
 import {CategoriesServices, VehicleCategoriesServices} from "../VehicleCategoriesServices";
 import VehicleCategoryForm from "./VehicleCategoryForm";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {
+    getSelectedId,
+    getSelectedTime, vehicleCategoryClosed,
+    vehicleCategoryDeleted,
+    vehicleCategorySaved,
+} from "../VehicleCategorySlice";
 
-type Properties = {
-    id: number,
-    requestTime: number,
-    onSaved: (saved: VehicleCategory) => void,
-    onDeleted: () => void,
-    onClosed: () => void,
-
-}
 
 const services: CategoriesServices = new VehicleCategoriesServices();
 
-const VehicleCategoryDetails = ({id, requestTime, onSaved, onDeleted, onClosed}: Properties) => {
+const VehicleCategoryDetails = () => {
+    const dispatch = useAppDispatch()
+    const id = useAppSelector(getSelectedId);
+    const selectTime = useAppSelector(getSelectedTime);
+
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [category, setCategory] = useState<VehicleCategory>();
     const [name, setName] = useState<string>();
@@ -24,15 +27,17 @@ const VehicleCategoryDetails = ({id, requestTime, onSaved, onDeleted, onClosed}:
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     useEffect(() => {
-        closeFeedBack();
-        services.getVehicleCategory(id)
-            .then((response) => {
-                setCategory(VehicleCategory.from(response.data));
-            })
-            .catch((error) => {
-                console.error(error)
-            });
-    }, [id, requestTime]);
+        if (id !== null) {
+            closeFeedBack();
+            services.getVehicleCategory(id)
+                .then((response) => {
+                    setCategory(VehicleCategory.from(response.data));
+                })
+                .catch((error) => {
+                    console.error(error)
+                });
+        }
+    }, [id, selectTime]);
 
     useEffect(() => {
         if (category) {
@@ -43,7 +48,7 @@ const VehicleCategoryDetails = ({id, requestTime, onSaved, onDeleted, onClosed}:
     const handleDeleteConfirmation = (id: number) => {
         services.deleteVehicleCategory(id)
             .then((response) => {
-                onDeleted();
+                dispatch(vehicleCategoryDeleted());
                 setShowDeleteModal(false);
             })
             .catch((error) => {
@@ -58,11 +63,11 @@ const VehicleCategoryDetails = ({id, requestTime, onSaved, onDeleted, onClosed}:
             services.saveVehicleCategory(category)
                 .then((response) => {
                     setCategory(VehicleCategory.from(response.data));
-                    onSaved(response.data);
+                    dispatch(vehicleCategorySaved(response.data.id));
                     setShowSavedFeedBack(true);
                 })
                 .catch((error) => {
-                    switch (error.response.status){
+                    switch (error.response.status) {
                         case 412: {
                             feedback(["Your data is old. Refresh the screen"]);
                             break;
@@ -95,7 +100,7 @@ const VehicleCategoryDetails = ({id, requestTime, onSaved, onDeleted, onClosed}:
                     <Card.Header className={"d-flex justify-content-between align-items-center"}>
                         <h3>{name}</h3>
                         <div className={"small text-muted ms-3"}>(Refreshed at: {new Date().toLocaleTimeString()})</div>
-                        <CloseButton aria-label="Close" onClick={() => onClosed()}/>
+                        <CloseButton aria-label="Close" onClick={() => dispatch(vehicleCategoryClosed())}/>
                     </Card.Header>
                     <Card.Body className={"overflow-scroll h-100"}>
                         <VehicleCategoryForm showTechnical={true} formCategory={category}

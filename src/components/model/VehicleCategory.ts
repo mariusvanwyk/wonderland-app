@@ -9,7 +9,6 @@ export class VehicleCategory {
     description: string;
     enabled: boolean;
 
-    instalmentCost: number;
     roadTaxCost: number;
     insuranceCost: number;
     trackerCost: number;
@@ -32,7 +31,6 @@ export class VehicleCategory {
         copied.color = original.color;
         copied.description = original.description;
         copied.enabled = original.enabled;
-        copied.instalmentCost = original.instalmentCost;
         copied.roadTaxCost = original.roadTaxCost;
         copied.insuranceCost = original.insuranceCost;
         copied.trackerCost = original.trackerCost;
@@ -56,7 +54,6 @@ export class VehicleCategory {
         this.color = "#ffffff";
         this.description = "";
         this.enabled = true;
-        this.instalmentCost = 0;
         this.roadTaxCost = 0;
         this.insuranceCost = 0;
         this.trackerCost = 0;

@@ -13,6 +13,8 @@ import Me from "./Me";
 import UserService from "../services/UserService";
 import _debounce from 'lodash.debounce'
 import VehicleCategoriesSmall from "./admin/vehicleCategories/VehicleCategoriesSmall";
+import {store} from './redux/store'
+import {Provider} from 'react-redux'
 
 const largeRouter = createBrowserRouter([
     {path: "/", element: <Home/>, errorElement: <Error/>,},
@@ -45,14 +47,16 @@ const App = () => {
     const isMobile = () => width <= 768;
 
     return (
-        <Fragment>
-            <NavigationBar/>
-            <div className={"mt-2 h-100 content"}>
-                {!UserService.isLoggedIn() && <Welcome/>}
-                {UserService.isLoggedIn() && !isMobile() && <RouterProvider router={largeRouter}/>}
-                {UserService.isLoggedIn() && isMobile() && <RouterProvider router={smallRouter}/>}
-            </div>
-        </Fragment>)
+        <Provider store={store}>
+            <Fragment>
+                <NavigationBar/>
+                <div className={"mt-2 h-100 content"}>
+                    {!UserService.isLoggedIn() && <Welcome/>}
+                    {UserService.isLoggedIn() && !isMobile() && <RouterProvider router={largeRouter}/>}
+                    {UserService.isLoggedIn() && isMobile() && <RouterProvider router={smallRouter}/>}
+                </div>
+            </Fragment>
+        </Provider>)
 };
 
 export default App;

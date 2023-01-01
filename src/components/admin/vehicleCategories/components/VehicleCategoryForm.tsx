@@ -34,7 +34,7 @@ const VehicleCategoryForm = ({formCategory, onUpdate, showTechnical}: Properties
 
     return (
         <Form noValidate>
-            <Accordion flush={true} alwaysOpen={true}>
+            <Accordion flush={true} alwaysOpen={true} defaultActiveKey={"1"}>
                 <Accordion.Item eventKey={"1"}>
                     <Accordion.Header className={"no-border"}>Basic Details
                         ({category.getBasicSummary()})</Accordion.Header>
@@ -80,17 +80,8 @@ const VehicleCategoryForm = ({formCategory, onUpdate, showTechnical}: Properties
                     <Accordion.Body>
                         <Row>
                             <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.instalmentCost">
-                                    <Form.Label>Instalment Cost</Form.Label>
-                                    <Form.Control required type={"number"} value={category.instalmentCost}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("instalmentCost", e)}
-                                                  isInvalid={category.instalmentCost <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
                                 <Form.Group className="mb-3" controlId="vehicleCategory.roadTaxCost">
-                                    <Form.Label>Road Tax Cost</Form.Label>
+                                    <Form.Label>Road Tax</Form.Label>
                                     <Form.Control required type={"number"} value={category.roadTaxCost}
                                                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                                       handleNumberChange("roadTaxCost", e)}
@@ -99,7 +90,7 @@ const VehicleCategoryForm = ({formCategory, onUpdate, showTechnical}: Properties
                             </Col>
                             <Col sm={12} md={6}>
                                 <Form.Group className="mb-3" controlId="vehicleCategory.insuranceCost">
-                                    <Form.Label>Insurance Cost</Form.Label>
+                                    <Form.Label>Insurance</Form.Label>
                                     <Form.Control required type={"number"} value={category.insuranceCost}
                                                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                                       handleNumberChange("insuranceCost", e)}
@@ -108,7 +99,7 @@ const VehicleCategoryForm = ({formCategory, onUpdate, showTechnical}: Properties
                             </Col>
                             <Col sm={12} md={6}>
                                 <Form.Group className="mb-3" controlId="vehicleCategory.trackerCost">
-                                    <Form.Label>Tracker Cost</Form.Label>
+                                    <Form.Label>Tracker</Form.Label>
                                     <Form.Control required type={"number"} value={category.trackerCost}
                                                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                                       handleNumberChange("trackerCost", e)}
@@ -117,7 +108,7 @@ const VehicleCategoryForm = ({formCategory, onUpdate, showTechnical}: Properties
                             </Col>
                             <Col sm={12} md={6}>
                                 <Form.Group className="mb-3" controlId="vehicleCategory.extraCost">
-                                    <Form.Label>Extra Cost</Form.Label>
+                                    <Form.Label>Extra</Form.Label>
                                     <Form.Control required type={"number"} value={category.extraCost}
                                                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                                       handleNumberChange("extraCost", e)}

@@ -3,15 +3,15 @@ import {Button, Modal, Toast, ToastContainer} from "react-bootstrap";
 import VehicleCategoryForm from "./VehicleCategoryForm";
 import {VehicleCategory} from "../../../model/VehicleCategory";
 import {CategoriesServices, VehicleCategoriesServices} from "../VehicleCategoriesServices";
-
-type Properties = {
-    onAdd: (id: number) => void;
-}
+import {useAppDispatch} from "../../../redux/hooks";
+import {vehicleCategoryAdded} from "../VehicleCategorySlice";
 
 const newVehicleCategory: VehicleCategory = new VehicleCategory()
 const services: CategoriesServices = new VehicleCategoriesServices();
 
-const AddVehicleCategoryButton = ({onAdd}: Properties) => {
+const AddVehicleCategoryButton = () => {
+    const dispatch = useAppDispatch()
+
     const [showModal, setShowModal] = useState(false);
     const [category, setCategory] = useState<VehicleCategory>(newVehicleCategory);
     const [showFeedBack, setShowFeedBack] = useState(false);
@@ -28,7 +28,7 @@ const AddVehicleCategoryButton = ({onAdd}: Properties) => {
         if (errors.length === 0) {
             services.addVehicleCategory(category)
                 .then(function (response) {
-                    onAdd(response.data.id);
+                    dispatch(vehicleCategoryAdded(response.data.id));
                     closeModal();
 
                 })

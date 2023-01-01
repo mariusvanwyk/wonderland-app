@@ -4,7 +4,7 @@ import {VehicleCategory} from "../../model/VehicleCategory";
 import {VehicleCategoriesPage} from "../../model/VehicleCategoriesPage";
 
 export interface CategoriesServices {
-    getVehicleCategories: (currentPage: number, size: number) => Promise<AxiosResponse<VehicleCategoriesPage>>;
+    getVehicleCategories: (currentPage: number, size: number, sortedBy: string, sortedAscending: boolean) => Promise<AxiosResponse<VehicleCategoriesPage>>;
     getVehicleCategoriesByName: (currentPage: number, size: number, name: string) => Promise<AxiosResponse<VehicleCategoriesPage>>;
     saveVehicleCategory: (category: VehicleCategory) => Promise<AxiosResponse<VehicleCategory>>;
     getVehicleCategory: (id: number) => Promise<AxiosResponse<VehicleCategory>>;
@@ -13,10 +13,11 @@ export interface CategoriesServices {
 }
 
 export class VehicleCategoriesServices implements CategoriesServices {
-    getVehicleCategories(currentPage: number, size: number): Promise<AxiosResponse<VehicleCategoriesPage>> {
+    getVehicleCategories(currentPage: number, size: number, sortedBy: string, sortedAscending: boolean): Promise<AxiosResponse<VehicleCategoriesPage>> {
         console.log("Getting Vehicle Categories - current page: " + currentPage + ", size: " + size)
+        const direction = sortedAscending ? "asc" : "desc";
         return HttpService.getAxiosClient().get<VehicleCategoriesPage>(
-            `/api/v1/vehicleCategories?page=${currentPage}&size=${size}&sort=id,asc`
+            `/api/v1/vehicleCategories?page=${currentPage}&size=${size}&sort=${sortedBy},${direction}`
         );
     }
 
