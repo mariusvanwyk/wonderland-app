@@ -1,51 +1,40 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Page} from "../model/Page";
+import {SelectionState, setCurrentPage} from "../redux/SelectionSlice";
+import {ObjectType} from "../model/BaseModelObject";
+import {useAppDispatch} from "../redux/hooks";
 
 type Properties = {
     page: Page,
     recordCount: number,
-    initialPage: number,
+    objectType: ObjectType,
+    state: SelectionState
     onPaging: (pageNumber: number) => void,
-    fetching: boolean,
 }
 
-const Paging = ({page, recordCount, initialPage, onPaging, fetching}: Properties) => {
-
-    const [currentPage, setCurrentPage] = useState<number>(initialPage);
-    const [busy, setBusy] = useState<boolean>(fetching);
-
-    useEffect(() => {
-        setCurrentPage(initialPage);
-    }, [initialPage]);
-
-    useEffect(() => {
-        setBusy(fetching);
-    }, [fetching]);
+const Paging = ({page, recordCount, state, onPaging}: Properties) => {
+    const dispatch = useAppDispatch();
 
     const gotoFirstPage = () => {
-        setBusy(true);
-        setCurrentPage(0);
+        dispatch(setCurrentPage({objectType: "CATEGORY", currentPage: 0}));
         onPaging(0);
     }
 
     const gotoPreviousPage = () => {
-        setBusy(true);
-        const newPageNumber = currentPage - 1;
-        setCurrentPage(newPageNumber)
+        const newPageNumber = (state.currentPage ? state.currentPage : 0) - 1;
+        dispatch(setCurrentPage({objectType: "CATEGORY", currentPage: newPageNumber}));
         onPaging(newPageNumber);
     }
 
     const gotoNextPage = () => {
-        setBusy(true);
-        const newPageNumber = currentPage + 1;
-        setCurrentPage(newPageNumber);
+        const newPageNumber = (state.currentPage ? state.currentPage : 0) + 1;
+        dispatch(setCurrentPage({objectType: "CATEGORY", currentPage: newPageNumber}));
         onPaging(newPageNumber);
     }
 
     const gotoLastPage = () => {
-        setBusy(true);
         const newPageNumber = page.totalPages - 1;
-        setCurrentPage(newPageNumber);
+        dispatch(setCurrentPage({objectType: "CATEGORY", currentPage: newPageNumber}));
         onPaging(newPageNumber);
     }
 
@@ -89,22 +78,22 @@ const Paging = ({page, recordCount, initialPage, onPaging, fetching}: Properties
                 </div>
                 <nav aria-label={"pagination"}>
                     <ul className={"pagination pagination-sm mb-0"}>
-                        <PageItem disabled={busy || !canNavigateBack()}
+                        <PageItem disabled={!canNavigateBack()}
                                   iconClass={"bi-chevron-double-left"}
                                   onClick={() => gotoFirstPage()}
                                   title={"Go to First Page"}/>
 
-                        <PageItem disabled={busy || !canNavigateBack()}
+                        <PageItem disabled={!canNavigateBack()}
                                   iconClass={"bi-chevron-left"}
                                   onClick={() => gotoPreviousPage()}
                                   title={"Go to Previous Page"}/>
 
-                        <PageItem disabled={busy || !canNavigateForward()}
+                        <PageItem disabled={!canNavigateForward()}
                                   iconClass={"bi-chevron-right"}
                                   onClick={() => gotoNextPage()}
                                   title={"Go to Next Page"}/>
 
-                        <PageItem disabled={busy || !canNavigateForward()}
+                        <PageItem disabled={!canNavigateForward()}
                                   iconClass={"bi-chevron-double-right"}
                                   onClick={() => gotoLastPage()}
                                   title={"Go to Last Page"}/>

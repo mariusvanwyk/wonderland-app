@@ -1,8 +1,7 @@
-import {size} from "lodash";
+import {BaseModelObject} from "./BaseModelObject";
 
-export class VehicleCategory {
-    id: number;
-    currentVersion: number;
+
+export class VehicleCategory extends BaseModelObject {
     name: string;
     size: number;
     color: string;
@@ -17,10 +16,6 @@ export class VehicleCategory {
     serviceRate: number;
     overtimeRate: number;
     fuelConsumption: number;
-    createdBy: string;
-    createdAt: string;
-    updatedBy: string;
-    updatedAt: string;
 
     static from(original: VehicleCategory) {
         const copied: VehicleCategory = new VehicleCategory();
@@ -47,8 +42,7 @@ export class VehicleCategory {
     }
 
     constructor() {
-        this.id = -1;
-        this.currentVersion = 0;
+        super();
         this.name = "";
         this.size = 0;
         this.color = "#ffffff";
@@ -62,10 +56,6 @@ export class VehicleCategory {
         this.serviceRate = 0;
         this.overtimeRate = 0;
         this.fuelConsumption = 0;
-        this.createdBy = "";
-        this.createdAt = "";
-        this.updatedBy = "";
-        this.updatedAt = "";
     }
 
     validate() {

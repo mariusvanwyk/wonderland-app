@@ -3,33 +3,30 @@ import {AxiosRequestConfig, AxiosResponse} from "axios";
 import {VehicleCategory} from "../../model/VehicleCategory";
 import {VehicleCategoriesPage} from "../../model/VehicleCategoriesPage";
 
-export interface CategoriesServices {
-    getVehicleCategories: (currentPage: number, size: number, sortedBy: string, sortedAscending: boolean) => Promise<AxiosResponse<VehicleCategoriesPage>>;
-    getVehicleCategoriesByName: (currentPage: number, size: number, name: string) => Promise<AxiosResponse<VehicleCategoriesPage>>;
-    saveVehicleCategory: (category: VehicleCategory) => Promise<AxiosResponse<VehicleCategory>>;
-    getVehicleCategory: (id: number) => Promise<AxiosResponse<VehicleCategory>>;
-    deleteVehicleCategory: (id: number) => Promise<AxiosResponse<VehicleCategory>>;
-    addVehicleCategory: (category: VehicleCategory) => Promise<AxiosResponse<VehicleCategory>>;
-}
 
-export class VehicleCategoriesServices implements CategoriesServices {
-    getVehicleCategories(currentPage: number, size: number, sortedBy: string, sortedAscending: boolean): Promise<AxiosResponse<VehicleCategoriesPage>> {
-        console.log("Getting Vehicle Categories - current page: " + currentPage + ", size: " + size)
+export class VehicleCategoriesServices {
+    getVehicleCategories(currentPage: number | undefined, pageSize: number | undefined, sortedBy: string | undefined, sortedAscending: boolean): Promise<AxiosResponse<VehicleCategoriesPage>> {
+        const pageArguments = this._getPageArguments(currentPage, pageSize, sortedBy, sortedAscending);
+        console.log("Getting Vehicle Categories with page arguments", pageArguments)
+        return HttpService.getAxiosClient().get<VehicleCategoriesPage>(
+            `/api/v1/vehicleCategories?${pageArguments}`
+        );
+    }
+
+    getVehicleCategoriesByName(currentPage: number | undefined, pageSize: number | undefined, name: string, sortedBy: string | undefined, sortedAscending: boolean): Promise<AxiosResponse<VehicleCategoriesPage>> {
+        const pageArguments = this._getPageArguments(currentPage, pageSize, sortedBy, sortedAscending);
+        console.log("Filtering Vehicle Categories with name and page arguments", name, pageArguments)
+        return HttpService.getAxiosClient().get<VehicleCategoriesPage>(
+            `/api/v1/vehicleCategories/search/findByNameContaining?name=${name}&${pageArguments}`
+        );
+    }
+
+    _getPageArguments(currentPage: number | undefined, pageSize: number | undefined, sortedBy: string | undefined, sortedAscending: boolean) {
         const direction = sortedAscending ? "asc" : "desc";
-        return HttpService.getAxiosClient().get<VehicleCategoriesPage>(
-            `/api/v1/vehicleCategories?page=${currentPage}&size=${size}&sort=${sortedBy},${direction}`
-        );
+        return `page=${currentPage ? currentPage : 0}&size=${pageSize ? pageSize : 5}&sort=${sortedBy},${direction}`;
     }
 
-    getVehicleCategoriesByName(currentPage: number, size: number, name: string): Promise<AxiosResponse<VehicleCategoriesPage>> {
-        console.log("getting Vehicle Categories by name - current page: "
-            + currentPage + ", size: " + size + ", name: '" + name + "'")
-        return HttpService.getAxiosClient().get<VehicleCategoriesPage>(
-            `/api/v1/vehicleCategories/search/findByNameContaining?name=${name}&page=${currentPage}&size=${size}&sort=id,asc`
-        );
-    }
-
-    getVehicleCategory(id: number): Promise<AxiosResponse<VehicleCategory>> {
+    getVehicleCategory(id: number | undefined): Promise<AxiosResponse<VehicleCategory>> {
         console.log("getting Vehicle Category - id: " + id)
         return HttpService.getAxiosClient().get<VehicleCategory>(`/api/v1/vehicleCategories/${id}`);
     }

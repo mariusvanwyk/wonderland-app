@@ -1,23 +1,22 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import {Button, Card, CloseButton, Modal, Toast, ToastContainer} from "react-bootstrap";
 import {VehicleCategory} from "../../../model/VehicleCategory";
-import {CategoriesServices, VehicleCategoriesServices} from "../VehicleCategoriesServices";
+import {VehicleCategoriesServices} from "../VehicleCategoriesServices";
 import VehicleCategoryForm from "./VehicleCategoryForm";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {
-    getSelectedId,
-    getSelectedTime, vehicleCategoryClosed,
+    getCategoriesSelectionState,
+    vehicleCategoryClosed,
     vehicleCategoryDeleted,
     vehicleCategorySaved,
-} from "../VehicleCategorySlice";
+} from "../../../redux/SelectionSlice";
 
 
-const services: CategoriesServices = new VehicleCategoriesServices();
+const services: VehicleCategoriesServices = new VehicleCategoriesServices();
 
 const VehicleCategoryDetails = () => {
     const dispatch = useAppDispatch()
-    const id = useAppSelector(getSelectedId);
-    const selectTime = useAppSelector(getSelectedTime);
+    const state = useAppSelector(getCategoriesSelectionState);
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [category, setCategory] = useState<VehicleCategory>();
@@ -27,9 +26,9 @@ const VehicleCategoryDetails = () => {
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     useEffect(() => {
-        if (id !== null) {
+        if (state.selectedId !== null) {
             closeFeedBack();
-            services.getVehicleCategory(id)
+            services.getVehicleCategory(state.selectedId)
                 .then((response) => {
                     setCategory(VehicleCategory.from(response.data));
                 })
@@ -37,7 +36,7 @@ const VehicleCategoryDetails = () => {
                     console.error(error)
                 });
         }
-    }, [id, selectTime]);
+    }, [state.selectedId, state.selectTime]);
 
     useEffect(() => {
         if (category) {
@@ -48,7 +47,7 @@ const VehicleCategoryDetails = () => {
     const handleDeleteConfirmation = (id: number) => {
         services.deleteVehicleCategory(id)
             .then((response) => {
-                dispatch(vehicleCategoryDeleted());
+                dispatch(vehicleCategoryDeleted({objectType:"CATEGORY"}));
                 setShowDeleteModal(false);
             })
             .catch((error) => {
@@ -63,7 +62,7 @@ const VehicleCategoryDetails = () => {
             services.saveVehicleCategory(category)
                 .then((response) => {
                     setCategory(VehicleCategory.from(response.data));
-                    dispatch(vehicleCategorySaved(response.data.id));
+                    dispatch(vehicleCategorySaved({objectType:"CATEGORY", id: response.data.id}));
                     setShowSavedFeedBack(true);
                 })
                 .catch((error) => {
@@ -100,7 +99,7 @@ const VehicleCategoryDetails = () => {
                     <Card.Header className={"d-flex justify-content-between align-items-center"}>
                         <h3>{name}</h3>
                         <div className={"small text-muted ms-3"}>(Refreshed at: {new Date().toLocaleTimeString()})</div>
-                        <CloseButton aria-label="Close" onClick={() => dispatch(vehicleCategoryClosed())}/>
+                        <CloseButton aria-label="Close" onClick={() => dispatch(vehicleCategoryClosed({objectType:"CATEGORY"}))}/>
                     </Card.Header>
                     <Card.Body className={"overflow-scroll h-100"}>
                         <VehicleCategoryForm showTechnical={true} formCategory={category}

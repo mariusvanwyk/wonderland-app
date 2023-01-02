@@ -1,21 +1,16 @@
-import React, {useState} from 'react';
-import {Col, Row} from "react-bootstrap";
+import React from 'react';
 import Container from "react-bootstrap/Container";
 import VehicleCategoryDetails from "./components/VehicleCategoryDetails";
 import VehicleCategoriesList from "./components/VehicleCategoriesList";
-import {CategoriesServices, VehicleCategoriesServices} from "./VehicleCategoriesServices";
-import {VehicleCategory} from "../../model/VehicleCategory";
 import {useAppSelector} from "../../redux/hooks";
-import {getSelectedId} from "./VehicleCategorySlice";
+import {getCategoriesSelectionState} from "../../redux/SelectionSlice";
 
-const services: CategoriesServices = new VehicleCategoriesServices();
-
-function VehicleCategoriesSmall() {
-    const selectedId = useAppSelector(getSelectedId)
+const VehicleCategoriesSmall = () => {
+    const state = useAppSelector(getCategoriesSelectionState)
     return (
         <Container fluid className={"h-100"}>
-            {!selectedId && <VehicleCategoriesList/>}
-            {selectedId && <VehicleCategoryDetails/>}
+            {!state.selectedId && <VehicleCategoriesList/>}
+            {state.selectedId && <VehicleCategoryDetails/>}
         </Container>
     );
 }

@@ -4,10 +4,10 @@ import Container from "react-bootstrap/Container";
 import VehicleCategoryDetails from "./components/VehicleCategoryDetails";
 import VehicleCategoriesList from "./components/VehicleCategoriesList";
 import {useAppSelector} from "../../redux/hooks";
-import {getSelectedId} from "./VehicleCategorySlice";
+import {getCategoriesSelectionState} from "../../redux/SelectionSlice";
 
-function VehicleCategoriesLarge() {
-    const selectedId = useAppSelector(getSelectedId)
+const VehicleCategoriesLarge = () => {
+    const state = useAppSelector(getCategoriesSelectionState)
     return (
         <Container fluid className={"h-100"}>
             <Row className={"h-100"}>
@@ -15,7 +15,7 @@ function VehicleCategoriesLarge() {
                     <VehicleCategoriesList/>
                 </Col>
                 <Col sm={12} md={6} lg={8} className={"h-100 pb-2"}>
-                    {selectedId && <VehicleCategoryDetails/>}
+                    {state.selectedId && <VehicleCategoryDetails/>}
                 </Col>
             </Row>
         </Container>
