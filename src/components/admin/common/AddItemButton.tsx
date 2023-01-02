@@ -1,40 +1,49 @@
-import React, {useState} from 'react';
+import React, {ReactNode, useState} from 'react';
 import {Button, Modal, Toast, ToastContainer} from "react-bootstrap";
-import VehicleCategoryForm from "./VehicleCategoryForm";
-import {VehicleCategory} from "../../../model/VehicleCategory";
-import {VehicleCategoriesServices} from "../VehicleCategoriesServices";
-import {useAppDispatch} from "../../../redux/hooks";
-import {itemAdded} from "../../../redux/SelectionSlice";
+import {useAppDispatch} from "../../redux/hooks";
+import {itemAdded, SelectionState, setItem} from "../../redux/SelectionSlice";
+import {Converter} from "../Converter";
+import {Services} from "../Services";
+import {ItemType} from "../model/BaseItem";
 
-const newVehicleCategory: VehicleCategory = new VehicleCategory()
-const services: VehicleCategoriesServices = new VehicleCategoriesServices();
 
-const AddVehicleCategoryButton = () => {
+type Properties = {
+    itemType: ItemType,
+    services: Services<any, any>,
+    converter: Converter<any, any>,
+    state: SelectionState<any>,
+    itemForm: ReactNode
+}
+
+const AddItemButton = ({itemType, services, converter, state, itemForm}: Properties) => {
     const dispatch = useAppDispatch()
 
     const [showModal, setShowModal] = useState(false);
-    const [category, setCategory] = useState<VehicleCategory>(newVehicleCategory);
+    // const [item, setItem] = useState<BaseModelObject>(converter.newItem());
     const [showFeedBack, setShowFeedBack] = useState(false);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     const handleShowModal = () => {
-        setCategory(newVehicleCategory);
+        dispatch(setItem({itemType: itemType, item: converter.newItem()}));
+        setShowModal(true)
     }
 
     const handleAddConfirmation = () => {
 
-        let errors = category.validate();
+        let errors = state.item.validate();
 
         if (errors.length === 0) {
-            services.addVehicleCategory(category)
+            services.addItem(state.item)
                 .then(function (response) {
-                    dispatch(itemAdded({objectType:"CATEGORY", id: response.data.id}));
+                    dispatch(itemAdded({itemType: itemType, id: response.data.id}));
                     closeModal();
-
                 })
                 .catch(function (error) {
                     errors = [...errors, error];
                     feedback(errors);
+                })
+                .finally(() => {
+                    dispatch(setItem({itemType: itemType, item: converter.newItem()}));
                 });
         } else {
             feedback(errors);
@@ -58,22 +67,20 @@ const AddVehicleCategoryButton = () => {
 
     return (
         <>
-            <Button variant="success" title={"Add a new Vehicle Category"} size={"sm"}
-                    onClick={() => setShowModal(true)} accessKey={"n"}>
+            <Button variant="success" title={"Add new"} size={"sm"}
+                    onClick={() => handleShowModal()} accessKey={"n"}>
                 New
             </Button>
             <Modal show={showModal}
                    onHide={() => closeModal()}
-                   onShow={() => handleShowModal()}
                    onBackdropClick={() => closeModal()}
                    scrollable={true}
                    centered={true}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{"Add new  category"}</Modal.Title>
+                    <Modal.Title>{"Add new"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <VehicleCategoryForm showTechnical={false} formCategory={category}
-                                         onUpdate={(category) => setCategory(category)}/>
+                    {itemForm}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => closeModal()}>
@@ -101,4 +108,4 @@ const AddVehicleCategoryButton = () => {
     )
 }
 
-export default AddVehicleCategoryButton
+export default AddItemButton

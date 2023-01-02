@@ -1,18 +1,18 @@
 import {Button, Form, InputGroup} from "react-bootstrap";
 import React, {ChangeEvent} from "react";
-import {ObjectType} from "../model/BaseModelObject";
-import {clearSearchItemsText, refreshItems, SelectionState, setSearchItemsText} from "../redux/SelectionSlice";
-import {useAppDispatch} from "../redux/hooks";
+import {ItemType} from "../model/BaseItem";
+import {clearSearchItemsText, refreshItems, SelectionState, setSearchItemsText} from "../../redux/SelectionSlice";
+import {useAppDispatch} from "../../redux/hooks";
 
 type Properties = {
-    objectType: ObjectType,
+    itemType: ItemType,
     state: SelectionState<any>
 }
-const SearchPanel = ({objectType, state}:Properties) => {
+const SearchPanel = ({itemType, state}:Properties) => {
     const dispatch = useAppDispatch();
 
     const search = () => {
-        dispatch(refreshItems({objectType: objectType}));
+        dispatch(refreshItems({itemType: itemType}));
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -22,7 +22,7 @@ const SearchPanel = ({objectType, state}:Properties) => {
     }
 
     const clearSearch = () => {
-        dispatch(clearSearchItemsText({objectType: objectType}));
+        dispatch(clearSearchItemsText({itemType: itemType}));
         search();
     }
 
@@ -36,7 +36,7 @@ const SearchPanel = ({objectType, state}:Properties) => {
                 onKeyDown={(e) => handleKeyDown(e)}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     dispatch(setSearchItemsText(
-                        {objectType: objectType, searchText: e.target.value}))}
+                        {itemType: itemType, searchText: e.target.value}))}
             />
             <Button variant="outline-secondary" id="search-button"
                     onClick={() => search()}>

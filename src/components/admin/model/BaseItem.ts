@@ -1,6 +1,6 @@
-export type ObjectType = "CATEGORY" | "VEHICLE"
+export type ItemType = "CATEGORY" | "VEHICLE"
 
-export class BaseModelObject {
+export class BaseItem {
     id: number;
     currentVersion: number;
     createdBy: string;
@@ -15,5 +15,12 @@ export class BaseModelObject {
         this.createdAt = "";
         this.updatedBy = "";
         this.updatedAt = "";
+    }
+
+    /**
+     * Override this is you need to do validation
+     */
+    validate(): string[] {
+        return [];
     }
 }

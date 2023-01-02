@@ -1,6 +1,6 @@
-import {BaseModelObject} from "./BaseModelObject";
+import {BaseItem} from "./BaseItem";
 
-export class Vehicle extends BaseModelObject {
+export class Vehicle extends BaseItem {
 
     instalment: number;
     registrationNumber: string;

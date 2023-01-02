@@ -1,5 +1,5 @@
 import React from "react";
-import NavigationBar from "./common/NavigationBar";
+import NavigationBar from "./admin/common/NavigationBar";
 
 const AuthenticationNotPossible = () => {
     return (<>

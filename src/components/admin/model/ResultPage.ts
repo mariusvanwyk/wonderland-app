@@ -1,7 +1,7 @@
 import {Page} from "./Page";
 
-export interface ResultPage<T> {
-    _embedded: T
+export interface ResultPage<E> {
+    _embedded: E
     // _links: PageLinks
     page: Page
 }

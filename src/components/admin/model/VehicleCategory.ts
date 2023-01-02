@@ -1,7 +1,7 @@
-import {BaseModelObject} from "./BaseModelObject";
+import {BaseItem} from "./BaseItem";
 
 
-export class VehicleCategory extends BaseModelObject {
+export class VehicleCategory extends BaseItem {
     name: string;
     size: number;
     color: string;
@@ -59,7 +59,7 @@ export class VehicleCategory extends BaseModelObject {
     }
 
     validate() {
-        let errors: any[] = [];
+        let errors: string[] = [];
         if (this.name === undefined || this.name.trim() === "") {
             errors = [...errors, "Name is required"];
         }

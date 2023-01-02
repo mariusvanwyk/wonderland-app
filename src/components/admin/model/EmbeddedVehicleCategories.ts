@@ -1,5 +1,5 @@
 import {VehicleCategory} from "./VehicleCategory";
 
-export type EmbeddedVehicleCategories = {
+export interface EmbeddedVehicleCategories {
     vehicleCategories: VehicleCategory[];
 }

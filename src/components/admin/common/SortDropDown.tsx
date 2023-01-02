@@ -1,14 +1,14 @@
 import {Dropdown} from "react-bootstrap";
-import {SelectionAction, SelectionState, setSortItemsBy} from "../redux/SelectionSlice";
+import {SelectionState, setSortItemsBy} from "../../redux/SelectionSlice";
 import React from "react";
-import {useAppDispatch} from "../redux/hooks";
-import {ObjectType} from "../model/BaseModelObject";
+import {useAppDispatch} from "../../redux/hooks";
+import {ItemType} from "../model/BaseItem";
 
 type Properties = {
-    objectType: ObjectType,
+    itemType: ItemType,
     state: SelectionState<any>
 }
-const SortDropDown = ({objectType, state}:Properties) => {
+const SortDropDown = ({itemType, state}:Properties) => {
     const dispatch = useAppDispatch();
 
     return (
@@ -24,7 +24,7 @@ const SortDropDown = ({objectType, state}:Properties) => {
             <Dropdown.Menu>
                 <Dropdown.Item className={"d-flex justify-content-between"}
                                onClick={() => dispatch(setSortItemsBy({
-                                   objectType: objectType,
+                                   itemType: itemType,
                                    sortBy: "name"
                                }))}>
                     {state.sortedBy === "name" ? <i className={"bi bi-check"}/> : <div>&nbsp;</div>}
@@ -35,7 +35,7 @@ const SortDropDown = ({objectType, state}:Properties) => {
                 </Dropdown.Item>
                 <Dropdown.Item className={"d-flex justify-content-between"}
                                onClick={() => dispatch(setSortItemsBy({
-                                   objectType: objectType,
+                                   itemType: itemType,
                                    sortBy: "size"
                                }))}>
                     {state.sortedBy === "size" ? <i className={"bi bi-check"}/> : <div>&nbsp;</div>}

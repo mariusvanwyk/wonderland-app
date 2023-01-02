@@ -5,7 +5,7 @@ import "./style/style.css";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Welcome from "./Welcome";
 import Home from "./Home";
-import NavigationBar from "./common/NavigationBar";
+import NavigationBar from "./admin/common/NavigationBar";
 import Error from "../Error";
 import About from "../About";
 import VehicleCategoriesLarge from "./admin/vehicleCategories/VehicleCategoriesLarge";

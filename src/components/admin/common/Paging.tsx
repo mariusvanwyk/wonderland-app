@@ -1,13 +1,13 @@
 import React from 'react';
 import {Page} from "../model/Page";
-import {SelectionState, setItemsCurrentPage} from "../redux/SelectionSlice";
-import {ObjectType} from "../model/BaseModelObject";
-import {useAppDispatch} from "../redux/hooks";
+import {SelectionState, setItemsCurrentPage} from "../../redux/SelectionSlice";
+import {ItemType} from "../model/BaseItem";
+import {useAppDispatch} from "../../redux/hooks";
 
 type Properties = {
     page: Page,
     recordCount: number,
-    objectType: ObjectType,
+    itemType: ItemType,
     state: SelectionState<any>
     onPaging: (pageNumber: number) => void,
 }
@@ -16,25 +16,25 @@ const Paging = ({page, recordCount, state, onPaging}: Properties) => {
     const dispatch = useAppDispatch();
 
     const gotoFirstPage = () => {
-        dispatch(setItemsCurrentPage({objectType: "CATEGORY", currentPage: 0}));
+        dispatch(setItemsCurrentPage({itemType: "CATEGORY", currentPage: 0}));
         onPaging(0);
     }
 
     const gotoPreviousPage = () => {
         const newPageNumber = (state.currentPage ? state.currentPage : 0) - 1;
-        dispatch(setItemsCurrentPage({objectType: "CATEGORY", currentPage: newPageNumber}));
+        dispatch(setItemsCurrentPage({itemType: "CATEGORY", currentPage: newPageNumber}));
         onPaging(newPageNumber);
     }
 
     const gotoNextPage = () => {
         const newPageNumber = (state.currentPage ? state.currentPage : 0) + 1;
-        dispatch(setItemsCurrentPage({objectType: "CATEGORY", currentPage: newPageNumber}));
+        dispatch(setItemsCurrentPage({itemType: "CATEGORY", currentPage: newPageNumber}));
         onPaging(newPageNumber);
     }
 
     const gotoLastPage = () => {
         const newPageNumber = page.totalPages - 1;
-        dispatch(setItemsCurrentPage({objectType: "CATEGORY", currentPage: newPageNumber}));
+        dispatch(setItemsCurrentPage({itemType: "CATEGORY", currentPage: newPageNumber}));
         onPaging(newPageNumber);
     }
 
@@ -116,7 +116,7 @@ const PageItem = ({disabled, onClick, iconClass, title}: PageItemProperties) => 
     return (
         <li className={"page-item" + (disabled ? " disabled" : "")}>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a className={"page-link"} href="#" tabIndex={disabled ? -1 : 0}
+            <a className={"page-link"} href="src/components/admin/common#" tabIndex={disabled ? -1 : 0}
                onClick={() => onClick()} title={title}>
                 <i className={"bi " + iconClass}></i>
             </a>
