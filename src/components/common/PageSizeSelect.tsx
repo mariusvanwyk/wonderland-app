@@ -1,19 +1,19 @@
 import {FormSelect} from "react-bootstrap";
 import React, {ChangeEvent} from "react";
-import {SelectionState, setPageSize} from "../redux/SelectionSlice";
+import {SelectionState, setItemsPageSize} from "../redux/SelectionSlice";
 import {ObjectType} from "../model/BaseModelObject";
 import {useAppDispatch} from "../redux/hooks";
 
 type Properties = {
     objectType: ObjectType,
-    state: SelectionState
+    state: SelectionState<any>
 }
 const PageSizeSelect = ({objectType, state}: Properties) => {
     const dispatch = useAppDispatch();
 
     const updateRecordsPerPage = (event: ChangeEvent<HTMLSelectElement>) => {
         const newPageSize = Number(event.target.value);
-        dispatch(setPageSize({objectType: objectType, pageSize: newPageSize}));
+        dispatch(setItemsPageSize({objectType: objectType, pageSize: newPageSize}));
     }
 
     return (

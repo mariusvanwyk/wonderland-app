@@ -1,12 +1,12 @@
 import {Dropdown} from "react-bootstrap";
-import {SelectionState, setSortVehicleCategoriesBy} from "../redux/SelectionSlice";
+import {SelectionAction, SelectionState, setSortItemsBy} from "../redux/SelectionSlice";
 import React from "react";
 import {useAppDispatch} from "../redux/hooks";
 import {ObjectType} from "../model/BaseModelObject";
 
 type Properties = {
     objectType: ObjectType,
-    state: SelectionState
+    state: SelectionState<any>
 }
 const SortDropDown = ({objectType, state}:Properties) => {
     const dispatch = useAppDispatch();
@@ -23,7 +23,7 @@ const SortDropDown = ({objectType, state}:Properties) => {
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 <Dropdown.Item className={"d-flex justify-content-between"}
-                               onClick={() => dispatch(setSortVehicleCategoriesBy({
+                               onClick={() => dispatch(setSortItemsBy({
                                    objectType: objectType,
                                    sortBy: "name"
                                }))}>
@@ -34,7 +34,7 @@ const SortDropDown = ({objectType, state}:Properties) => {
                         <i className={"bi bi-arrow-up"}/>) : <div>&nbsp;</div>}
                 </Dropdown.Item>
                 <Dropdown.Item className={"d-flex justify-content-between"}
-                               onClick={() => dispatch(setSortVehicleCategoriesBy({
+                               onClick={() => dispatch(setSortItemsBy({
                                    objectType: objectType,
                                    sortBy: "size"
                                }))}>

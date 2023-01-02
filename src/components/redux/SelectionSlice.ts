@@ -1,8 +1,10 @@
 import {createSlice, Draft, PayloadAction} from '@reduxjs/toolkit'
 import type {RootState} from './store'
 import {ObjectType} from "../model/BaseModelObject";
+import {ResultPage} from "../model/ResultPage";
+import {EmbeddedVehicleCategories} from "../model/EmbeddedVehicleCategories";
 
-export interface SelectionState {
+export interface SelectionState<T> {
     selectedId: number | null | undefined,
     refreshTime: number | null,
     selectTime: number | null,
@@ -12,76 +14,77 @@ export interface SelectionState {
     pageSize: number | undefined,
     currentPage: number | undefined,
     error: string | null | undefined,
-    fetching: boolean
-}
-
-const initialSelectionState: SelectionState = {
-    selectedId: null,
-    refreshTime: Date.now(),
-    selectTime: null,
-    sortedBy: undefined,
-    sortedAscending: true,
-    searchText: undefined,
-    pageSize: 5,
-    currentPage: 0,
-    error: undefined,
-    fetching: false,
+    fetching: boolean,
+    resultPage: ResultPage<T> | undefined
 }
 
 interface SelectionStates {
-    categoriesSelectionState: SelectionState
+    categoriesSelectionState: SelectionState<EmbeddedVehicleCategories>
 }
 
 const initialState: SelectionStates = {
-    categoriesSelectionState: initialSelectionState
+    categoriesSelectionState: {
+        selectedId: null,
+        refreshTime: Date.now(),
+        selectTime: null,
+        sortedBy: undefined,
+        sortedAscending: true,
+        searchText: undefined,
+        pageSize: 5,
+        currentPage: 0,
+        error: undefined,
+        fetching: false,
+        resultPage: undefined,
+    }
 }
 
-interface SelectionAction {
+export interface SelectionAction<T> {
     objectType: ObjectType,
     id?: number,
     sortBy?: string,
     searchText?: string,
     pageSize?: number,
     currentPage?: number
-    error?: string
+    error?: string,
+    resultPage?: ResultPage<T> | undefined
 }
 
 export const SelectionSlice = createSlice({
     name: 'selectionSlice',
     initialState,
     reducers: {
-        vehicleCategorySelected: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        itemSelected: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.selectedId = action.payload.id;
             selectionState.selectTime = Date.now();
         },
-        vehicleCategorySaved: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        itemSaved: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.selectedId = action.payload.id;
             selectionState.selectTime = Date.now();
             selectionState.refreshTime = Date.now();
         },
-        vehicleCategoryAdded: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        itemAdded: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.selectedId = action.payload.id;
             selectionState.refreshTime = Date.now();
         },
-        vehicleCategoryDeleted: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        itemDeleted: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.selectedId = null;
             selectionState.refreshTime = Date.now();
         },
-        vehicleCategoryClosed: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        itemClosed: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.selectedId = null;
         },
-        refreshVehicleCategories: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        refreshItems: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.selectedId = null;
             selectionState.refreshTime = Date.now();
         },
-        setSortVehicleCategoriesBy: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        setSortItemsBy: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             if (selectionState.sortedBy === action.payload.sortBy) {
                 selectionState.sortedAscending = !selectionState.sortedAscending;
             } else {
@@ -90,41 +93,45 @@ export const SelectionSlice = createSlice({
             selectionState.selectedId = null;
             selectionState.refreshTime = Date.now();
         },
-        setSearchText: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        setSearchItemsText: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.searchText = action.payload.searchText;
         },
-        clearSearchText: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        clearSearchItemsText: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.searchText = "";
         },
-        setPageSize: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        setItemsPageSize: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.pageSize = action.payload.pageSize;
             selectionState.currentPage = 0;
             selectionState.selectedId = null;
             selectionState.refreshTime = Date.now();
         },
-        setCurrentPage: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        setItemsCurrentPage: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.selectedId = null;
             selectionState.currentPage = action.payload.currentPage;
         },
-        clearError: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        clearItemsFetchError: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.error = null;
         },
-        setError: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        setItemsFetchError: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.error = action.payload.error;
         },
-        setFetching: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        setFetchingItems: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.fetching = true;
         },
-        setFetchingComplete: (state, action: PayloadAction<SelectionAction>) => {
-            const selectionState: SelectionState = getSelectionState(state, action.payload.objectType);
+        setFetchingItemsComplete: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
             selectionState.fetching = false;
+        },
+        setItemsResultPage: (state, action: PayloadAction<SelectionAction<any>>) => {
+            const selectionState: SelectionState<any> = getSelectionState(state, action.payload.objectType);
+            selectionState.resultPage = action.payload.resultPage;
         }
     },
 })
@@ -139,21 +146,22 @@ const getSelectionState = (state: Draft<SelectionStates>, objectType: ObjectType
 }
 
 export const {
-    vehicleCategorySelected,
-    vehicleCategorySaved,
-    vehicleCategoryAdded,
-    vehicleCategoryDeleted,
-    vehicleCategoryClosed,
-    refreshVehicleCategories,
-    setSortVehicleCategoriesBy,
-    setSearchText,
-    clearSearchText,
-    setPageSize,
-    setCurrentPage,
-    clearError,
-    setError,
-    setFetching,
-    setFetchingComplete
+    itemSelected,
+    itemSaved,
+    itemAdded,
+    itemDeleted,
+    itemClosed,
+    refreshItems,
+    setSortItemsBy,
+    setSearchItemsText,
+    clearSearchItemsText,
+    setItemsPageSize,
+    setItemsCurrentPage,
+    clearItemsFetchError,
+    setItemsFetchError,
+    setFetchingItems,
+    setFetchingItemsComplete,
+    setItemsResultPage
 } = SelectionSlice.actions
 
 export const getCategoriesSelectionState = (state: RootState) => state.selections.categoriesSelectionState;

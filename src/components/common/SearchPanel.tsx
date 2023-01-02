@@ -1,18 +1,18 @@
 import {Button, Form, InputGroup} from "react-bootstrap";
 import React, {ChangeEvent} from "react";
 import {ObjectType} from "../model/BaseModelObject";
-import {clearSearchText, refreshVehicleCategories, SelectionState, setSearchText} from "../redux/SelectionSlice";
+import {clearSearchItemsText, refreshItems, SelectionState, setSearchItemsText} from "../redux/SelectionSlice";
 import {useAppDispatch} from "../redux/hooks";
 
 type Properties = {
     objectType: ObjectType,
-    state: SelectionState
+    state: SelectionState<any>
 }
 const SearchPanel = ({objectType, state}:Properties) => {
     const dispatch = useAppDispatch();
 
     const search = () => {
-        dispatch(refreshVehicleCategories({objectType: objectType}));
+        dispatch(refreshItems({objectType: objectType}));
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -22,7 +22,7 @@ const SearchPanel = ({objectType, state}:Properties) => {
     }
 
     const clearSearch = () => {
-        dispatch(clearSearchText({objectType: objectType}));
+        dispatch(clearSearchItemsText({objectType: objectType}));
         search();
     }
 
@@ -35,7 +35,7 @@ const SearchPanel = ({objectType, state}:Properties) => {
                 aria-describedby="search-button"
                 onKeyDown={(e) => handleKeyDown(e)}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    dispatch(setSearchText(
+                    dispatch(setSearchItemsText(
                         {objectType: objectType, searchText: e.target.value}))}
             />
             <Button variant="outline-secondary" id="search-button"

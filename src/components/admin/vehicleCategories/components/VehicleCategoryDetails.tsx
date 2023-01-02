@@ -6,9 +6,9 @@ import VehicleCategoryForm from "./VehicleCategoryForm";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {
     getCategoriesSelectionState,
-    vehicleCategoryClosed,
-    vehicleCategoryDeleted,
-    vehicleCategorySaved,
+    itemClosed,
+    itemDeleted,
+    itemSaved,
 } from "../../../redux/SelectionSlice";
 
 
@@ -47,7 +47,7 @@ const VehicleCategoryDetails = () => {
     const handleDeleteConfirmation = (id: number) => {
         services.deleteVehicleCategory(id)
             .then((response) => {
-                dispatch(vehicleCategoryDeleted({objectType:"CATEGORY"}));
+                dispatch(itemDeleted({objectType:"CATEGORY"}));
                 setShowDeleteModal(false);
             })
             .catch((error) => {
@@ -62,7 +62,7 @@ const VehicleCategoryDetails = () => {
             services.saveVehicleCategory(category)
                 .then((response) => {
                     setCategory(VehicleCategory.from(response.data));
-                    dispatch(vehicleCategorySaved({objectType:"CATEGORY", id: response.data.id}));
+                    dispatch(itemSaved({objectType:"CATEGORY", id: response.data.id}));
                     setShowSavedFeedBack(true);
                 })
                 .catch((error) => {
@@ -99,7 +99,7 @@ const VehicleCategoryDetails = () => {
                     <Card.Header className={"d-flex justify-content-between align-items-center"}>
                         <h3>{name}</h3>
                         <div className={"small text-muted ms-3"}>(Refreshed at: {new Date().toLocaleTimeString()})</div>
-                        <CloseButton aria-label="Close" onClick={() => dispatch(vehicleCategoryClosed({objectType:"CATEGORY"}))}/>
+                        <CloseButton aria-label="Close" onClick={() => dispatch(itemClosed({objectType:"CATEGORY"}))}/>
                     </Card.Header>
                     <Card.Body className={"overflow-scroll h-100"}>
                         <VehicleCategoryForm showTechnical={true} formCategory={category}

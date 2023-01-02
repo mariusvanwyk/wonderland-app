@@ -1,24 +1,24 @@
 import HttpService from "../../../services/HttpService";
 import {AxiosRequestConfig, AxiosResponse} from "axios";
 import {VehicleCategory} from "../../model/VehicleCategory";
-import {VehicleCategoriesPage} from "../../model/VehicleCategoriesPage";
+import {ResultPage} from "../../model/ResultPage";
+import {EmbeddedVehicleCategories} from "../../model/EmbeddedVehicleCategories";
 
 
 export class VehicleCategoriesServices {
-    getVehicleCategories(currentPage: number | undefined, pageSize: number | undefined, sortedBy: string | undefined, sortedAscending: boolean): Promise<AxiosResponse<VehicleCategoriesPage>> {
-        const pageArguments = this._getPageArguments(currentPage, pageSize, sortedBy, sortedAscending);
-        console.log("Getting Vehicle Categories with page arguments", pageArguments)
-        return HttpService.getAxiosClient().get<VehicleCategoriesPage>(
-            `/api/v1/vehicleCategories?${pageArguments}`
-        );
-    }
 
-    getVehicleCategoriesByName(currentPage: number | undefined, pageSize: number | undefined, name: string, sortedBy: string | undefined, sortedAscending: boolean): Promise<AxiosResponse<VehicleCategoriesPage>> {
+    getVehicleCategories(currentPage: number | undefined, pageSize: number | undefined, searchText: string | undefined, sortedBy: string | undefined, sortedAscending: boolean): Promise<AxiosResponse<ResultPage<EmbeddedVehicleCategories>>> {
         const pageArguments = this._getPageArguments(currentPage, pageSize, sortedBy, sortedAscending);
-        console.log("Filtering Vehicle Categories with name and page arguments", name, pageArguments)
-        return HttpService.getAxiosClient().get<VehicleCategoriesPage>(
-            `/api/v1/vehicleCategories/search/findByNameContaining?name=${name}&${pageArguments}`
-        );
+        console.log("Filtering Vehicle Categories with name and page arguments", searchText, pageArguments)
+        if (!searchText || searchText.trim() === "") {
+            return HttpService.getAxiosClient().get<ResultPage<EmbeddedVehicleCategories>>(
+                `/api/v1/vehicleCategories?${pageArguments}`
+            );
+        } else {
+            return HttpService.getAxiosClient().get<ResultPage<EmbeddedVehicleCategories>>(
+                `/api/v1/vehicleCategories/search/findByNameContaining?name=${searchText}&${pageArguments}`
+            );
+        }
     }
 
     _getPageArguments(currentPage: number | undefined, pageSize: number | undefined, sortedBy: string | undefined, sortedAscending: boolean) {

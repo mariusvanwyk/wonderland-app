@@ -4,7 +4,7 @@ import VehicleCategoryForm from "./VehicleCategoryForm";
 import {VehicleCategory} from "../../../model/VehicleCategory";
 import {VehicleCategoriesServices} from "../VehicleCategoriesServices";
 import {useAppDispatch} from "../../../redux/hooks";
-import {vehicleCategoryAdded} from "../../../redux/SelectionSlice";
+import {itemAdded} from "../../../redux/SelectionSlice";
 
 const newVehicleCategory: VehicleCategory = new VehicleCategory()
 const services: VehicleCategoriesServices = new VehicleCategoriesServices();
@@ -28,7 +28,7 @@ const AddVehicleCategoryButton = () => {
         if (errors.length === 0) {
             services.addVehicleCategory(category)
                 .then(function (response) {
-                    dispatch(vehicleCategoryAdded({objectType:"CATEGORY", id: response.data.id}));
+                    dispatch(itemAdded({objectType:"CATEGORY", id: response.data.id}));
                     closeModal();
 
                 })
