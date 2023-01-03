@@ -5,7 +5,7 @@ import {ResultPage} from "../model/ResultPage";
 import {Services} from "../Services";
 import {EmbeddedVehicleCategories} from "../model/EmbeddedVehicleCategories";
 
-export class VehicleCategoriesServices implements Services<EmbeddedVehicleCategories, VehicleCategory> {
+export class VehicleCategoriesServices extends Services<EmbeddedVehicleCategories, VehicleCategory> {
 
     getItems(currentPage: number | undefined, pageSize: number | undefined, searchText: string | undefined, sortedBy: string | undefined, sortedAscending: boolean): Promise<AxiosResponse<ResultPage<EmbeddedVehicleCategories>>> {
         const pageArguments = this._getPageArguments(currentPage, pageSize, sortedBy, sortedAscending);

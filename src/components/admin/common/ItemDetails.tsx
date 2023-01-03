@@ -59,7 +59,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
     const handleSaved = () => {
         if (state.item) {
             setShowSavedFeedBack(false);
-            let errors = state.item.validate();
+            let errors = converter.validate(state.item);
             if (errors.length === 0) {
                 services.saveItem(state.item)
                     .then((response) => {
@@ -104,7 +104,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                 <>
                     <Card className={"h-100"}>
                         <Card.Header className={"d-flex justify-content-between align-items-center"}>
-                            <h3>{state.item.name}</h3>
+                            <h3>{converter.getListColumn(state.item)}</h3>
                             <div className={"small text-muted ms-3"}>(Refreshed at: {new Date().toLocaleTimeString()})
                             </div>
                             <CloseButton aria-label="Close"

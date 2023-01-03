@@ -1,6 +1,6 @@
 export type ItemType = "CATEGORY" | "VEHICLE"
 
-export class BaseItem {
+export interface BaseItem {
     id: number;
     currentVersion: number;
     createdBy: string;
@@ -8,19 +8,4 @@ export class BaseItem {
     updatedBy: string;
     updatedAt: string;
 
-    constructor() {
-        this.id = -1;
-        this.currentVersion = 0;
-        this.createdBy = "";
-        this.createdAt = "";
-        this.updatedBy = "";
-        this.updatedAt = "";
-    }
-
-    /**
-     * Override this is you need to do validation
-     */
-    validate(): string[] {
-        return [];
-    }
 }

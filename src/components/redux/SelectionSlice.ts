@@ -1,10 +1,12 @@
 import {createSlice, Draft, PayloadAction} from '@reduxjs/toolkit'
 import type {RootState} from './store'
-import {ItemType} from "../admin/model/BaseItem";
+import {BaseItem, ItemType} from "../admin/model/BaseItem";
 import {ListPage} from "../admin/model/ListPage";
 import {VehicleCategory} from "../admin/model/VehicleCategory";
+import {Vehicle} from "../admin/model/Vehicle";
+import _ from "lodash";
 
-export interface SelectionState<T> {
+export interface SelectionState<T extends BaseItem> {
     selectedId: number | null | undefined,
     refreshTime: number | null,
     selectTime: number | null,
@@ -20,10 +22,25 @@ export interface SelectionState<T> {
 }
 
 interface SelectionStates {
-    categoriesSelectionState: SelectionState<VehicleCategory>
+    categoriesSelectionState: SelectionState<VehicleCategory>,
+    vehiclesSelectionState: SelectionState<Vehicle>,
 }
 
 const initialState: SelectionStates = {
+    vehiclesSelectionState: {
+        selectedId: null,
+        refreshTime: Date.now(),
+        selectTime: null,
+        sortedBy: "registrationNumber",
+        sortedAscending: true,
+        searchText: undefined,
+        pageSize: 5,
+        currentPage: 0,
+        error: undefined,
+        fetching: false,
+        listPage: undefined,
+        item: undefined
+    },
     categoriesSelectionState: {
         selectedId: null,
         refreshTime: Date.now(),
@@ -40,7 +57,7 @@ const initialState: SelectionStates = {
     }
 }
 
-export interface SelectionAction<T> {
+export interface SelectionAction<T extends BaseItem> {
     itemType: ItemType,
     id?: number,
     sortBy?: string,
@@ -140,14 +157,13 @@ export const SelectionSlice = createSlice({
             const selectionState: SelectionState<any> = getSelectionState(state, action.payload.itemType);
             selectionState.item = action.payload.item;
         }
-
     },
 })
 
 const getSelectionState = (state: Draft<SelectionStates>, itemType: ItemType) => {
     switch (itemType) {
-        case "CATEGORY":
-            return state.categoriesSelectionState;
+        case "VEHICLE":
+            return state.vehiclesSelectionState;
         default:
             return state.categoriesSelectionState;
     }
@@ -170,9 +186,10 @@ export const {
     setFetchingItems,
     setFetchingItemsComplete,
     setItemsResultPage,
-    setItem
+    setItem,
 } = SelectionSlice.actions
 
 export const getCategoriesSelectionState = (state: RootState) => state.selections.categoriesSelectionState;
+export const getVehicleSelectionState = (state: RootState) => state.selections.vehiclesSelectionState;
 
 export default SelectionSlice.reducer

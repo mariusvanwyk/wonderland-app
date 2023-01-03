@@ -4,6 +4,7 @@ import _ from "lodash";
 import {ItemType} from "../model/BaseItem";
 import {SelectionState, setItem} from "../../redux/SelectionSlice";
 import {useAppDispatch} from "../../redux/hooks";
+import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
 
 type Properties = {
     itemType: ItemType,
@@ -33,7 +34,7 @@ const VehicleCategoryForm = ({itemType, state, showTechnical}: Properties) => {
             <Accordion flush={true} alwaysOpen={true} defaultActiveKey={"1"}>
                 <Accordion.Item eventKey={"1"}>
                     <Accordion.Header className={"no-border"}>Basic Details
-                        ({state.item.getBasicSummary()})</Accordion.Header>
+                        ({state.item.size + " ton"})</Accordion.Header>
                     <Accordion.Body>
                         <Form.Group className="mb-3" controlId="vehicleCategory.name">
                             <Form.Label>Name</Form.Label>
@@ -43,15 +44,6 @@ const VehicleCategoryForm = ({itemType, state, showTechnical}: Properties) => {
                                           isInvalid={state.item.name.trim() === ""}/>
                         </Form.Group>
                         <Row>
-                            <Col sm={12} md={2}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.name">
-                                    <Form.Label>Color</Form.Label>
-                                    <Form.Control required value={state.item.color} type={"color"}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleStringChange("color", e)}
-                                                  isInvalid={state.item.color.trim() === ""}/>
-                                </Form.Group>
-                            </Col>
                             <Col sm={12} md={10}>
                                 <Form.Group className="mb-3" controlId="vehicleCategory.size">
                                     <Form.Label>Size</Form.Label>
@@ -59,6 +51,15 @@ const VehicleCategoryForm = ({itemType, state, showTechnical}: Properties) => {
                                                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                                       handleNumberChange("size", e)}
                                                   isInvalid={state.item.size <= 0}/>
+                                </Form.Group>
+                            </Col>
+                            <Col sm={12} md={2}>
+                                <Form.Group className="mb-3" controlId="vehicleCategory.name">
+                                    <Form.Label>Color</Form.Label>
+                                    <Form.Control required value={state.item.color} type={"color"}
+                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                      handleStringChange("color", e)}
+                                                  isInvalid={state.item.color.trim() === ""}/>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -160,56 +161,7 @@ const VehicleCategoryForm = ({itemType, state, showTechnical}: Properties) => {
                 {showTechnical && <Accordion.Item eventKey={"0"}>
                     <Accordion.Header>Technical Details</Accordion.Header>
                     <Accordion.Body>
-                        <Row>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.id">
-                                    <Row>
-                                        <Col sm={2}>Id</Col>
-                                        <Col sm={10}><Form.Text>{state.item.id}</Form.Text></Col>
-                                    </Row>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.id">
-                                    <Row>
-                                        <Col sm={2}>Version</Col>
-                                        <Col sm={10}><Form.Text>{state.item.currentVersion}</Form.Text></Col>
-                                    </Row>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.id">
-                                    <Row>
-                                        <Col sm={4}>Created By</Col>
-                                        <Col sm={8}><Form.Text>{state.item.createdBy}</Form.Text></Col>
-                                    </Row>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.id">
-                                    <Row>
-                                        <Col sm={4}>Created At</Col>
-                                        <Col sm={8}><Form.Text>{state.item.createdAt}</Form.Text></Col>
-                                    </Row>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.updatedBy">
-                                    <Row>
-                                        <Col sm={4}>Updated By</Col>
-                                        <Col sm={8}><Form.Text>{state.item.updatedBy}</Form.Text></Col>
-                                    </Row>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.updatedAt">
-                                    <Row>
-                                        <Col sm={4}>Updated At</Col>
-                                        <Col sm={8}><Form.Text>{state.item.updatedAt}</Form.Text></Col>
-                                    </Row>
-                                </Form.Group>
-                            </Col>
-                        </Row>
+                        <ItemTechnicalDetails state={state}/>
                     </Accordion.Body>
                 </Accordion.Item>}
             </Accordion>

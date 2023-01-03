@@ -5,7 +5,7 @@ import "./style/style.css";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Welcome from "./Welcome";
 import Home from "./Home";
-import NavigationBar from "./admin/common/NavigationBar";
+import NavigationBar from "./common/NavigationBar";
 import Error from "../Error";
 import About from "../About";
 import VehicleCategoriesLarge from "./admin/vehicleCategories/VehicleCategoriesLarge";
@@ -15,6 +15,8 @@ import _debounce from 'lodash.debounce'
 import VehicleCategoriesSmall from "./admin/vehicleCategories/VehicleCategoriesSmall";
 import {store} from './redux/store'
 import {Provider} from 'react-redux'
+import VehiclesSmall from "./admin/vehicles/VehiclesSmall";
+import VehiclesLarge from "./admin/vehicles/VehiclesLarge";
 
 const largeRouter = createBrowserRouter([
     {path: "/", element: <Home/>, errorElement: <Error/>,},
@@ -22,6 +24,7 @@ const largeRouter = createBrowserRouter([
     {path: "/home", element: <Home/>},
     {path: "/about", element: <About/>},
     {path: "/vehicle-categories", element: <VehicleCategoriesLarge/>},
+    {path: "/vehicles", element: <VehiclesLarge/>},
 ]);
 
 const smallRouter = createBrowserRouter([
@@ -30,6 +33,7 @@ const smallRouter = createBrowserRouter([
     {path: "/home", element: <Home/>},
     {path: "/about", element: <About/>},
     {path: "/vehicle-categories", element: <VehicleCategoriesSmall/>},
+    {path: "/vehicles", element: <VehiclesSmall/>},
 ]);
 
 const App = () => {

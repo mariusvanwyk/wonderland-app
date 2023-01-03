@@ -1,20 +1,24 @@
-import {AxiosResponse} from "axios/index";
+import {AxiosResponse} from "axios";
 import {ResultPage} from "./model/ResultPage";
-import {ListPage} from "./model/ListPage";
 
-export interface Services<E, T> {
-    getItems(currentPage: number | undefined,
-             pageSize: number | undefined,
-             searchText: string | undefined,
-             sortedBy: string | undefined,
-             sortedAscending: boolean): Promise<AxiosResponse<ResultPage<E>>>;
+export abstract class Services<E, T> {
+    abstract getItems(currentPage: number | undefined,
+                      pageSize: number | undefined,
+                      searchText: string | undefined,
+                      sortedBy: string | undefined,
+                      sortedAscending: boolean): Promise<AxiosResponse<ResultPage<E>>>;
 
-    getItem(id: number | undefined): Promise<AxiosResponse<T>>;
+    abstract getItem(id: number | undefined): Promise<AxiosResponse<T>>;
 
-    saveItem(item: T): Promise<AxiosResponse<T>>;
+    abstract saveItem(item: T): Promise<AxiosResponse<T>>;
 
-    deleteItem(id: number): Promise<AxiosResponse<T>>;
+    abstract deleteItem(id: number): Promise<AxiosResponse<T>>;
 
-    addItem(item: T): Promise<AxiosResponse<T>>
+    abstract addItem(item: T): Promise<AxiosResponse<T>>;
+
+    _getPageArguments(currentPage: number | undefined, pageSize: number | undefined, sortedBy: string | undefined, sortedAscending: boolean) {
+        const direction = sortedAscending ? "asc" : "desc";
+        return `page=${currentPage ? currentPage : 0}&size=${pageSize ? pageSize : 5}&sort=${sortedBy},${direction}`;
+    }
 }
 

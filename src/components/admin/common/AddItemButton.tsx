@@ -30,7 +30,7 @@ const AddItemButton = ({itemType, services, converter, state, itemForm}: Propert
 
     const handleAddConfirmation = () => {
 
-        let errors = state.item.validate();
+        let errors = converter.validate(state.item);
 
         if (errors.length === 0) {
             services.addItem(state.item)

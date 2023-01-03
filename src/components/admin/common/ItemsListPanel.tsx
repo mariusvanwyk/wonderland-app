@@ -104,8 +104,8 @@ const ItemsListPanel = ({name, itemType, services, state, converter, itemForm}: 
                                                     id: current.id
                                                 }))} key={index}
                                                 className="d-flex justify-content-between align-items-start">
-                                    <div>{current.name}</div>
-                                    <div>{"(" + current.size + " ton)"}</div>
+                                    <div>{converter.getListColumn(current)}</div>
+                                    <div>{converter.getListExtraColumn(current)}</div>
                                 </ListGroup.Item>
                             )
                         })

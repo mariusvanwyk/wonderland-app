@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import UserService from "../../../services/UserService";
+import UserService from "../../services/UserService";
 import {NavDropdown} from "react-bootstrap";
 
 const NavigationBar = () => {
@@ -18,7 +18,7 @@ const NavigationBar = () => {
                             <NavDropdown title="Admin" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="/vehicle-categories">Vehicle Categories</NavDropdown.Item>
                                 <NavDropdown.Divider/>
-                                <NavDropdown.Item>Vehicles</NavDropdown.Item>
+                                <NavDropdown.Item href="/vehicles">Vehicles</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     }
