@@ -4,6 +4,7 @@ import _ from "lodash";
 import {SelectionState, setItem} from "../../redux/SelectionSlice";
 import {ItemType} from "../model/BaseItem";
 import {useAppDispatch} from "../../redux/hooks";
+import {getDateAsString} from "../../common/DateUtils";
 
 type Properties = {
     itemType: ItemType,
@@ -31,7 +32,7 @@ const ItemFormControl = ({itemType, state, label, property, value, required, as,
             case "date": {
                 if (value) {
                     const date: Date = new Date(value);
-                    setLocalValue(value ? date.toISOString().split('T')[0] : "")
+                    setLocalValue(value ? getDateAsString(date) : "")
                 } else {
                     setLocalValue("");
                 }
@@ -54,7 +55,7 @@ const ItemFormControl = ({itemType, state, label, property, value, required, as,
             }
             case "date": {
                 const date: Date = new Date(value);
-                updated[property] = date.toISOString().split('T')[0];
+                updated[property] =  getDateAsString(date);
                 break;
             }
             default: {

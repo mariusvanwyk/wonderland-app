@@ -1,5 +1,5 @@
-import React, {Fragment, useEffect} from 'react';
-import {Button, ListGroup} from "react-bootstrap";
+import React, {Fragment, memo, useEffect} from 'react';
+import {Badge, Button, ListGroup} from "react-bootstrap";
 import Paging from "./Paging";
 
 import {useAppDispatch} from "../../redux/hooks";
@@ -17,10 +17,11 @@ import {
 import SearchPanel from "./SearchPanel";
 import SortDropDown from "./SortDropDown";
 import PageSizeSelect from "./PageSizeSelect";
-import {ItemType} from "../model/BaseItem";
+import {BaseItem, ItemType} from "../model/BaseItem";
 import {ItemManager} from "../managers/ItemManager";
 import {Services} from "../Services";
 import {ListPage} from "../model/ListPage";
+import Fetching from "./Fetching";
 
 type Properties = {
     name: string,
@@ -73,6 +74,15 @@ const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) 
         dispatch(setItemsCurrentPage({itemType: itemType, currentPage: pageNumber}));
     }
 
+    const validationPill = (item: BaseItem) => {
+        const errors = manager.validate(item);
+        if (errors.length > 0) {
+            return <Badge bg="danger" pill>{errors.length} Errors</Badge>;
+        } else {
+            return <></>;
+        }
+    }
+
     return (
         <Fragment>
             <div className={"d-flex justify-content-between align-items-center mb-2"}>
@@ -85,11 +95,11 @@ const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) 
                         </Button>}
                 </div>
             </div>
-            {state.fetching && <div className={"d-flex justify-content-center mt-5"}>Fetching</div>}
+            <Fetching visible={state.fetching}/>
             {state.error && <div className={"text-danger"}>{state.error}</div>}
             {!state.fetching && !state.error && state.listPage &&
                 <>
-                    <SearchPanel itemType={itemType} state={state}/>
+                    <SearchPanel itemType={itemType} searchText={state.searchText}/>
                     <div className={"d-flex justify-content-between mb-2 flex-wrap"}>
                         <div>
                             <Button variant="outline-secondary" title={"Refresh"}
@@ -110,9 +120,11 @@ const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) 
                                 <ListGroup.Item action
                                                 active={state.selectedItem != null && state.selectedItem.id === current.id}
                                                 onClick={() => onItemSelected(current.id)} key={index}
-                                                className="d-flex justify-content-between align-items-start">
+                                                className="d-flex justify-content-between align-items-center">
                                     <div>{manager.getListColumn(current)}</div>
-                                    <div>{manager.getListExtraColumn(current)}</div>
+                                    <div className={"d-flex align-items-center"}>
+                                        {validationPill(current)}
+                                    </div>
                                 </ListGroup.Item>
                             )
                         })
@@ -122,7 +134,8 @@ const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) 
                 </>
             }
         </Fragment>
-    );
+    )
+        ;
 }
 
-export default ItemsListPanel
+export default memo(ItemsListPanel)

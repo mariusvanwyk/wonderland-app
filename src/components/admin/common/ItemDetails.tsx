@@ -1,5 +1,5 @@
 import React, {Fragment, ReactNode, useEffect, useState} from 'react';
-import {Accordion, Button, Card, CloseButton, Modal, Toast, ToastContainer} from "react-bootstrap";
+import {Button, Card, CloseButton, Modal, Toast, ToastContainer} from "react-bootstrap";
 import {useAppDispatch} from "../../redux/hooks";
 import {itemAdded, itemClosed, itemDeleted, itemSaved, SelectionState,} from "../../redux/SelectionSlice";
 import {ItemType} from "../model/BaseItem";
@@ -7,8 +7,7 @@ import {ItemManager} from "../managers/ItemManager";
 import {Services} from "../Services";
 import {ServiceError} from "../model/ServiceError";
 import {AxiosError} from "axios";
-import ItemTechnicalDetails from "./ItemTechnicalDetails";
-import ReactJson from "react-json-view";
+import {getDateTimeAsString} from "../../common/DateUtils";
 
 
 type Properties = {
@@ -115,27 +114,13 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                     <Card className={"h-100"}>
                         <Card.Header className={"d-flex justify-content-between align-items-center"}>
                             <h3>{getHeading()}</h3>
-                            <div className={"small text-muted ms-3"}>(Refreshed at: {new Date().toLocaleTimeString()})
+                            <div className={"small text-muted ms-3"}>(Refreshed at: {getDateTimeAsString(Date.now())})
                             </div>
                             <CloseButton aria-label="Close"
                                          onClick={() => dispatch(itemClosed({itemType: itemType}))}/>
                         </Card.Header>
                         <Card.Body className={"overflow-scroll h-100"}>
                             {itemForm}
-                            <Accordion flush={true} alwaysOpen={true}>
-                                <Accordion.Item eventKey={"1"}>
-                                    <Accordion.Header>Technical Details</Accordion.Header>
-                                    <Accordion.Body>
-                                        <ItemTechnicalDetails state={state}/>
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                                <Accordion.Item eventKey={"2"}>
-                                    <Accordion.Header>Raw</Accordion.Header>
-                                    <Accordion.Body>
-                                        <ReactJson src={state.selectedItem}/>
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            </Accordion>
                         </Card.Body>
                         <Card.Footer className={"d-flex justify-content-center"}>
                             {/* eslint-disable-next-line jsx-a11y/no-access-key */}

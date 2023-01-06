@@ -3,6 +3,7 @@ import React, {ChangeEvent} from "react";
 import {SelectionState, setItemsPageSize} from "../../redux/SelectionSlice";
 import {ItemType} from "../model/BaseItem";
 import {useAppDispatch} from "../../redux/hooks";
+import {getDateTimeAsString} from "../../common/DateUtils";
 
 type Properties = {
     itemType: ItemType,
@@ -16,10 +17,11 @@ const PageSizeSelect = ({itemType, state}: Properties) => {
         dispatch(setItemsPageSize({itemType: itemType, pageSize: newPageSize}));
     }
 
+
     return (
         <div className={"d-flex justify-content-between mt-2 align-items-center"}>
             <div className={"text-muted small"}>
-                {state.refreshTime && new Date(state.refreshTime).toLocaleTimeString()}
+                {state.refreshTime && getDateTimeAsString(state.refreshTime)}
             </div>
             <div className={"d-flex justify-content-end align-items-center"}>
                 <FormSelect aria-label="Default select example" size={"sm"} defaultValue={state.pageSize}

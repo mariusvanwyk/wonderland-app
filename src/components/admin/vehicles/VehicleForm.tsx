@@ -6,6 +6,7 @@ import ItemFormControl from "../common/ItemFormControl";
 import {useAppDispatch} from "../../redux/hooks";
 import _ from "lodash";
 import VehicleCategoryChoice from "../vehicleCategories/VehicleCategoryChoice";
+import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
 
 type Properties = {
     itemType: ItemType,
@@ -93,6 +94,7 @@ const VehicleForm = ({itemType, state}: Properties) => {
                                      type={"number"}/>
                 </Col>
             </Row>
+            <ItemTechnicalDetails state={state}/>
         </Form>
     )
 }
