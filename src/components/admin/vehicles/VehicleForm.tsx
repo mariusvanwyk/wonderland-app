@@ -1,107 +1,98 @@
-import React, {ChangeEvent} from 'react';
-import {Accordion, Col, Form, Row} from "react-bootstrap";
-import _ from "lodash";
+import React from 'react';
+import {Col, Form, Row} from "react-bootstrap";
 import {ItemType} from "../model/BaseItem";
 import {SelectionState, setItem} from "../../redux/SelectionSlice";
+import ItemFormControl from "../common/ItemFormControl";
 import {useAppDispatch} from "../../redux/hooks";
-import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
+import _ from "lodash";
+import VehicleCategoryChoice from "../vehicleCategories/VehicleCategoryChoice";
 
 type Properties = {
     itemType: ItemType,
-    showTechnical: boolean,
     state: SelectionState<any>,
 }
 
-const VehicleForm = ({itemType, state, showTechnical}: Properties) => {
+const VehicleForm = ({itemType, state}: Properties) => {
     const dispatch = useAppDispatch();
 
-    const handleNumberChange = (property: string, event: ChangeEvent<HTMLInputElement>) => {
-        let updated = _.cloneDeep(state.item);
-        // @ts-ignore
-        updated[property] = Number(event.target.value);
-        dispatch(setItem({itemType: itemType, item: updated}));
-    }
-
-    const handleStringChange = (property: string, event: ChangeEvent<HTMLInputElement>) => {
-        let updated = _.cloneDeep(state.item);
-        // @ts-ignore
-        updated[property] = event.target.value;
-        dispatch(setItem({itemType: itemType, item: updated}));
+    const onCategoryChange = (categoryId: number | undefined) => {
+        let vehicle = _.cloneDeep(state.selectedItem);
+        vehicle.categoryId = categoryId;
+        dispatch(setItem({itemType: itemType, item: vehicle}));
     }
 
     return (
         <Form noValidate>
-            <Accordion flush={true} alwaysOpen={true} defaultActiveKey={"1"}>
-                <Accordion.Item eventKey={"1"}>
-                    <Accordion.Header className={"no-border"}>Basic Details</Accordion.Header>
-                    <Accordion.Body>
-                        <Form.Group className="mb-3" controlId="vehicle.registration">
-                            <Form.Label>Registration Number</Form.Label>
-                            <Form.Control required value={state.item.registrationNumber}
-                                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                              handleStringChange("registrationNumber", e)}
-                                          isInvalid={state.item.registrationNumber.trim() === ""}/>
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="vehicle.description">
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control as="textarea" rows={3}
-                                          value={state.item.description !== null ? state.item.description : ""}
-                                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                              handleStringChange("description", e)}/>
-                        </Form.Group>
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey={"2"}>
-                    <Accordion.Header>Extra</Accordion.Header>
-                    <Accordion.Body>
-                        <Row>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicle.fuelConsumption">
-                                    <Form.Label>Fuel Consumption</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.fuelConsumption}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("fuelConsumption", e)}
-                                                  isInvalid={state.item.fuelConsumption <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicle.purchasedOn">
-                                    <Form.Label>Purchased On</Form.Label>
-                                    <Form.Control required type={"date"} value={state.item.purchasedOn}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleStringChange("purchasedOn", e)}
-                                                  isInvalid={state.item.purchasedOn <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicle.roadTaxDueDate">
-                                    <Form.Label>Road Tax Due Date</Form.Label>
-                                    <Form.Control required type={"date"} value={state.item.roadTaxDueDate}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleStringChange("roadTaxDueDate", e)}
-                                                  isInvalid={state.item.roadTaxDueDate <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicle.motDate">
-                                    <Form.Label>MOT Due Date</Form.Label>
-                                    <Form.Control required type={"date"} value={state.item.motDate}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleStringChange("motDate", e)}
-                                                  isInvalid={state.item.motDate <= 0}/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                    </Accordion.Body>
-                </Accordion.Item>
+            <Row>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.registrationNumber}
+                                     property={"registrationNumber"}
+                                     required={true}
+                                     label={"Registration Number"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <VehicleCategoryChoice categoryId={state.selectedItem.categoryId}
+                                           onChange={onCategoryChange}/>
+                </Col>
+                <Col sm={12}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.description}
+                                     property={"description"}
+                                     required={false}
+                                     label={"Description"}
+                                     as={"textarea"}
+                                     hideClear={true}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.fuelConsumption}
+                                     property={"fuelConsumption"}
+                                     required={true}
+                                     label={"Fuel Consumption"}
+                                     type={"number"}/>
 
-                {showTechnical && <Accordion.Item eventKey={"0"}>
-                    <Accordion.Header>Technical Details</Accordion.Header>
-                    <Accordion.Body>
-                        <ItemTechnicalDetails state={state}/>
-                    </Accordion.Body>
-                </Accordion.Item>}
-            </Accordion>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.purchasedOn}
+                                     property={"purchasedOn"}
+                                     required={true}
+                                     label={"Purchased On"}
+                                     type={"date"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.roadTaxDueDate}
+                                     property={"roadTaxDueDate"}
+                                     required={true}
+                                     label={"Road Tax Due Date"}
+                                     type={"date"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.motDate}
+                                     property={"motDate"}
+                                     required={true}
+                                     label={"MOT Due Date"}
+                                     type={"date"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.instalment}
+                                     property={"instalment"}
+                                     required={true}
+                                     label={"Instalment"}
+                                     type={"number"}/>
+                </Col>
+            </Row>
         </Form>
     )
 }

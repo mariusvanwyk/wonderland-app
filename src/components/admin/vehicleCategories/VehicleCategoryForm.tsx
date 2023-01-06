@@ -1,170 +1,128 @@
-import React, {ChangeEvent} from 'react';
-import {Accordion, Col, Form, Row} from "react-bootstrap";
-import _ from "lodash";
+import React from 'react';
+import {Col, Form, Row} from "react-bootstrap";
 import {ItemType} from "../model/BaseItem";
-import {SelectionState, setItem} from "../../redux/SelectionSlice";
-import {useAppDispatch} from "../../redux/hooks";
-import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
+import {SelectionState} from "../../redux/SelectionSlice";
+import ItemFormControl from "../common/ItemFormControl";
 
 type Properties = {
     itemType: ItemType,
-    showTechnical: boolean,
     state: SelectionState<any>,
 }
 
-const VehicleCategoryForm = ({itemType, state, showTechnical}: Properties) => {
-    const dispatch = useAppDispatch();
-
-    const handleNumberChange = (property: string, event: ChangeEvent<HTMLInputElement>) => {
-        let updated = _.cloneDeep(state.item);
-        // @ts-ignore
-        updated[property] = Number(event.target.value);
-        dispatch(setItem({itemType: itemType, item: updated}));
-    }
-
-    const handleStringChange = (property: string, event: ChangeEvent<HTMLInputElement>) => {
-        let updated = _.cloneDeep(state.item);
-        // @ts-ignore
-        updated[property] = event.target.value;
-        dispatch(setItem({itemType: itemType, item: updated}));
-    }
+const VehicleCategoryForm = ({itemType, state}: Properties) => {
 
     return (
         <Form noValidate>
-            <Accordion flush={true} alwaysOpen={true} defaultActiveKey={"1"}>
-                <Accordion.Item eventKey={"1"}>
-                    <Accordion.Header className={"no-border"}>Basic Details
-                        ({state.item.size + " ton"})</Accordion.Header>
-                    <Accordion.Body>
-                        <Form.Group className="mb-3" controlId="vehicleCategory.name">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control required value={state.item.name}
-                                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                              handleStringChange("name", e)}
-                                          isInvalid={state.item.name.trim() === ""}/>
-                        </Form.Group>
-                        <Row>
-                            <Col sm={12} md={10}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.size">
-                                    <Form.Label>Size</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.size}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("size", e)}
-                                                  isInvalid={state.item.size <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={2}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.name">
-                                    <Form.Label>Color</Form.Label>
-                                    <Form.Control required value={state.item.color} type={"color"}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleStringChange("color", e)}
-                                                  isInvalid={state.item.color.trim() === ""}/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Form.Group className="mb-3" controlId="vehicleCategory.description">
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control as="textarea" rows={3}
-                                          value={state.item.description !== null ? state.item.description : ""}
-                                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                              handleStringChange("description", e)}/>
-                        </Form.Group>
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey={"2"}>
-                    <Accordion.Header>Monthly Cost Details</Accordion.Header>
-                    <Accordion.Body>
-                        <Row>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.roadTaxCost">
-                                    <Form.Label>Road Tax</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.roadTaxCost}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("roadTaxCost", e)}
-                                                  isInvalid={state.item.roadTaxCost <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.insuranceCost">
-                                    <Form.Label>Insurance</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.insuranceCost}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("insuranceCost", e)}
-                                                  isInvalid={state.item.insuranceCost <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.trackerCost">
-                                    <Form.Label>Tracker</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.trackerCost}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("trackerCost", e)}
-                                                  isInvalid={state.item.trackerCost <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.extraCost">
-                                    <Form.Label>Extra</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.extraCost}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("extraCost", e)}
-                                                  isInvalid={state.item.extraCost <= 0}/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey={"3"}>
-                    <Accordion.Header>Rates</Accordion.Header>
-                    <Accordion.Body>
-                        <Row>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.tireRate">
-                                    <Form.Label>Tire Rate (per km)</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.tireRate}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("tireRate", e)}
-                                                  isInvalid={state.item.tireRate <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.serviceRate">
-                                    <Form.Label>Service Rate (per km)</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.serviceRate}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("serviceRate", e)}
-                                                  isInvalid={state.item.serviceRate <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.overtimeRate">
-                                    <Form.Label>Overtime Rate (per hour)</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.overtimeRate}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("overtimeRate", e)}
-                                                  isInvalid={state.item.overtimeRate <= 0}/>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6}>
-                                <Form.Group className="mb-3" controlId="vehicleCategory.fuelConsumption">
-                                    <Form.Label>Fuel Consumption (per km)</Form.Label>
-                                    <Form.Control required type={"number"} value={state.item.fuelConsumption}
-                                                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                      handleNumberChange("fuelConsumption", e)}
-                                                  isInvalid={state.item.fuelConsumption <= 0}/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                    </Accordion.Body>
-                </Accordion.Item>
-                {showTechnical && <Accordion.Item eventKey={"0"}>
-                    <Accordion.Header>Technical Details</Accordion.Header>
-                    <Accordion.Body>
-                        <ItemTechnicalDetails state={state}/>
-                    </Accordion.Body>
-                </Accordion.Item>}
-            </Accordion>
+            <Row>
+                <Col sm={12}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.name}
+                                     property={"name"}
+                                     required={true}
+                                     label={"Name"}/>
+                </Col>
+                <Col sm={12} md={10}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.size}
+                                     property={"size"}
+                                     required={true}
+                                     label={"Size"}
+                                     type={"number"}/>
+                </Col>
+                <Col sm={12} md={2}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.color}
+                                     property={"color"}
+                                     required={true}
+                                     label={"Color"}
+                                     type={"color"}/>
+                </Col>
+                <Col sm={12}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.description}
+                                     property={"description"}
+                                     required={false}
+                                     label={"Description"}
+                                     as={"textarea"}
+                                     hideClear={true}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.roadTaxCost}
+                                     property={"roadTaxCost"}
+                                     required={true}
+                                     label={"Road Tax"}
+                                     type={"number"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.insuranceCost}
+                                     property={"insuranceCost"}
+                                     required={true}
+                                     label={"Insurance"}
+                                     type={"number"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.trackerCost}
+                                     property={"trackerCost"}
+                                     required={true}
+                                     label={"Tracker"}
+                                     type={"number"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.extraCost}
+                                     property={"extraCost"}
+                                     required={true}
+                                     label={"Extra"}
+                                     type={"number"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.tireRate}
+                                     property={"tireRate"}
+                                     required={true}
+                                     label={"Tire Rate (per km)"}
+                                     type={"number"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.serviceRate}
+                                     property={"serviceRate"}
+                                     required={true}
+                                     label={"Service Rate (per km)"}
+                                     type={"number"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.overtimeRate}
+                                     property={"overtimeRate"}
+                                     required={true}
+                                     label={"Overtime Rate (per hour)"}
+                                     type={"number"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormControl itemType={itemType}
+                                     state={state}
+                                     value={state.selectedItem.fuelConsumption}
+                                     property={"fuelConsumption"}
+                                     required={true}
+                                     label={"Fuel Consumption (per km)"}
+                                     type={"number"}/>
+                </Col>
+            </Row>
         </Form>
     )
 }

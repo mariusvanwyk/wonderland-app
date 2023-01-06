@@ -41,12 +41,16 @@ export class VehicleCategoriesServices extends Services<EmbeddedVehicleCategorie
     }
 
 
-    deleteItem(id: number): Promise<AxiosResponse<VehicleCategory>> {
-        return HttpService.getAxiosClient().delete(`/api/v1/vehicleCategories/${id}`);
+    deleteItem(item: VehicleCategory): Promise<AxiosResponse<VehicleCategory>> {
+        return HttpService.getAxiosClient().delete(`/api/v1/vehicleCategories/${item.id}`);
     }
 
     addItem(item: VehicleCategory): Promise<AxiosResponse<VehicleCategory>> {
         return HttpService.getAxiosClient().post<VehicleCategory>('/api/v1/vehicleCategories', item);
+    }
+
+    getAssociations(item: VehicleCategory): Promise<AxiosResponse<VehicleCategory>>[] {
+        return [];
     }
 
 }

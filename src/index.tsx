@@ -6,12 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import UserService from "./services/UserService";
 import HttpService from "./services/HttpService";
 import AuthenticationNotPossible from "./components/AuthenticationNotPossible";
+import {store} from "./components/redux/store";
+import {Provider} from "react-redux";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
-const renderApp = () => root.render(<App/>)
+const renderApp = () => root.render(<Provider store={store}><App/></Provider>)
 const renderError = () => root.render(<AuthenticationNotPossible/>)
 
 UserService.initKeycloak(renderApp, renderError);

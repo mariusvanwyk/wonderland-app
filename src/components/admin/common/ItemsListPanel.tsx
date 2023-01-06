@@ -1,22 +1,24 @@
-import React, {Fragment, ReactNode, useEffect} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {Button, ListGroup} from "react-bootstrap";
-import AddItemButton from "./AddItemButton";
 import Paging from "./Paging";
 
 import {useAppDispatch} from "../../redux/hooks";
 import {
     clearItemsFetchError,
     refreshItems,
+    SelectionState,
+    setFetchingItems,
+    setFetchingItemsComplete,
+    setItem,
     setItemsCurrentPage,
     setItemsFetchError,
-    setFetchingItems, setFetchingItemsComplete, setItemsResultPage,
-    itemSelected, SelectionState
+    setItemsResultPage
 } from "../../redux/SelectionSlice";
 import SearchPanel from "./SearchPanel";
 import SortDropDown from "./SortDropDown";
 import PageSizeSelect from "./PageSizeSelect";
 import {ItemType} from "../model/BaseItem";
-import {Converter} from "../Converter";
+import {ItemManager} from "../managers/ItemManager";
 import {Services} from "../Services";
 import {ListPage} from "../model/ListPage";
 
@@ -25,35 +27,43 @@ type Properties = {
     itemType: ItemType,
     services: Services<any, any>,
     state: SelectionState<any>,
-    converter: Converter<any, any>,
-    itemForm: ReactNode
+    manager: ItemManager<any, any>,
 }
 
-const ItemsListPanel = ({name, itemType, services, state, converter, itemForm}: Properties) => {
+const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) => {
     const dispatch = useAppDispatch();
 
-    const fetchResultPage = () => {
-        dispatch(clearItemsFetchError({itemType: itemType}));
-        dispatch(setFetchingItems({itemType: itemType}));
-        services.getItems(state.currentPage, state.pageSize, state.searchText, state.sortedBy, state.sortedAscending)
+    const onItemSelected = (id: number) => {
+        services.getItem(id)
             .then((response) => {
-                const listPage: ListPage<any> = converter.convert(response.data);
-                dispatch(setItemsResultPage({itemType: itemType, listPage: listPage}));
+                dispatch(setItem({itemType: itemType, item: response.data}));
             })
             .catch((error) => {
-                dispatch(setItemsFetchError({
-                    itemType: itemType,
-                    error: (error.message + " [" + error.code + "]")
-                }));
-            })
-            .finally(() => {
-                dispatch(setFetchingItemsComplete({itemType: itemType}))
+                console.error(error)
             });
     }
 
     useEffect(() => {
+        const fetchResultPage = () => {
+            dispatch(clearItemsFetchError({itemType: itemType}));
+            dispatch(setFetchingItems({itemType: itemType}));
+            services.getItems(state.currentPage, state.pageSize, state.searchText, state.sortedBy, state.sortedAscending)
+                .then((response) => {
+                    const listPage: ListPage<any> = manager.convert(response.data);
+                    dispatch(setItemsResultPage({itemType: itemType, listPage: listPage}));
+                })
+                .catch((error) => {
+                    dispatch(setItemsFetchError({
+                        itemType: itemType,
+                        error: (error.message + " [" + error.code + "]")
+                    }));
+                })
+                .finally(() => {
+                    dispatch(setFetchingItemsComplete({itemType: itemType}))
+                });
+        }
         fetchResultPage();
-    }, [state.refreshTime, state.pageSize, state.currentPage]);
+    }, [dispatch, itemType, manager, services, state.refreshTime, state.pageSize, state.currentPage]);
 
     const refresh = () => {
         dispatch(refreshItems({itemType: itemType}));
@@ -68,16 +78,16 @@ const ItemsListPanel = ({name, itemType, services, state, converter, itemForm}: 
             <div className={"d-flex justify-content-between align-items-center mb-2"}>
                 <h3>{name}</h3>
                 <div>
-                    {!state.error && <AddItemButton
-                        itemType={itemType}
-                        services={services}
-                        converter={converter}
-                        state={state}
-                        itemForm={itemForm}/>}
+                    {!state.fetching && !state.error &&
+                        <Button variant="success" title={"Add new"} size={"sm"}
+                                onClick={() => dispatch(setItem({itemType: itemType, item: manager.newItem()}))}>
+                            Add
+                        </Button>}
                 </div>
             </div>
+            {state.fetching && <div className={"d-flex justify-content-center mt-5"}>Fetching</div>}
             {state.error && <div className={"text-danger"}>{state.error}</div>}
-            {!state.error && state.listPage &&
+            {!state.fetching && !state.error && state.listPage &&
                 <>
                     <SearchPanel itemType={itemType} state={state}/>
                     <div className={"d-flex justify-content-between mb-2 flex-wrap"}>
@@ -92,20 +102,17 @@ const ItemsListPanel = ({name, itemType, services, state, converter, itemForm}: 
                                 recordCount={state.listPage.items.length}
                                 itemType={itemType} state={state}
                                 onPaging={(pageNumber) => onPaging(pageNumber)}/>
-                        <SortDropDown itemType={itemType} state={state}/>
+                        <SortDropDown itemType={itemType} state={state} sortProperties={manager.getSortProperties()}/>
                     </div>
                     <ListGroup>
                         {state.listPage.items.map((current, index) => {
                             return (
                                 <ListGroup.Item action
-                                                active={state.selectedId != null && state.selectedId === current.id}
-                                                onClick={() => dispatch(itemSelected({
-                                                    itemType: itemType,
-                                                    id: current.id
-                                                }))} key={index}
+                                                active={state.selectedItem != null && state.selectedItem.id === current.id}
+                                                onClick={() => onItemSelected(current.id)} key={index}
                                                 className="d-flex justify-content-between align-items-start">
-                                    <div>{converter.getListColumn(current)}</div>
-                                    <div>{converter.getListExtraColumn(current)}</div>
+                                    <div>{manager.getListColumn(current)}</div>
+                                    <div>{manager.getListExtraColumn(current)}</div>
                                 </ListGroup.Item>
                             )
                         })

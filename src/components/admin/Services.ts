@@ -9,10 +9,11 @@ export abstract class Services<E, T> {
                       sortedAscending: boolean): Promise<AxiosResponse<ResultPage<E>>>;
 
     abstract getItem(id: number | undefined): Promise<AxiosResponse<T>>;
+    abstract getAssociations(item: T): Promise<AxiosResponse<T>>[];
 
     abstract saveItem(item: T): Promise<AxiosResponse<T>>;
 
-    abstract deleteItem(id: number): Promise<AxiosResponse<T>>;
+    abstract deleteItem(id: T): Promise<AxiosResponse<T>>;
 
     abstract addItem(item: T): Promise<AxiosResponse<T>>;
 

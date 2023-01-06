@@ -1,39 +1,37 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import Container from "react-bootstrap/Container";
 import ItemDetails from "../common/ItemDetails";
 import ItemsListPanel from "../common/ItemsListPanel";
 import {useAppSelector} from "../../redux/hooks";
 import {getCategoriesSelectionState} from "../../redux/SelectionSlice";
 import {VehicleCategoriesServices} from "./VehicleCategoriesServices";
-import {VehicleCategoryConverter} from "./VehicleCategoryConverter";
+import {VehicleCategoryManager} from "../managers/VehicleCategoryManager";
 import {ItemType} from "../model/BaseItem";
-import VehicleCategoryForm from "./VehicleCategoryForm";
 
-const services: VehicleCategoriesServices = new VehicleCategoriesServices();
-const converter: VehicleCategoryConverter = new VehicleCategoryConverter();
-const CATEGORY: ItemType = "CATEGORY";
-
-const VehicleCategoriesSmall = () => {
+type Properties = {
+    itemType: ItemType,
+    services: VehicleCategoriesServices,
+    converter: VehicleCategoryManager,
+    form: ReactNode
+}
+const VehicleCategoriesSmall = ({itemType, services, converter, form}:Properties) => {
     const state = useAppSelector(getCategoriesSelectionState);
-
-    const categoryForm = () => <VehicleCategoryForm showTechnical={false} state={state} itemType={CATEGORY}/>;
 
     return (
         <Container fluid className={"h-100"}>
-            {!state.selectedId &&
+            {!state.selectedItem &&
                 <ItemsListPanel
                     name={"Vehicle Categories"}
-                    itemType={CATEGORY}
+                    itemType={itemType}
                     services={services}
                     state={state}
-                    converter={converter}
-                    itemForm={categoryForm()}/>}
-            {state.selectedId &&
+                    manager={converter}/>}
+            {state.selectedItem &&
                 <ItemDetails
                     state={state}
                     converter={converter}
-                    itemType={CATEGORY}
-                    itemForm={categoryForm()}
+                    itemType={itemType}
+                    itemForm={form}
                     services={services}/>}
         </Container>
     );

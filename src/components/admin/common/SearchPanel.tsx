@@ -1,5 +1,5 @@
 import {Button, Form, InputGroup} from "react-bootstrap";
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useState} from "react";
 import {ItemType} from "../model/BaseItem";
 import {clearSearchItemsText, refreshItems, SelectionState, setSearchItemsText} from "../../redux/SelectionSlice";
 import {useAppDispatch} from "../../redux/hooks";
@@ -8,10 +8,12 @@ type Properties = {
     itemType: ItemType,
     state: SelectionState<any>
 }
-const SearchPanel = ({itemType, state}:Properties) => {
+const SearchPanel = ({itemType, state}: Properties) => {
     const dispatch = useAppDispatch();
+    const [searchText, setSearchText] = useState<string>(state.searchText);
 
     const search = () => {
+        dispatch(setSearchItemsText({itemType: itemType, searchText: searchText}))
         dispatch(refreshItems({itemType: itemType}));
     }
 
@@ -22,21 +24,20 @@ const SearchPanel = ({itemType, state}:Properties) => {
     }
 
     const clearSearch = () => {
+        setSearchText("");
         dispatch(clearSearchItemsText({itemType: itemType}));
-        search();
+        dispatch(refreshItems({itemType: itemType}));
     }
 
     return (
         <InputGroup className="mb-3" size={"sm"}>
             <Form.Control
-                value={state.searchText}
+                value={searchText}
                 placeholder={"Search here..."}
                 aria-label="Search Vehicle Categories input"
                 aria-describedby="search-button"
                 onKeyDown={(e) => handleKeyDown(e)}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    dispatch(setSearchItemsText(
-                        {itemType: itemType, searchText: e.target.value}))}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value)}
             />
             <Button variant="outline-secondary" id="search-button"
                     onClick={() => search()}>

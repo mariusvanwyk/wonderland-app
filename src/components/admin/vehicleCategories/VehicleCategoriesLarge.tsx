@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {Col, Row} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import ItemDetails from "../common/ItemDetails";
@@ -6,37 +6,38 @@ import ItemsListPanel from "../common/ItemsListPanel";
 import {useAppSelector} from "../../redux/hooks";
 import {getCategoriesSelectionState} from "../../redux/SelectionSlice";
 import {VehicleCategoriesServices} from "./VehicleCategoriesServices";
-import {VehicleCategoryConverter} from "./VehicleCategoryConverter";
+import {VehicleCategoryManager} from "../managers/VehicleCategoryManager";
 import {ItemType} from "../model/BaseItem";
-import VehicleCategoryForm from "./VehicleCategoryForm";
 
-const services: VehicleCategoriesServices = new VehicleCategoriesServices();
-const converter: VehicleCategoryConverter = new VehicleCategoryConverter();
-const CATEGORY: ItemType = "CATEGORY";
-
-const VehicleCategoriesLarge = () => {
+type Properties = {
+    itemType: ItemType,
+    services: VehicleCategoriesServices,
+    converter: VehicleCategoryManager,
+    form: ReactNode
+}
+const VehicleCategoriesLarge = ({itemType, services, converter, form}:Properties) => {
     // @ts-ignore
     const state = useAppSelector(getCategoriesSelectionState);
-    const categoryForm = () => <VehicleCategoryForm showTechnical={false} state={state} itemType={CATEGORY}/>;
+
     return (
         <Container fluid className={"h-100"}>
             <Row className={"h-100"}>
                 <Col sm={12} md={6} lg={4} className={"h-100 border-end"}>
                     <ItemsListPanel
                         name={"Vehicle Categories"}
-                        itemType={CATEGORY}
+                        itemType={itemType}
                         services={services}
-                        converter={converter}
-                        state={state}
-                        itemForm={categoryForm()}/>
+                        manager={converter}
+                        state={state}/>
                 </Col>
                 <Col sm={12} md={6} lg={8} className={"h-100 pb-2"}>
-                    {state.selectedId &&
+                    {state.selectedItem &&
                         <ItemDetails
                             state={state}
                             converter={converter}
-                            itemType={CATEGORY}
-                            services={services} itemForm={categoryForm()}/>}
+                            itemType={itemType}
+                            services={services}
+                            itemForm={form}/>}
                 </Col>
             </Row>
         </Container>

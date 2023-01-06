@@ -1,11 +1,11 @@
 export type ItemType = "CATEGORY" | "VEHICLE"
 
 export interface BaseItem {
-    id: number;
+    id: number | undefined;
     currentVersion: number;
     createdBy: string;
     createdAt: string;
-    updatedBy: string;
-    updatedAt: string;
+    updatedBy: Date | undefined;
+    updatedAt: Date | undefined;
 
 }

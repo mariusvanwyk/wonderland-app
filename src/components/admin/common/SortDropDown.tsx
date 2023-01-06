@@ -3,47 +3,45 @@ import {SelectionState, setSortItemsBy} from "../../redux/SelectionSlice";
 import React from "react";
 import {useAppDispatch} from "../../redux/hooks";
 import {ItemType} from "../model/BaseItem";
+import {SortProperty} from "../managers/ItemManager";
 
 type Properties = {
     itemType: ItemType,
-    state: SelectionState<any>
+    state: SelectionState<any>,
+    sortProperties: SortProperty[],
 }
-const SortDropDown = ({itemType, state}:Properties) => {
+
+
+const SortDropDown = ({itemType, state, sortProperties}: Properties) => {
+
     const dispatch = useAppDispatch();
 
     return (
         <Dropdown>
             <Dropdown.Toggle id="dropdown-basic" variant={"outline-secondary"} size={"sm"}>
-                {state.sortedBy === "name" && (state.sortedAscending ?
-                    <i className={"bi bi-sort-alpha-down"}/> :
-                    <i className={"bi bi-sort-alpha-up"}/>)}
-                {state.sortedBy === "size" && (state.sortedAscending ?
-                    <i className={"bi bi-sort-numeric-down"}/> :
-                    <i className={"bi bi-sort-numeric-up"}/>)}
+                {state.sortedBy && (state.sortedAscending ?
+                    <i className={"bi bi-sort-down"}/> :
+                    <i className={"bi bi-sort-up"}/>)}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                <Dropdown.Item className={"d-flex justify-content-between"}
-                               onClick={() => dispatch(setSortItemsBy({
-                                   itemType: itemType,
-                                   sortBy: "name"
-                               }))}>
-                    {state.sortedBy === "name" ? <i className={"bi bi-check"}/> : <div>&nbsp;</div>}
-                    <div>By Name</div>
-                    {state.sortedBy === "name" ? (state.sortedAscending ?
-                        <i className={"bi bi-arrow-down"}/> :
-                        <i className={"bi bi-arrow-up"}/>) : <div>&nbsp;</div>}
-                </Dropdown.Item>
-                <Dropdown.Item className={"d-flex justify-content-between"}
-                               onClick={() => dispatch(setSortItemsBy({
-                                   itemType: itemType,
-                                   sortBy: "size"
-                               }))}>
-                    {state.sortedBy === "size" ? <i className={"bi bi-check"}/> : <div>&nbsp;</div>}
-                    <div>By Size</div>
-                    {state.sortedBy === "size" ? (state.sortedAscending ?
-                        <i className={"bi bi-arrow-down"}/> :
-                        <i className={"bi bi-arrow-up"}/>) : <div>&nbsp;</div>}
-                </Dropdown.Item>
+                {sortProperties.map((property, index) => {
+                    return (
+                        <Dropdown.Item key={index} className={"d-flex justify-content-between"}
+                                       onClick={() => dispatch(setSortItemsBy({
+                                           itemType: itemType,
+                                           sortBy: property.name
+                                       }))}>
+                            <div className={"d-flex"}>
+                                <i className={"bi bi-check " + (state.sortedBy === property.name ? "visible" : "invisible")}/>
+                                <div className={"ms-1"}>By {property.label ? property.label : property.name}</div>
+                            </div>
+
+                            {state.sortedBy === property.name ? (state.sortedAscending ?
+                                <i className={"bi bi-arrow-down"}/> :
+                                <i className={"bi bi-arrow-up"}/>) : <div>&nbsp;</div>}
+                        </Dropdown.Item>
+                    )
+                })}
             </Dropdown.Menu>
         </Dropdown>
     )

@@ -10,5 +10,16 @@ export interface Vehicle extends BaseItem {
     motDate: Date | null;
     disabled: boolean;
     description: string;
+    categoryId: number | undefined;
+    _links: VehicleLinks | undefined;
+}
 
+export interface VehicleLinks {
+    self: Link;
+    vehicle: Link;
+    category: Link;
+}
+
+interface Link {
+    href: string;
 }

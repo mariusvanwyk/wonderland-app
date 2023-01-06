@@ -116,7 +116,7 @@ const PageItem = ({disabled, onClick, iconClass, title}: PageItemProperties) => 
     return (
         <li className={"page-item" + (disabled ? " disabled" : "")}>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a className={"page-link"} href="src/components/admin/common#" tabIndex={disabled ? -1 : 0}
+            <a className={"page-link"} tabIndex={disabled ? -1 : 0}
                onClick={() => onClick()} title={title}>
                 <i className={"bi " + iconClass}></i>
             </a>

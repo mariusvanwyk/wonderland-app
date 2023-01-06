@@ -15,5 +15,16 @@ export interface VehicleCategory extends BaseItem {
     serviceRate: number;
     overtimeRate: number;
     fuelConsumption: number;
+    _links: VehicleCategoryLinks | undefined;
 
+}
+
+export interface VehicleCategoryLinks {
+    self: Link;
+    vehicleCategory: Link;
+    vehicles: Link;
+}
+
+interface Link {
+    href: string;
 }

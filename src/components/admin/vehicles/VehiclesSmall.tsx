@@ -1,5 +1,4 @@
-import React from 'react';
-import {Col, Row} from "react-bootstrap";
+import React, {ReactNode} from 'react';
 import Container from "react-bootstrap/Container";
 import ItemDetails from "../common/ItemDetails";
 import ItemsListPanel from "../common/ItemsListPanel";
@@ -8,33 +7,34 @@ import {getVehicleSelectionState} from "../../redux/SelectionSlice";
 
 import {ItemType} from "../model/BaseItem";
 import {VehicleServices} from "./VehicleServices";
-import {VehicleConverter} from "./VehicleConverter";
-import VehicleForm from "./VehicleForm";
+import {VehicleManager} from "../managers/VehicleManager";
 
-const services: VehicleServices = new VehicleServices();
-const converter: VehicleConverter = new VehicleConverter();
-const VEHICLE: ItemType = "VEHICLE";
+type Properties = {
+    itemType: ItemType,
+    services: VehicleServices,
+    converter: VehicleManager,
+    form: ReactNode
+}
 
-const VehiclesSmall = () => {
+const VehiclesSmall = ({itemType, services, converter, form}: Properties) => {
     // @ts-ignore
     const state = useAppSelector(getVehicleSelectionState);
-    const vehicleForm = () => <VehicleForm state={state} itemType={VEHICLE} showTechnical={true}/>;
+
     return (
         <Container fluid className={"h-100"}>
-            {!state.selectedId &&
+            {!state.selectedItem &&
                 <ItemsListPanel
                     name={"Vehicle Categories"}
-                    itemType={VEHICLE}
+                    itemType={itemType}
                     services={services}
                     state={state}
-                    converter={converter}
-                    itemForm={vehicleForm()}/>}
-            {state.selectedId &&
+                    manager={converter}/>}
+            {state.selectedItem &&
                 <ItemDetails
                     state={state}
                     converter={converter}
-                    itemType={VEHICLE}
-                    itemForm={vehicleForm()}
+                    itemType={itemType}
+                    itemForm={form}
                     services={services}/>}
         </Container>
     );
