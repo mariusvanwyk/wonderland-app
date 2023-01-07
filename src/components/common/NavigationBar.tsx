@@ -17,8 +17,9 @@ const NavigationBar = () => {
                         <Nav>
                             <NavDropdown title="Admin" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="/vehicle-categories">Vehicle Categories</NavDropdown.Item>
-                                <NavDropdown.Divider/>
                                 <NavDropdown.Item href="/vehicles">Vehicles</NavDropdown.Item>
+                                <NavDropdown.Divider/>
+                                <NavDropdown.Item href="/customers">Customers</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     }

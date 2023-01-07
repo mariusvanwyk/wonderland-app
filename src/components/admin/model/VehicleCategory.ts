@@ -1,4 +1,5 @@
 import {BaseItem} from "./BaseItem";
+import {Link} from "./Link";
 
 
 export interface VehicleCategory extends BaseItem {
@@ -25,6 +26,4 @@ export interface VehicleCategoryLinks {
     vehicles: Link;
 }
 
-interface Link {
-    href: string;
-}
+

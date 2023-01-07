@@ -3,28 +3,28 @@ import Container from "react-bootstrap/Container";
 import ItemDetails from "../common/ItemDetails";
 import ItemsListPanel from "../common/ItemsListPanel";
 import {useAppSelector} from "../../redux/hooks";
-import {getVehicleSelectionState} from "../../redux/SelectionSlice";
+import {getCustomerSelectionState} from "../../redux/SelectionSlice";
 
 import {ItemType} from "../model/BaseItem";
-import {VehicleServices} from "./VehicleServices";
-import {VehicleManager} from "../managers/VehicleManager";
+import {CustomerServices} from "./CustomerServices";
+import {CustomerManager} from "../managers/CustomerManager";
 
 type Properties = {
     itemType: ItemType,
-    services: VehicleServices,
-    converter: VehicleManager,
+    services: CustomerServices,
+    converter: CustomerManager,
     form: ReactNode
 }
 
-const VehiclesSmall = ({itemType, services, converter, form}: Properties) => {
+const CustomersSmall = ({itemType, services, converter, form}: Properties) => {
     // @ts-ignore
-    const state = useAppSelector(getVehicleSelectionState);
+    const state = useAppSelector(getCustomerSelectionState);
 
     return (
         <Container fluid className={"h-100"}>
             {!state.selectedItem &&
                 <ItemsListPanel
-                    name={"Vehicles"}
+                    name={"Customers"}
                     itemType={itemType}
                     services={services}
                     state={state}
@@ -40,4 +40,4 @@ const VehiclesSmall = ({itemType, services, converter, form}: Properties) => {
     );
 }
 
-export default VehiclesSmall;
+export default CustomersSmall;

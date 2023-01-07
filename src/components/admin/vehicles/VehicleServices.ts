@@ -1,21 +1,11 @@
 import HttpService from "../../../services/HttpService";
-import {AxiosRequestConfig, AxiosResponse} from "axios";
+import {AxiosResponse} from "axios";
 import {ResultPage} from "../model/ResultPage";
 import {Services} from "../Services";
 import {EmbeddedVehicles} from "../model/EmbeddedVehicles";
 import {Vehicle} from "../model/Vehicle";
 
 export class VehicleServices extends Services<EmbeddedVehicles, Vehicle> {
-    getAssociations(item: Vehicle): Promise<AxiosResponse<Vehicle>>[] {
-        const promises: Promise<AxiosResponse<Vehicle>>[] = [];
-        const config: AxiosRequestConfig<Vehicle> = {
-            headers: {
-                "Content-Type": "text/uri-list"
-            }
-        };
-        // promises.push(HttpService.getAxiosClient().put<Vehicle>(url, newCategory._links?.self.href, config))
-        throw new Error("Method not implemented.");
-    }
 
     getItems(currentPage: number | undefined, pageSize: number | undefined, searchText: string | undefined, sortedBy: string | undefined, sortedAscending: boolean): Promise<AxiosResponse<ResultPage<EmbeddedVehicles>>> {
         const pageArguments = this._getPageArguments(currentPage, pageSize, sortedBy, sortedAscending);
@@ -31,27 +21,12 @@ export class VehicleServices extends Services<EmbeddedVehicles, Vehicle> {
         }
     }
 
-    getItem(id: number | undefined): Promise<AxiosResponse<Vehicle>> {
-        console.log("Getting Vehicle  - id: " + id)
-        return HttpService.getAxiosClient().get<Vehicle>(`/api/v1/vehicles/${id}`);
+    getBaseUrl(): string {
+        return "/api/v1/vehicles";
     }
 
-    saveItem(item: Vehicle): Promise<AxiosResponse<Vehicle>> {
-        console.log("Saving Vehicle", item)
-        const config: AxiosRequestConfig<Vehicle> = {
-            headers: {
-                "If-Match": item.currentVersion
-            }
-        };
-        return HttpService.getAxiosClient().put<Vehicle>(`/api/v1/vehicles/${item.id}`, item, config);
-    }
-
-    deleteItem(item: Vehicle): Promise<AxiosResponse<Vehicle>> {
-        return HttpService.getAxiosClient().delete(`/api/v1/vehicles/${item.id}`);
-    }
-
-    addItem(item: Vehicle): Promise<AxiosResponse<Vehicle>> {
-        return HttpService.getAxiosClient().post<Vehicle>('/api/v1/vehicles', item);
+    getItemName(): string {
+        return "Vehicle";
     }
 
 }

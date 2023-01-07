@@ -15,6 +15,7 @@ import VehicleCategories from "./admin/vehicleCategories/VehicleCategories";
 import {useAppDispatch} from "./redux/hooks";
 import {setIsMobile} from "./redux/SelectionSlice";
 import Vehicles from "./admin/vehicles/Vehicles";
+import Customers from "./admin/customers/Customers";
 
 const router = createBrowserRouter([
     {path: "/", element: <Home/>, errorElement: <Error/>,},
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     {path: "/about", element: <About/>},
     {path: "/vehicle-categories", element: <VehicleCategories/>},
     {path: "/vehicles", element: <Vehicles/>},
+    {path: "/customers", element: <Customers/>},
 ]);
 
 const App = () => {

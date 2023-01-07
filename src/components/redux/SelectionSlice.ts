@@ -4,6 +4,7 @@ import {BaseItem, ItemType} from "../admin/model/BaseItem";
 import {ListPage} from "../admin/model/ListPage";
 import {VehicleCategory} from "../admin/model/VehicleCategory";
 import {Vehicle} from "../admin/model/Vehicle";
+import {Customer} from "../admin/model/Customer";
 
 export interface SelectionState<T extends BaseItem> {
     refreshTime: number | null,
@@ -23,6 +24,7 @@ interface SelectionStates {
     isMobile: boolean,
     categoriesSelectionState: SelectionState<VehicleCategory>,
     vehiclesSelectionState: SelectionState<Vehicle>,
+    customerSelectionState: SelectionState<Customer>,
 }
 
 const initialState: SelectionStates = {
@@ -41,6 +43,19 @@ const initialState: SelectionStates = {
         selectedItem: undefined
     },
     categoriesSelectionState: {
+        refreshTime: Date.now(),
+        selectTime: null,
+        sortedBy: "name",
+        sortedAscending: true,
+        searchText: "",
+        pageSize: 5,
+        currentPage: 0,
+        error: undefined,
+        fetching: false,
+        listPage: undefined,
+        selectedItem: undefined
+    },
+    customerSelectionState: {
         refreshTime: Date.now(),
         selectTime: null,
         sortedBy: "name",
@@ -160,6 +175,8 @@ const getSelectionState = (state: Draft<SelectionStates>, itemType: ItemType) =>
     switch (itemType) {
         case "VEHICLE":
             return state.vehiclesSelectionState;
+        case "CUSTOMER":
+            return state.customerSelectionState;
         default:
             return state.categoriesSelectionState;
     }
@@ -187,6 +204,7 @@ export const {
 
 export const getCategoriesSelectionState = (state: RootState) => state.selections.categoriesSelectionState;
 export const getVehicleSelectionState = (state: RootState) => state.selections.vehiclesSelectionState;
+export const getCustomerSelectionState = (state: RootState) => state.selections.customerSelectionState;
 export const isMobile = (state: RootState) => state.selections.isMobile;
 
 export default SelectionSlice.reducer
