@@ -1,33 +1,27 @@
 import {AxiosRequestConfig, AxiosResponse} from "axios";
-import {ResultPage} from "./model/ResultPage";
-import HttpService from "../../services/HttpService";
-import {BaseItem} from "./model/BaseItem";
+import {ResultPage} from "../model/base/ResultPage";
+import HttpService from "../../../services/HttpService";
+import {BaseItem} from "../model/base/BaseItem";
+import {Services} from "./Services";
 
-export abstract class Services<E, T extends BaseItem> {
+export abstract class AbstractServices<E, T extends BaseItem> implements Services<E, T> {
     abstract getItems(currentPage: number | undefined,
                       pageSize: number | undefined,
                       searchText: string | undefined,
                       sortedBy: string | undefined,
                       sortedAscending: boolean): Promise<AxiosResponse<ResultPage<E>>>;
 
+    abstract getBaseUrl(): string;
+
+    abstract getItemName(): string;
+
     getItem(id: number | undefined): Promise<AxiosResponse<T>> {
-        console.log(`Getting ${this.getItemName()} - id: ` + id)
+        console.debug(`Getting ${this.getItemName()} - id: ` + id)
         return HttpService.getAxiosClient().get<T>(`${this.getBaseUrl()}/${id}`);
     }
 
-    getAssociations(item: T): Promise<AxiosResponse<T>>[] {
-        const promises: Promise<AxiosResponse<T>>[] = [];
-        const config: AxiosRequestConfig<T> = {
-            headers: {
-                "Content-Type": "text/uri-list"
-            }
-        };
-        // promises.push(HttpService.getAxiosClient().put<T>(url, newCategory._links?.self.href, config))
-        throw new Error("Method not implemented.");
-    }
-
     saveItem(item: T): Promise<AxiosResponse<T>> {
-        console.log(`Saving ${this.getItemName()}`, item)
+        console.debug(`Saving ${this.getItemName()}`, item)
         const config: AxiosRequestConfig<T> = {
             headers: {
                 "If-Match": item.currentVersion
@@ -37,22 +31,29 @@ export abstract class Services<E, T extends BaseItem> {
     }
 
     deleteItem(item: T): Promise<AxiosResponse<T>> {
-        console.log(`Deleting ${this.getItemName()} - id: ` + item.id);
+        console.debug(`Deleting ${this.getItemName()} - id: ` + item.id);
         return HttpService.getAxiosClient().delete(`${this.getBaseUrl()}/${item.id}`);
     }
 
     addItem(item: T): Promise<AxiosResponse<T>> {
-        console.log(`Adding ${this.getItemName()} - id: `, item);
+        console.debug(`Adding ${this.getItemName()} - id: `, item);
         return HttpService.getAxiosClient().post<T>(`${this.getBaseUrl()}`, item);
     }
 
-    _getPageArguments(currentPage: number | undefined, pageSize: number | undefined, sortedBy: string | undefined, sortedAscending: boolean) {
+    protected _getPageArguments(currentPage: number | undefined, pageSize: number | undefined, sortedBy: string | undefined, sortedAscending: boolean) {
         const direction = sortedAscending ? "asc" : "desc";
         return `page=${currentPage ? currentPage : 0}&size=${pageSize ? pageSize : 5}&sort=${sortedBy},${direction}`;
     }
 
-    abstract getBaseUrl(): string;
-
-    abstract getItemName(): string;
+    // getAssociations(item: T): Promise<AxiosResponse<T>>[] {
+    //     const promises: Promise<AxiosResponse<T>>[] = [];
+    //     const config: AxiosRequestConfig<T> = {
+    //         headers: {
+    //             "Content-Type": "text/uri-list"
+    //         }
+    //     };
+    //     // promises.push(HttpService.getAxiosClient().put<T>(url, newCategory._links?.self.href, config))
+    //     throw new Error("Method not implemented.");
+    // }
 }
 

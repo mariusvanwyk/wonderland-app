@@ -1,12 +1,12 @@
 import React, {ReactNode} from 'react';
 import Container from "react-bootstrap/Container";
-import ItemDetails from "../../common/ItemDetails";
-import ItemsListPanel from "../../common/ItemsListPanel";
+import ItemDetails from "../common/ItemDetails";
+import ItemsListPanel from "../common/ItemsListPanel";
 import {useAppSelector} from "../../../redux/hooks";
 import {getCustomerSelectionState} from "../../../redux/SelectionSlice";
 
-import {ItemType} from "../../model/BaseItem";
-import {CustomerServices} from "./CustomerServices";
+import {ItemType} from "../../model/base/BaseItem";
+import {CustomerServices} from "../../services/CustomerServices";
 import {CustomerManager} from "../../managers/CustomerManager";
 
 type Properties = {

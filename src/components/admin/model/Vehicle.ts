@@ -1,5 +1,5 @@
-import {BaseItem} from "./BaseItem";
-import {Link} from "./Link";
+import {BaseItem} from "./base/BaseItem";
+import {Link} from "./base/Link";
 
 export interface Vehicle extends BaseItem {
 

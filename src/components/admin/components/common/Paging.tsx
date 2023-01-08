@@ -1,8 +1,8 @@
 import React from 'react';
-import {Page} from "../model/Page";
-import {SelectionState, setItemsCurrentPage} from "../../redux/SelectionSlice";
-import {ItemType} from "../model/BaseItem";
-import {useAppDispatch} from "../../redux/hooks";
+import {Page} from "../../model/base/Page";
+import {SelectionState, setItemsCurrentPage} from "../../../redux/SelectionSlice";
+import {ItemType} from "../../model/base/BaseItem";
+import {useAppDispatch} from "../../../redux/hooks";
 
 type Properties = {
     page: Page,
@@ -16,25 +16,25 @@ const Paging = ({page, recordCount, state, onPaging}: Properties) => {
     const dispatch = useAppDispatch();
 
     const gotoFirstPage = () => {
-        dispatch(setItemsCurrentPage({itemType: "CATEGORY", currentPage: 0}));
+        dispatch(setItemsCurrentPage({itemType: "category", currentPage: 0}));
         onPaging(0);
     }
 
     const gotoPreviousPage = () => {
         const newPageNumber = (state.currentPage ? state.currentPage : 0) - 1;
-        dispatch(setItemsCurrentPage({itemType: "CATEGORY", currentPage: newPageNumber}));
+        dispatch(setItemsCurrentPage({itemType: "category", currentPage: newPageNumber}));
         onPaging(newPageNumber);
     }
 
     const gotoNextPage = () => {
         const newPageNumber = (state.currentPage ? state.currentPage : 0) + 1;
-        dispatch(setItemsCurrentPage({itemType: "CATEGORY", currentPage: newPageNumber}));
+        dispatch(setItemsCurrentPage({itemType: "category", currentPage: newPageNumber}));
         onPaging(newPageNumber);
     }
 
     const gotoLastPage = () => {
         const newPageNumber = page.totalPages - 1;
-        dispatch(setItemsCurrentPage({itemType: "CATEGORY", currentPage: newPageNumber}));
+        dispatch(setItemsCurrentPage({itemType: "category", currentPage: newPageNumber}));
         onPaging(newPageNumber);
     }
 

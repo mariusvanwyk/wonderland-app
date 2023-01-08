@@ -1,5 +1,5 @@
-import {NamedItem} from "./NamedItem";
-import {Link} from "./Link";
+import {NamedItem} from "./base/NamedItem";
+import {Link} from "./base/Link";
 
 export interface Location extends NamedItem {
     address1: string,

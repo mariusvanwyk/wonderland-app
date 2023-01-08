@@ -1,12 +1,12 @@
 import React from 'react';
 import {Col, Form, Row} from "react-bootstrap";
-import {ItemType} from "../../model/BaseItem";
+import {ItemType} from "../../model/base/BaseItem";
 import {SelectionState, setItem} from "../../../redux/SelectionSlice";
-import ItemFormControl from "../../common/ItemFormControl";
+import ItemFormControl from "../common/ItemFormControl";
 import {useAppDispatch} from "../../../redux/hooks";
 import _ from "lodash";
 import VehicleCategoryChoice from "../categories/VehicleCategoryChoice";
-import ItemTechnicalDetails from "../../common/ItemTechnicalDetails";
+import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
 
 type Properties = {
     itemType: ItemType,

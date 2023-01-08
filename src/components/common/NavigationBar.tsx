@@ -3,11 +3,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import UserService from "../../services/UserService";
 import {NavDropdown} from "react-bootstrap";
-import {useAppSelector} from "../redux/hooks";
-import {isMobile} from "../redux/SelectionSlice";
 
 const NavigationBar = () => {
-    const mobile = useAppSelector(isMobile);
     return (
         <Navbar bg={"dark"} variant={"dark"} expand={"lg"}>
             <Container fluid>

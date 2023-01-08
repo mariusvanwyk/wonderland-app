@@ -1,8 +1,8 @@
 import {Accordion, Col, Form, Row} from "react-bootstrap";
 import React from "react";
-import {SelectionState} from "../../redux/SelectionSlice";
+import {SelectionState} from "../../../redux/SelectionSlice";
 import ReactJson from "react-json-view";
-import {getDateTimeAsString} from "../../common/DateUtils";
+import {getDateTimeAsString} from "../../../common/DateUtils";
 
 type Properties = {
     state: SelectionState<any>,

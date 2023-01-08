@@ -2,7 +2,7 @@ import {Form} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {VehicleCategory} from "../../model/VehicleCategory";
 import HttpService from "../../../../services/HttpService";
-import {ResultPage} from "../../model/ResultPage";
+import {ResultPage} from "../../model/base/ResultPage";
 import {EmbeddedVehicleCategories} from "../../model/embedded/EmbeddedVehicleCategories";
 
 type Properties = {
@@ -20,7 +20,7 @@ const VehicleCategoryChoice = ({categoryId, onChange}: Properties) => {
                 setVehicleCategories(response.data._embedded.vehicleCategories);
             })
             .catch((error) => {
-                console.log("Error", error);
+                console.debug("Error", error);
                 setError(JSON.stringify(error.response.status))
             })
             .finally(() => {
@@ -31,7 +31,7 @@ const VehicleCategoryChoice = ({categoryId, onChange}: Properties) => {
     const categoryChanged = (id: number) => {
         if (vehicleCategories) {
             for (let i = 0; i < vehicleCategories?.length; i++) {
-                if (vehicleCategories[i].id == id) {
+                if (vehicleCategories[i].id === id) {
                     onChange(vehicleCategories[i].id);
                     break;
                 }
@@ -44,7 +44,7 @@ const VehicleCategoryChoice = ({categoryId, onChange}: Properties) => {
             <Form.Label>Category</Form.Label>
             <Form.Select required={true} aria-label="Default select example" value={categoryId ? categoryId : ""}
                          disabled={fetching}
-                         isInvalid={categoryId == undefined || categoryId <= 0}
+                         isInvalid={categoryId === undefined || categoryId <= 0}
                          onChange={(e) => {
                              categoryChanged(Number(e.target.value));
                          }}>

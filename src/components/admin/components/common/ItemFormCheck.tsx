@@ -1,10 +1,9 @@
-import {Button, Form, InputGroup} from "react-bootstrap";
-import React, {ChangeEvent, useEffect, useState} from "react";
+import {Form,} from "react-bootstrap";
+import React, {useEffect, useState} from "react";
 import _ from "lodash";
-import {SelectionState, setItem} from "../../redux/SelectionSlice";
-import {ItemType} from "../model/BaseItem";
-import {useAppDispatch} from "../../redux/hooks";
-import {getDateAsString} from "../../common/DateUtils";
+import {SelectionState, setItem} from "../../../redux/SelectionSlice";
+import {ItemType} from "../../model/base/BaseItem";
+import {useAppDispatch} from "../../../redux/hooks";
 
 type Properties = {
     itemType: ItemType,

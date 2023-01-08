@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Col, Form, Row, Tab, Tabs} from "react-bootstrap";
-import {ItemType} from "../../model/BaseItem";
+import {ItemType} from "../../model/base/BaseItem";
 import {SelectionState} from "../../../redux/SelectionSlice";
-import ItemFormControl from "../../common/ItemFormControl";
-import ItemTechnicalDetails from "../../common/ItemTechnicalDetails";
+import ItemFormControl from "../common/ItemFormControl";
+import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
 import VehiclesList from "../vehicles/VehiclesList";
 
 type Properties = {

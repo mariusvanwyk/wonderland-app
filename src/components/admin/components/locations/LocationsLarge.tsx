@@ -1,13 +1,13 @@
 import React, {ReactNode} from 'react';
 import {Col, Row} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
-import ItemDetails from "../../common/ItemDetails";
-import ItemsListPanel from "../../common/ItemsListPanel";
+import ItemDetails from "../common/ItemDetails";
+import ItemsListPanel from "../common/ItemsListPanel";
 import {useAppSelector} from "../../../redux/hooks";
 import {getLocationSelectionState} from "../../../redux/SelectionSlice";
 
-import {ItemType} from "../../model/BaseItem";
-import {LocationServices} from "./LocationServices";
+import {ItemType} from "../../model/base/BaseItem";
+import {LocationServices} from "../../services/LocationServices";
 import {LocationManager} from "../../managers/LocationManager";
 
 type Properties = {

@@ -1,9 +1,9 @@
 import {Dropdown} from "react-bootstrap";
-import {SelectionState, setSortItemsBy} from "../../redux/SelectionSlice";
+import {SelectionState, setSortItemsBy} from "../../../redux/SelectionSlice";
 import React from "react";
-import {useAppDispatch} from "../../redux/hooks";
-import {ItemType} from "../model/BaseItem";
-import {SortProperty} from "../managers/ItemManager";
+import {useAppDispatch} from "../../../redux/hooks";
+import {ItemType} from "../../model/base/BaseItem";
+import {SortProperty} from "../../managers/ItemManager";
 
 type Properties = {
     itemType: ItemType,

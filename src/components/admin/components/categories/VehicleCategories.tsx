@@ -1,37 +1,40 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import VehicleCategoryForm from "./VehicleCategoryForm";
-import {ItemType} from "../../model/BaseItem";
-import {VehicleCategoriesServices} from "./VehicleCategoriesServices";
+import {ItemType} from "../../model/base/BaseItem";
+import {VehicleCategoriesServices} from "../../services/VehicleCategoriesServices";
 import {VehicleCategoryManager} from "../../managers/VehicleCategoryManager";
 import {useAppSelector} from "../../../redux/hooks";
 import {getCategoriesSelectionState, isMobile} from "../../../redux/SelectionSlice";
 import VehicleCategoriesLarge from "./VehicleCategoriesLarge";
 import VehicleCategoriesSmall from "./VehicleCategoriesSmall";
 
-const services: VehicleCategoriesServices = new VehicleCategoriesServices();
+// const services: VehicleCategoriesServices = new VehicleCategoriesServices();
 const converter: VehicleCategoryManager = new VehicleCategoryManager();
-const CATEGORY: ItemType = "CATEGORY";
+const category: ItemType = "category";
 
-const VehicleCategories = () => {
+type Properties = {
+    services: VehicleCategoriesServices
+}
+
+const VehicleCategories = ({services}: Properties) => {
     const mobile = useAppSelector(isMobile);
     const state = useAppSelector(getCategoriesSelectionState);
-
     const categoryForm = () => {
         return (
-            <VehicleCategoryForm state={state} itemType={CATEGORY}/>
+            <VehicleCategoryForm state={state} itemType={category}/>
         )
     };
 
     return (
         <Fragment>
-            {!mobile && <VehicleCategoriesLarge form={categoryForm()}
-                                                services={services}
-                                                converter={converter}
-                                                itemType={CATEGORY}/>}
-            {mobile && <VehicleCategoriesSmall form={categoryForm()}
-                                               services={services}
-                                               converter={converter}
-                                               itemType={CATEGORY}/>}
+            {!mobile && services && <VehicleCategoriesLarge form={categoryForm()}
+                                                            services={services}
+                                                            converter={converter}
+                                                            itemType={category}/>}
+            {mobile && services && <VehicleCategoriesSmall form={categoryForm()}
+                                                           services={services}
+                                                           converter={converter}
+                                                           itemType={category}/>}
         </Fragment>
     )
 }

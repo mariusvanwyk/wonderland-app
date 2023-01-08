@@ -2,7 +2,7 @@ import React, {Fragment, memo, useEffect} from 'react';
 import {Badge, Button, ListGroup} from "react-bootstrap";
 import Paging from "./Paging";
 
-import {useAppDispatch} from "../../redux/hooks";
+import {useAppDispatch} from "../../../redux/hooks";
 import {
     clearItemsFetchError,
     refreshItems,
@@ -13,14 +13,14 @@ import {
     setItemsCurrentPage,
     setItemsFetchError,
     setItemsResultPage
-} from "../../redux/SelectionSlice";
+} from "../../../redux/SelectionSlice";
 import SearchPanel from "./SearchPanel";
 import SortDropDown from "./SortDropDown";
 import PageSizeSelect from "./PageSizeSelect";
-import {BaseItem, ItemType} from "../model/BaseItem";
-import {ItemManager} from "../managers/ItemManager";
-import {Services} from "../Services";
-import {ListPage} from "../model/ListPage";
+import {BaseItem, ItemType} from "../../model/base/BaseItem";
+import {ItemManager} from "../../managers/ItemManager";
+import {Services} from "../../services/Services";
+import {ListPage} from "../../model/base/ListPage";
 import Fetching from "./Fetching";
 
 type Properties = {
@@ -52,6 +52,7 @@ const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) 
                 .then((response) => {
                     const listPage: ListPage<any> = manager.convert(response.data);
                     dispatch(setItemsResultPage({itemType: itemType, listPage: listPage}));
+                    // dispatch(setFetchingItemsComplete({itemType: itemType}));
                 })
                 .catch((error) => {
                     dispatch(setItemsFetchError({
@@ -89,7 +90,7 @@ const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) 
                 <h3>{name}</h3>
                 <div>
                     {!state.fetching && !state.error &&
-                        <Button variant="success" title={"Add new"} size={"sm"}
+                        <Button variant="success" title={"Add new"} size={"sm"} data-testid={"add-new-item-button"}
                                 onClick={() => dispatch(setItem({itemType: itemType, item: manager.newItem()}))}>
                             Add
                         </Button>}
@@ -114,22 +115,27 @@ const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) 
                                 onPaging={(pageNumber) => onPaging(pageNumber)}/>
                         <SortDropDown itemType={itemType} state={state} sortProperties={manager.getSortProperties()}/>
                     </div>
-                    <ListGroup>
-                        {state.listPage.items.map((current, index) => {
-                            return (
-                                <ListGroup.Item action
-                                                active={state.selectedItem != null && state.selectedItem.id === current.id}
-                                                onClick={() => onItemSelected(current.id)} key={index}
-                                                className="d-flex justify-content-between align-items-center">
-                                    <div>{manager.getListColumn(current)}</div>
-                                    <div className={"d-flex align-items-center"}>
-                                        {validationPill(current)}
-                                    </div>
-                                </ListGroup.Item>
-                            )
-                        })
-                        }
-                    </ListGroup>
+                    {state.listPage.items.length < 1 && <div className={"d-flex justify-content-center mt-3 mb-3"}>There are no items</div>}
+                    {state.listPage.items.length > 0 &&
+                        <ListGroup>
+                            {
+                                state.listPage.items.map((current, index) => {
+                                    return (
+                                        <ListGroup.Item action
+                                                        active={state.selectedItem != null && state.selectedItem.id === current.id}
+                                                        onClick={() => onItemSelected(current.id)} key={index}
+                                                        className="d-flex justify-content-between align-items-center"
+                                                        data-testid={"list-item-" + index}>
+                                            <div>{manager.getListColumn(current)}</div>
+                                            <div className={"d-flex align-items-center"}>
+                                                {validationPill(current)}
+                                            </div>
+                                        </ListGroup.Item>
+                                    )
+                                })
+                            }
+                        </ListGroup>
+                    }
                     <PageSizeSelect itemType={itemType} state={state}/>
                 </>
             }

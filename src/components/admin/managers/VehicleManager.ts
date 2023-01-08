@@ -1,6 +1,6 @@
 import {ItemManager, RequiredProperty, SortProperty} from "./ItemManager";
-import {ResultPage} from "../model/ResultPage";
-import {ListPage} from "../model/ListPage";
+import {ResultPage} from "../model/base/ResultPage";
+import {ListPage} from "../model/base/ListPage";
 import {EmbeddedVehicles} from "../model/embedded/EmbeddedVehicles";
 import {Vehicle} from "../model/Vehicle";
 import _ from "lodash";

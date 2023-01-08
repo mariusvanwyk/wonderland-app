@@ -1,6 +1,6 @@
-import {ResultPage} from "../model/ResultPage";
-import {ListPage} from "../model/ListPage";
-import {BaseItem} from "../model/BaseItem";
+import {ResultPage} from "../model/base/ResultPage";
+import {ListPage} from "../model/base/ListPage";
+import {BaseItem} from "../model/base/BaseItem";
 
 export type SortProperty = {
     type: "number" | "string",
@@ -50,6 +50,7 @@ export abstract class ItemManager<E, T extends BaseItem> {
                     break;
                 }
             }
+            return true;
         })
         return errors;
     }

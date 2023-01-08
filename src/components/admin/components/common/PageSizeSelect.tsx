@@ -1,9 +1,9 @@
 import {FormSelect} from "react-bootstrap";
 import React, {ChangeEvent} from "react";
-import {SelectionState, setItemsPageSize} from "../../redux/SelectionSlice";
-import {ItemType} from "../model/BaseItem";
-import {useAppDispatch} from "../../redux/hooks";
-import {getDateTimeAsString} from "../../common/DateUtils";
+import {SelectionState, setItemsPageSize} from "../../../redux/SelectionSlice";
+import {ItemType} from "../../model/base/BaseItem";
+import {useAppDispatch} from "../../../redux/hooks";
+import {getDateTimeAsString} from "../../../common/DateUtils";
 
 type Properties = {
     itemType: ItemType,

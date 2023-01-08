@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import HttpService from "../../../../services/HttpService";
 import {Vehicle} from "../../model/Vehicle";
-import {ServiceError} from "../../model/ServiceError";
+import {ServiceError} from "../../services/ServiceError";
 import {Table, Toast, ToastContainer} from "react-bootstrap";
-import {ResultPage} from "../../model/ResultPage";
+import {ResultPage} from "../../model/base/ResultPage";
 import {EmbeddedVehicles} from "../../model/embedded/EmbeddedVehicles";
-import Fetching from "../../common/Fetching";
+import Fetching from "../common/Fetching";
 import {getDateAsString} from "../../../common/DateUtils";
 
 type Properties = {
@@ -23,7 +23,7 @@ const VehiclesList = ({url, visible}: Properties) => {
         setVehicles(undefined);
         setShowServiceErrorFeedBack(false);
         if (visible) {
-            console.log("Extracting vehicles for: ", url)
+            console.debug("Extracting vehicles for: ", url)
             setFetching(true);
             HttpService.getAxiosClient().get<ResultPage<EmbeddedVehicles>>(url)
                 .then((response) => {

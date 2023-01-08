@@ -1,6 +1,6 @@
-import {BaseItem} from "./BaseItem";
-import {Link} from "./Link";
-import {NamedItem} from "./NamedItem";
+import {BaseItem} from "./base/BaseItem";
+import {Link} from "./base/Link";
+import {NamedItem} from "./base/NamedItem";
 
 export interface Customer extends NamedItem {
 

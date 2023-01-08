@@ -1,16 +1,16 @@
 import React, {Fragment} from "react";
-import {ItemType} from "../../model/BaseItem";
+import {ItemType} from "../../model/base/BaseItem";
 import {useAppSelector} from "../../../redux/hooks";
 import {getLocationSelectionState, isMobile} from "../../../redux/SelectionSlice";
 import LocationsForm from "./LocationsForm";
-import {LocationServices} from "./LocationServices";
+import {LocationServices} from "../../services/LocationServices";
 import {LocationManager} from "../../managers/LocationManager";
 import LocationsLarge from "./LocationsLarge";
 import LocationsSmall from "./LocationsSmall";
 
 const services: LocationServices = new LocationServices();
 const converter: LocationManager = new LocationManager();
-const LOCATION: ItemType = "LOCATION";
+const location: ItemType = "location";
 
 const Locations = () => {
     const mobile = useAppSelector(isMobile);
@@ -18,7 +18,7 @@ const Locations = () => {
 
     const locationForm = () => {
         return (
-            <LocationsForm state={state} itemType={LOCATION}/>
+            <LocationsForm state={state} itemType={location}/>
         )
     };
 
@@ -27,11 +27,11 @@ const Locations = () => {
             {!mobile && <LocationsLarge form={locationForm()}
                                         services={services}
                                         converter={converter}
-                                        itemType={LOCATION}/>}
+                                        itemType={location}/>}
             {mobile && <LocationsSmall form={locationForm()}
                                        services={services}
                                        converter={converter}
-                                       itemType={LOCATION}/>}
+                                       itemType={location}/>}
         </Fragment>
     )
 }

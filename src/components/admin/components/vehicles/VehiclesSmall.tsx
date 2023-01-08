@@ -1,12 +1,12 @@
 import React, {ReactNode} from 'react';
 import Container from "react-bootstrap/Container";
-import ItemDetails from "../../common/ItemDetails";
-import ItemsListPanel from "../../common/ItemsListPanel";
+import ItemDetails from "../common/ItemDetails";
+import ItemsListPanel from "../common/ItemsListPanel";
 import {useAppSelector} from "../../../redux/hooks";
 import {getVehicleSelectionState} from "../../../redux/SelectionSlice";
 
-import {ItemType} from "../../model/BaseItem";
-import {VehicleServices} from "./VehicleServices";
+import {ItemType} from "../../model/base/BaseItem";
+import {VehicleServices} from "../../services/VehicleServices";
 import {VehicleManager} from "../../managers/VehicleManager";
 
 type Properties = {

@@ -1,8 +1,8 @@
 import React, {Fragment} from "react";
-import {ItemType} from "../../model/BaseItem";
+import {ItemType} from "../../model/base/BaseItem";
 import {useAppSelector} from "../../../redux/hooks";
 import {getVehicleSelectionState, isMobile} from "../../../redux/SelectionSlice";
-import {VehicleServices} from "./VehicleServices";
+import {VehicleServices} from "../../services/VehicleServices";
 import {VehicleManager} from "../../managers/VehicleManager";
 import VehicleForm from "./VehicleForm";
 import VehiclesLarge from "./VehiclesLarge";
@@ -10,7 +10,7 @@ import VehiclesSmall from "./VehiclesSmall";
 
 const services: VehicleServices = new VehicleServices();
 const converter: VehicleManager = new VehicleManager();
-const VEHICLE: ItemType = "VEHICLE";
+const vehicle: ItemType = "vehicle";
 
 const Vehicles = () => {
     const mobile = useAppSelector(isMobile);
@@ -18,7 +18,7 @@ const Vehicles = () => {
 
     const vehicleForm = () => {
         return (
-            <VehicleForm state={state} itemType={VEHICLE}/>
+            <VehicleForm state={state} itemType={vehicle}/>
         )
     };
 
@@ -27,11 +27,11 @@ const Vehicles = () => {
             {!mobile && <VehiclesLarge form={vehicleForm()}
                                        services={services}
                                        converter={converter}
-                                       itemType={VEHICLE}/>}
+                                       itemType={vehicle}/>}
             {mobile && <VehiclesSmall form={vehicleForm()}
                                       services={services}
                                       converter={converter}
-                                      itemType={VEHICLE}/>}
+                                      itemType={vehicle}/>}
         </Fragment>
     )
 }

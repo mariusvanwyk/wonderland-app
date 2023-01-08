@@ -18,7 +18,7 @@ const VehicleCategoryDetails = ({url}: Properties) => {
                 setVehicleCategory(response.data);
             })
             .catch((error) => {
-                console.log("Error", error)
+                console.debug("Error", error)
                 setError(JSON.stringify(error.response.status))
             });
     }, [url]);

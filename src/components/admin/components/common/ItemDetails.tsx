@@ -1,13 +1,13 @@
 import React, {Fragment, ReactNode, useEffect, useState} from 'react';
 import {Button, Card, CloseButton, Modal, Toast, ToastContainer} from "react-bootstrap";
-import {useAppDispatch} from "../../redux/hooks";
-import {itemAdded, itemClosed, itemDeleted, itemSaved, SelectionState,} from "../../redux/SelectionSlice";
-import {ItemType} from "../model/BaseItem";
-import {ItemManager} from "../managers/ItemManager";
-import {Services} from "../Services";
-import {ServiceError} from "../model/ServiceError";
+import {useAppDispatch} from "../../../redux/hooks";
+import {itemAdded, itemClosed, itemDeleted, itemSaved, SelectionState,} from "../../../redux/SelectionSlice";
+import {ItemType} from "../../model/base/BaseItem";
+import {ItemManager} from "../../managers/ItemManager";
+import {Services} from "../../services/Services";
+import {ServiceError} from "../../services/ServiceError";
 import {AxiosError} from "axios";
-import {getDateTimeAsString} from "../../common/DateUtils";
+import {getDateTimeAsString} from "../../../common/DateUtils";
 
 
 type Properties = {
@@ -47,11 +47,14 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
     }
 
     const handleAdd = () => {
+
         closeFeedBack();
         let validationErrors = converter.validate(state.selectedItem);
         if (validationErrors.length === 0) {
+            console.debug("Adding")
             services.addItem(state.selectedItem)
                 .then(function (response) {
+                    console.debug(JSON.stringify(response.data))
                     dispatch(itemAdded({itemType: itemType, id: response.data}));
                     // dispatch(refreshItems({itemType: itemType}));
                 })
@@ -59,6 +62,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                     serviceErrorFeedback(error);
                 })
         } else {
+            console.debug("Add Validation failed")
             validationFeedback(validationErrors);
         }
     }
@@ -113,7 +117,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                 <>
                     <Card className={"h-100"}>
                         <Card.Header className={"d-flex justify-content-between align-items-center"}>
-                            <h3>{getHeading()}</h3>
+                            <h3 data-testid={"item-heading"}>{getHeading()}</h3>
                             <div className={"small text-muted ms-3"}>(Refreshed at: {getDateTimeAsString(Date.now())})
                             </div>
                             <CloseButton aria-label="Close"
@@ -131,6 +135,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                                         Update
                                     </Button>
                                     <Button variant="danger" type="button" className={"me-1"}
+                                            data-testid={"delete-item-button"}
                                             onClick={() => setShowDeleteModal(true)}>
                                         Delete
                                     </Button>
@@ -142,7 +147,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                             }
                             {(state.selectedItem.id === undefined) &&
                                 <>
-                                    <Button variant="success" type="button" className={"me-1"}
+                                    <Button variant="success" type="button" className={"me-1"} data-testid={"add-item-button"}
                                             onClick={() => handleAdd()}>
                                         Add
                                     </Button>
@@ -168,7 +173,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                             <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
                                 Close
                             </Button>
-                            <Button variant="danger" onClick={() => handleDelete()}>
+                            <Button variant="danger" onClick={() => handleDelete()} data-testid={"delete-item-confirm-button"}>
                                 Delete
                             </Button>
                         </Modal.Footer>

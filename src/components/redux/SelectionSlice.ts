@@ -1,7 +1,7 @@
 import {createSlice, Draft, PayloadAction} from '@reduxjs/toolkit'
 import type {RootState} from './store'
-import {BaseItem, ItemType} from "../admin/model/BaseItem";
-import {ListPage} from "../admin/model/ListPage";
+import {BaseItem, ItemType} from "../admin/model/base/BaseItem";
+import {ListPage} from "../admin/model/base/ListPage";
 import {VehicleCategory} from "../admin/model/VehicleCategory";
 import {Vehicle} from "../admin/model/Vehicle";
 import {Customer} from "../admin/model/Customer";
@@ -188,13 +188,13 @@ export const SelectionSlice = createSlice({
 
 const getSelectionState = (state: Draft<SelectionStates>, itemType: ItemType) => {
     switch (itemType) {
-        case "VEHICLE":
+        case "vehicle":
             return state.vehiclesSelectionState;
-        case "CUSTOMER":
+        case "customer":
             return state.customerSelectionState;
-        case "LOCATION":
+        case "location":
             return state.locationSelectionState;
-        case "CATEGORY":
+        case "category":
             return state.categoriesSelectionState;
         default:
             throw new Error("The Type " + itemType + " is not defined in the Selection Slice");

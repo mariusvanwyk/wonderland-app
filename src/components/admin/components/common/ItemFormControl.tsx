@@ -1,10 +1,10 @@
 import {Button, Form, InputGroup} from "react-bootstrap";
 import React, {ChangeEvent, useEffect, useState} from "react";
 import _ from "lodash";
-import {SelectionState, setItem} from "../../redux/SelectionSlice";
-import {ItemType} from "../model/BaseItem";
-import {useAppDispatch} from "../../redux/hooks";
-import {getDateAsString} from "../../common/DateUtils";
+import {SelectionState, setItem} from "../../../redux/SelectionSlice";
+import {ItemType} from "../../model/base/BaseItem";
+import {useAppDispatch} from "../../../redux/hooks";
+import {getDateAsString} from "../../../common/DateUtils";
 
 type Properties = {
     itemType: ItemType,
@@ -57,7 +57,7 @@ const ItemFormControl = ({
             }
         }
 
-    }, [value]);
+    }, [type, value]);
     const handleChange = (value: string) => {
         let updated = _.cloneDeep(state.selectedItem);
         switch (type) {
@@ -98,17 +98,19 @@ const ItemFormControl = ({
     }
 
     return (
-        <Form.Group className="mb-3" controlId={property}>
+        <Form.Group className="mb-3" controlId={itemType + "." + property}>
             <Form.Label>{label}</Form.Label>
             <InputGroup>
-                <Form.Control as={as ? as : "input"}
-                              type={type ? type : "string"}
-                              required={required}
-                              value={localValue}
-                              onChange={(event: ChangeEvent<HTMLInputElement>) => handleChange(event.target.value)}
-                              isInvalid={isInvalid()}
-                              maxLength={maxLength ? maxLength : 255}/>
-                {!hideClear && <Button variant="outline-secondary" onClick={() => clearValue()}><i
+                <Form.Control
+                    data-testid={itemType + "." + property}
+                    as={as ? as : "input"}
+                    type={type ? type : "string"}
+                    required={required}
+                    value={localValue}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => handleChange(event.target.value)}
+                    isInvalid={isInvalid()}
+                    maxLength={maxLength ? maxLength : 255}/>
+                {!hideClear && <Button variant="outline-secondary" onClick={() => clearValue()} tabIndex={-1}><i
                     className={"bi bi-x"}/></Button>}
             </InputGroup>
         </Form.Group>

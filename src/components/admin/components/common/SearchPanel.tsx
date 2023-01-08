@@ -1,8 +1,8 @@
 import {Button, Form, InputGroup} from "react-bootstrap";
 import React, {ChangeEvent, memo, useEffect, useState} from "react";
-import {ItemType} from "../model/BaseItem";
-import {clearSearchItemsText, refreshItems, setSearchItemsText} from "../../redux/SelectionSlice";
-import {useAppDispatch} from "../../redux/hooks";
+import {ItemType} from "../../model/base/BaseItem";
+import {clearSearchItemsText, refreshItems, setSearchItemsText} from "../../../redux/SelectionSlice";
+import {useAppDispatch} from "../../../redux/hooks";
 
 type Properties = {
     itemType: ItemType,
