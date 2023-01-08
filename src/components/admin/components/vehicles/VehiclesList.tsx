@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
-import HttpService from "../../../services/HttpService";
-import {Vehicle} from "../model/Vehicle";
-import {ServiceError} from "../model/ServiceError";
+import HttpService from "../../../../services/HttpService";
+import {Vehicle} from "../../model/Vehicle";
+import {ServiceError} from "../../model/ServiceError";
 import {Table, Toast, ToastContainer} from "react-bootstrap";
-import {ResultPage} from "../model/ResultPage";
-import {EmbeddedVehicles} from "../model/EmbeddedVehicles";
-import Fetching from "../common/Fetching";
-import {getDateAsString} from "../../common/DateUtils";
+import {ResultPage} from "../../model/ResultPage";
+import {EmbeddedVehicles} from "../../model/embedded/EmbeddedVehicles";
+import Fetching from "../../common/Fetching";
+import {getDateAsString} from "../../../common/DateUtils";
 
 type Properties = {
     url: string,

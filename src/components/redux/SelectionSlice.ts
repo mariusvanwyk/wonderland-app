@@ -5,6 +5,7 @@ import {ListPage} from "../admin/model/ListPage";
 import {VehicleCategory} from "../admin/model/VehicleCategory";
 import {Vehicle} from "../admin/model/Vehicle";
 import {Customer} from "../admin/model/Customer";
+import {Location} from "../admin/model/Location";
 
 export interface SelectionState<T extends BaseItem> {
     refreshTime: number | null,
@@ -25,10 +26,11 @@ interface SelectionStates {
     categoriesSelectionState: SelectionState<VehicleCategory>,
     vehiclesSelectionState: SelectionState<Vehicle>,
     customerSelectionState: SelectionState<Customer>,
+    locationSelectionState: SelectionState<Location>,
 }
 
 const initialState: SelectionStates = {
-    isMobile: false,
+    isMobile: (window.innerWidth <= 992),
     vehiclesSelectionState: {
         refreshTime: Date.now(),
         selectTime: null,
@@ -67,7 +69,20 @@ const initialState: SelectionStates = {
         fetching: false,
         listPage: undefined,
         selectedItem: undefined
-    }
+    },
+    locationSelectionState: {
+        refreshTime: Date.now(),
+        selectTime: null,
+        sortedBy: "name",
+        sortedAscending: true,
+        searchText: "",
+        pageSize: 5,
+        currentPage: 0,
+        error: undefined,
+        fetching: false,
+        listPage: undefined,
+        selectedItem: undefined
+    },
 }
 
 export interface SelectionAction<T extends BaseItem> {
@@ -177,8 +192,12 @@ const getSelectionState = (state: Draft<SelectionStates>, itemType: ItemType) =>
             return state.vehiclesSelectionState;
         case "CUSTOMER":
             return state.customerSelectionState;
-        default:
+        case "LOCATION":
+            return state.locationSelectionState;
+        case "CATEGORY":
             return state.categoriesSelectionState;
+        default:
+            throw new Error("The Type " + itemType + " is not defined in the Selection Slice");
     }
 }
 
@@ -205,6 +224,7 @@ export const {
 export const getCategoriesSelectionState = (state: RootState) => state.selections.categoriesSelectionState;
 export const getVehicleSelectionState = (state: RootState) => state.selections.vehiclesSelectionState;
 export const getCustomerSelectionState = (state: RootState) => state.selections.customerSelectionState;
+export const getLocationSelectionState = (state: RootState) => state.selections.locationSelectionState;
 export const isMobile = (state: RootState) => state.selections.isMobile;
 
 export default SelectionSlice.reducer

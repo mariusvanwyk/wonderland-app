@@ -1,31 +1,31 @@
 import React, {ReactNode} from 'react';
 import {Col, Row} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
-import ItemDetails from "../common/ItemDetails";
-import ItemsListPanel from "../common/ItemsListPanel";
-import {useAppSelector} from "../../redux/hooks";
-import {getCustomerSelectionState} from "../../redux/SelectionSlice";
+import ItemDetails from "../../common/ItemDetails";
+import ItemsListPanel from "../../common/ItemsListPanel";
+import {useAppSelector} from "../../../redux/hooks";
+import {getVehicleSelectionState} from "../../../redux/SelectionSlice";
 
-import {ItemType} from "../model/BaseItem";
-import {CustomerServices} from "./CustomerServices";
-import {CustomerManager} from "../managers/CustomerManager";
+import {ItemType} from "../../model/BaseItem";
+import {VehicleServices} from "./VehicleServices";
+import {VehicleManager} from "../../managers/VehicleManager";
 
 type Properties = {
     itemType: ItemType,
-    services: CustomerServices,
-    converter: CustomerManager,
+    services: VehicleServices,
+    converter: VehicleManager,
     form: ReactNode
 }
-const CustomersLarge = ({itemType, services, converter, form}:Properties) => {
+const VehiclesLarge = ({itemType, services, converter, form}:Properties) => {
     // @ts-ignore
-    const state = useAppSelector(getCustomerSelectionState);
+    const state = useAppSelector(getVehicleSelectionState);
 
     return (
         <Container fluid className={"h-100"}>
             <Row className={"h-100"}>
                 <Col sm={12} md={6} lg={4} className={"h-100 border-end"}>
                     <ItemsListPanel
-                        name={"Customers"}
+                        name={"Vehicles"}
                         itemType={itemType}
                         services={services}
                         manager={converter}
@@ -45,4 +45,4 @@ const CustomersLarge = ({itemType, services, converter, form}:Properties) => {
     );
 }
 
-export default CustomersLarge;
+export default VehiclesLarge;

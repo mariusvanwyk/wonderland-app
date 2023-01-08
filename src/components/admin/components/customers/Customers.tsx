@@ -1,10 +1,10 @@
 import React, {Fragment} from "react";
-import {ItemType} from "../model/BaseItem";
-import {useAppSelector} from "../../redux/hooks";
-import {getCustomerSelectionState, isMobile} from "../../redux/SelectionSlice";
+import {ItemType} from "../../model/BaseItem";
+import {useAppSelector} from "../../../redux/hooks";
+import {getCustomerSelectionState, isMobile} from "../../../redux/SelectionSlice";
 import CustomersForm from "./CustomersForm";
 import {CustomerServices} from "./CustomerServices";
-import {CustomerManager} from "../managers/CustomerManager";
+import {CustomerManager} from "../../managers/CustomerManager";
 import CustomersLarge from "./CustomersLarge";
 import CustomersSmall from "./CustomersSmall";
 

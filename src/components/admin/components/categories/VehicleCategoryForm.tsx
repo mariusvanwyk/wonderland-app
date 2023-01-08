@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Col, Form, Row, Tab, Tabs} from "react-bootstrap";
-import {ItemType} from "../model/BaseItem";
-import {SelectionState} from "../../redux/SelectionSlice";
-import ItemFormControl from "../common/ItemFormControl";
-import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
+import {ItemType} from "../../model/BaseItem";
+import {SelectionState} from "../../../redux/SelectionSlice";
+import ItemFormControl from "../../common/ItemFormControl";
+import ItemTechnicalDetails from "../../common/ItemTechnicalDetails";
 import VehiclesList from "../vehicles/VehiclesList";
 
 type Properties = {
@@ -134,10 +134,12 @@ const VehicleCategoryForm = ({itemType, state}: Properties) => {
                     <ItemTechnicalDetails state={state}/>
                 </Form>
             </Tab>
-            <Tab eventKey="vehicles" title="Vehicles">
-                <VehiclesList url={state.selectedItem._links.vehicles.href} visible={key === "vehicles"}/>
-                {/*{<VehicleCategoryForm itemType={itemType} state={state}/>}*/}
-            </Tab>
+            {state.selectedItem._links &&
+                <Tab eventKey="vehicles" title="Vehicles">
+                    <VehiclesList url={state.selectedItem._links.vehicles.href}
+                                  visible={key === "vehicles"}/>
+                </Tab>
+            }
         </Tabs>
     )
 }

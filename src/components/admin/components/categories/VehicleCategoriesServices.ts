@@ -1,9 +1,9 @@
-import HttpService from "../../../services/HttpService";
+import HttpService from "../../../../services/HttpService";
 import {AxiosResponse} from "axios";
-import {VehicleCategory} from "../model/VehicleCategory";
-import {ResultPage} from "../model/ResultPage";
-import {Services} from "../Services";
-import {EmbeddedVehicleCategories} from "../model/EmbeddedVehicleCategories";
+import {VehicleCategory} from "../../model/VehicleCategory";
+import {ResultPage} from "../../model/ResultPage";
+import {Services} from "../../Services";
+import {EmbeddedVehicleCategories} from "../../model/embedded/EmbeddedVehicleCategories";
 
 export class VehicleCategoriesServices extends Services<EmbeddedVehicleCategories, VehicleCategory> {
 

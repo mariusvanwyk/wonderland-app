@@ -56,8 +56,6 @@ export abstract class ItemManager<E, T extends BaseItem> {
 
     abstract getListColumn(item: T): string;
 
-    abstract getListExtraColumn(item: T): string;
-
     abstract getHeading(item: T): string;
 
     abstract getSortProperties(): SortProperty[];

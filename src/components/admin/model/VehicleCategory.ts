@@ -1,12 +1,11 @@
 import {BaseItem} from "./BaseItem";
 import {Link} from "./Link";
+import {NamedItem} from "./NamedItem";
 
 
-export interface VehicleCategory extends BaseItem {
-    name: string;
+export interface VehicleCategory extends NamedItem {
     size: number;
     color: string;
-    description: string;
     enabled: boolean;
     roadTaxCost: number;
     insuranceCost: number;

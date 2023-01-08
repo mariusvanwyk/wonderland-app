@@ -1,6 +1,5 @@
 import {AxiosRequestConfig, AxiosResponse} from "axios";
 import {ResultPage} from "./model/ResultPage";
-import {Vehicle} from "./model/Vehicle";
 import HttpService from "../../services/HttpService";
 import {BaseItem} from "./model/BaseItem";
 
@@ -16,18 +15,18 @@ export abstract class Services<E, T extends BaseItem> {
         return HttpService.getAxiosClient().get<T>(`${this.getBaseUrl()}/${id}`);
     }
 
-    getAssociations(item: Vehicle): Promise<AxiosResponse<Vehicle>>[] {
-        const promises: Promise<AxiosResponse<Vehicle>>[] = [];
-        const config: AxiosRequestConfig<Vehicle> = {
+    getAssociations(item: T): Promise<AxiosResponse<T>>[] {
+        const promises: Promise<AxiosResponse<T>>[] = [];
+        const config: AxiosRequestConfig<T> = {
             headers: {
                 "Content-Type": "text/uri-list"
             }
         };
-        // promises.push(HttpService.getAxiosClient().put<Vehicle>(url, newCategory._links?.self.href, config))
+        // promises.push(HttpService.getAxiosClient().put<T>(url, newCategory._links?.self.href, config))
         throw new Error("Method not implemented.");
     }
 
-    saveItem(item: Vehicle): Promise<AxiosResponse<T>> {
+    saveItem(item: T): Promise<AxiosResponse<T>> {
         console.log(`Saving ${this.getItemName()}`, item)
         const config: AxiosRequestConfig<T> = {
             headers: {

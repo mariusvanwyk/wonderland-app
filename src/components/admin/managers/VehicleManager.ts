@@ -1,7 +1,7 @@
 import {ItemManager, RequiredProperty, SortProperty} from "./ItemManager";
 import {ResultPage} from "../model/ResultPage";
 import {ListPage} from "../model/ListPage";
-import {EmbeddedVehicles} from "../model/EmbeddedVehicles";
+import {EmbeddedVehicles} from "../model/embedded/EmbeddedVehicles";
 import {Vehicle} from "../model/Vehicle";
 import _ from "lodash";
 
@@ -45,10 +45,6 @@ export class VehicleManager extends ItemManager<EmbeddedVehicles, Vehicle> {
 
     getListColumn(item: Vehicle): string {
         return item.registrationNumber;
-    }
-
-    getListExtraColumn(item: Vehicle): string {
-        return "";
     }
 
     getHeading(item: Vehicle): string {

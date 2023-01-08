@@ -1,4 +1,4 @@
-export type ItemType = "CATEGORY" | "VEHICLE" | "CUSTOMER"
+export type ItemType = "CATEGORY" | "VEHICLE" | "CUSTOMER" | "LOCATION"
 
 export interface BaseItem {
     id: number | undefined;
@@ -7,5 +7,4 @@ export interface BaseItem {
     createdAt: string;
     updatedBy: Date | undefined;
     updatedAt: Date | undefined;
-
 }

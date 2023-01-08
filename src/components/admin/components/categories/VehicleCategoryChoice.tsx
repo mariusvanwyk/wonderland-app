@@ -1,9 +1,9 @@
 import {Form} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import {VehicleCategory} from "../model/VehicleCategory";
-import HttpService from "../../../services/HttpService";
-import {ResultPage} from "../model/ResultPage";
-import {EmbeddedVehicleCategories} from "../model/EmbeddedVehicleCategories";
+import {VehicleCategory} from "../../model/VehicleCategory";
+import HttpService from "../../../../services/HttpService";
+import {ResultPage} from "../../model/ResultPage";
+import {EmbeddedVehicleCategories} from "../../model/embedded/EmbeddedVehicleCategories";
 
 type Properties = {
     categoryId: number | undefined,

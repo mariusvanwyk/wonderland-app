@@ -1,9 +1,10 @@
 import React from 'react';
 import {Col, Form, Row} from "react-bootstrap";
-import {ItemType} from "../model/BaseItem";
-import {SelectionState} from "../../redux/SelectionSlice";
-import ItemFormControl from "../common/ItemFormControl";
-import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
+import {ItemType} from "../../model/BaseItem";
+import {SelectionState} from "../../../redux/SelectionSlice";
+import ItemFormControl from "../../common/ItemFormControl";
+import ItemTechnicalDetails from "../../common/ItemTechnicalDetails";
+import ItemFormCheck from "../../common/ItemFormCheck";
 
 type Properties = {
     itemType: ItemType,
@@ -22,6 +23,13 @@ const CustomersForm = ({itemType, state}: Properties) => {
                                      property={"name"}
                                      required={true}
                                      label={"Name"}/>
+                </Col>
+                <Col sm={12} lg={6}>
+                    <ItemFormCheck itemType={itemType}
+                                   state={state}
+                                   value={state.selectedItem.disabled}
+                                   property={"disabled"}
+                                   label={"Disabled"}/>
                 </Col>
                 <Col sm={12}>
                     <ItemFormControl itemType={itemType}

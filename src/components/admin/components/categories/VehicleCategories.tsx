@@ -1,10 +1,10 @@
 import React, {Fragment} from "react";
 import VehicleCategoryForm from "./VehicleCategoryForm";
-import {ItemType} from "../model/BaseItem";
+import {ItemType} from "../../model/BaseItem";
 import {VehicleCategoriesServices} from "./VehicleCategoriesServices";
-import {VehicleCategoryManager} from "../managers/VehicleCategoryManager";
-import {useAppSelector} from "../../redux/hooks";
-import {getCategoriesSelectionState, isMobile} from "../../redux/SelectionSlice";
+import {VehicleCategoryManager} from "../../managers/VehicleCategoryManager";
+import {useAppSelector} from "../../../redux/hooks";
+import {getCategoriesSelectionState, isMobile} from "../../../redux/SelectionSlice";
 import VehicleCategoriesLarge from "./VehicleCategoriesLarge";
 import VehicleCategoriesSmall from "./VehicleCategoriesSmall";
 

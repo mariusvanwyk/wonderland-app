@@ -1,27 +1,30 @@
 import React, {ReactNode} from 'react';
 import Container from "react-bootstrap/Container";
-import ItemDetails from "../common/ItemDetails";
-import ItemsListPanel from "../common/ItemsListPanel";
-import {useAppSelector} from "../../redux/hooks";
-import {getCategoriesSelectionState} from "../../redux/SelectionSlice";
-import {VehicleCategoriesServices} from "./VehicleCategoriesServices";
-import {VehicleCategoryManager} from "../managers/VehicleCategoryManager";
-import {ItemType} from "../model/BaseItem";
+import ItemDetails from "../../common/ItemDetails";
+import ItemsListPanel from "../../common/ItemsListPanel";
+import {useAppSelector} from "../../../redux/hooks";
+import {getCustomerSelectionState} from "../../../redux/SelectionSlice";
+
+import {ItemType} from "../../model/BaseItem";
+import {CustomerServices} from "./CustomerServices";
+import {CustomerManager} from "../../managers/CustomerManager";
 
 type Properties = {
     itemType: ItemType,
-    services: VehicleCategoriesServices,
-    converter: VehicleCategoryManager,
+    services: CustomerServices,
+    converter: CustomerManager,
     form: ReactNode
 }
-const VehicleCategoriesSmall = ({itemType, services, converter, form}:Properties) => {
-    const state = useAppSelector(getCategoriesSelectionState);
+
+const CustomersSmall = ({itemType, services, converter, form}: Properties) => {
+    // @ts-ignore
+    const state = useAppSelector(getCustomerSelectionState);
 
     return (
         <Container fluid className={"h-100"}>
             {!state.selectedItem &&
                 <ItemsListPanel
-                    name={"Vehicle Categories"}
+                    name={"Customers"}
                     itemType={itemType}
                     services={services}
                     state={state}
@@ -37,4 +40,4 @@ const VehicleCategoriesSmall = ({itemType, services, converter, form}:Properties
     );
 }
 
-export default VehicleCategoriesSmall;
+export default CustomersSmall;

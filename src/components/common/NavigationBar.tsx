@@ -3,16 +3,18 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import UserService from "../../services/UserService";
 import {NavDropdown} from "react-bootstrap";
+import {useAppSelector} from "../redux/hooks";
+import {isMobile} from "../redux/SelectionSlice";
 
 const NavigationBar = () => {
+    const mobile = useAppSelector(isMobile);
     return (
         <Navbar bg={"dark"} variant={"dark"} expand={"lg"}>
             <Container fluid>
                 <Navbar.Brand href="/home">Peter Pan | Management</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Navbar.Text className="me-auto">
-                    </Navbar.Text>
+                    <Navbar.Text className="me-auto"></Navbar.Text>
                     {UserService.isAdmin() &&
                         <Nav>
                             <NavDropdown title="Admin" id="basic-nav-dropdown">
@@ -20,6 +22,7 @@ const NavigationBar = () => {
                                 <NavDropdown.Item href="/vehicles">Vehicles</NavDropdown.Item>
                                 <NavDropdown.Divider/>
                                 <NavDropdown.Item href="/customers">Customers</NavDropdown.Item>
+                                <NavDropdown.Item href="/locations">Locations</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     }

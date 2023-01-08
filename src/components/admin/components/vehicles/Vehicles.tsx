@@ -1,9 +1,9 @@
 import React, {Fragment} from "react";
-import {ItemType} from "../model/BaseItem";
-import {useAppSelector} from "../../redux/hooks";
-import {getVehicleSelectionState, isMobile} from "../../redux/SelectionSlice";
+import {ItemType} from "../../model/BaseItem";
+import {useAppSelector} from "../../../redux/hooks";
+import {getVehicleSelectionState, isMobile} from "../../../redux/SelectionSlice";
 import {VehicleServices} from "./VehicleServices";
-import {VehicleManager} from "../managers/VehicleManager";
+import {VehicleManager} from "../../managers/VehicleManager";
 import VehicleForm from "./VehicleForm";
 import VehiclesLarge from "./VehiclesLarge";
 import VehiclesSmall from "./VehiclesSmall";

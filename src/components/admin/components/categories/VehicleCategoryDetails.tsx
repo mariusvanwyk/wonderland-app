@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {VehicleCategory} from "../model/VehicleCategory";
-import HttpService from "../../../services/HttpService";
+import {VehicleCategory} from "../../model/VehicleCategory";
+import HttpService from "../../../../services/HttpService";
 import ReactJson from "react-json-view";
 
 

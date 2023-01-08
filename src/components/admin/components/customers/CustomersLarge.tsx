@@ -1,30 +1,31 @@
 import React, {ReactNode} from 'react';
 import {Col, Row} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
-import ItemDetails from "../common/ItemDetails";
-import ItemsListPanel from "../common/ItemsListPanel";
-import {useAppSelector} from "../../redux/hooks";
-import {getCategoriesSelectionState} from "../../redux/SelectionSlice";
-import {VehicleCategoriesServices} from "./VehicleCategoriesServices";
-import {VehicleCategoryManager} from "../managers/VehicleCategoryManager";
-import {ItemType} from "../model/BaseItem";
+import ItemDetails from "../../common/ItemDetails";
+import ItemsListPanel from "../../common/ItemsListPanel";
+import {useAppSelector} from "../../../redux/hooks";
+import {getCustomerSelectionState} from "../../../redux/SelectionSlice";
+
+import {ItemType} from "../../model/BaseItem";
+import {CustomerServices} from "./CustomerServices";
+import {CustomerManager} from "../../managers/CustomerManager";
 
 type Properties = {
     itemType: ItemType,
-    services: VehicleCategoriesServices,
-    converter: VehicleCategoryManager,
+    services: CustomerServices,
+    converter: CustomerManager,
     form: ReactNode
 }
-const VehicleCategoriesLarge = ({itemType, services, converter, form}:Properties) => {
+const CustomersLarge = ({itemType, services, converter, form}:Properties) => {
     // @ts-ignore
-    const state = useAppSelector(getCategoriesSelectionState);
+    const state = useAppSelector(getCustomerSelectionState);
 
     return (
         <Container fluid className={"h-100"}>
             <Row className={"h-100"}>
                 <Col sm={12} md={6} lg={4} className={"h-100 border-end"}>
                     <ItemsListPanel
-                        name={"Vehicle Categories"}
+                        name={"Customers"}
                         itemType={itemType}
                         services={services}
                         manager={converter}
@@ -44,4 +45,4 @@ const VehicleCategoriesLarge = ({itemType, services, converter, form}:Properties
     );
 }
 
-export default VehicleCategoriesLarge;
+export default CustomersLarge;

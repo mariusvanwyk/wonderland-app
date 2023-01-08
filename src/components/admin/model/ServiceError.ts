@@ -8,6 +8,7 @@ export class ServiceError {
     constructor(axiosError: AxiosError) {
         this.code = axiosError.code;
         this.status = axiosError.response?.status;
+        console.log(axiosError);
     }
 
     getFriendlyMessage() {

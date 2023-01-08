@@ -2,7 +2,7 @@ import {ItemManager, RequiredProperty, SortProperty} from "./ItemManager";
 import {VehicleCategory} from "../model/VehicleCategory";
 import {ResultPage} from "../model/ResultPage";
 import {ListPage} from "../model/ListPage";
-import {EmbeddedVehicleCategories} from "../model/EmbeddedVehicleCategories";
+import {EmbeddedVehicleCategories} from "../model/embedded/EmbeddedVehicleCategories";
 import _ from "lodash";
 
 export class VehicleCategoryManager extends ItemManager<EmbeddedVehicleCategories, VehicleCategory> {
@@ -48,10 +48,6 @@ export class VehicleCategoryManager extends ItemManager<EmbeddedVehicleCategorie
 
     getListColumn(item: VehicleCategory): string {
         return item.name;
-    }
-
-    getListExtraColumn(item: VehicleCategory): string {
-        return "(" + item.size + " ton)";
     }
 
     getRequiredProperties(): RequiredProperty[] {

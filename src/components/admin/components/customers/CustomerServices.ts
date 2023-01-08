@@ -1,9 +1,9 @@
-import HttpService from "../../../services/HttpService";
+import HttpService from "../../../../services/HttpService";
 import {AxiosResponse} from "axios";
-import {ResultPage} from "../model/ResultPage";
-import {Services} from "../Services";
-import {EmbeddedCustomers} from "../model/EmbeddedCustomers";
-import {Customer} from "../model/Customer";
+import {ResultPage} from "../../model/ResultPage";
+import {Services} from "../../Services";
+import {EmbeddedCustomers} from "../../model/embedded/EmbeddedCustomers";
+import {Customer} from "../../model/Customer";
 
 export class CustomerServices extends Services<EmbeddedCustomers, Customer> {
     getBaseUrl(): string {

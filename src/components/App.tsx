@@ -11,11 +11,12 @@ import About from "../About";
 import Me from "./Me";
 import UserService from "../services/UserService";
 import _debounce from 'lodash.debounce'
-import VehicleCategories from "./admin/vehicleCategories/VehicleCategories";
+import VehicleCategories from "./admin/components/categories/VehicleCategories";
 import {useAppDispatch} from "./redux/hooks";
 import {setIsMobile} from "./redux/SelectionSlice";
-import Vehicles from "./admin/vehicles/Vehicles";
-import Customers from "./admin/customers/Customers";
+import Vehicles from "./admin/components/vehicles/Vehicles";
+import Customers from "./admin/components/customers/Customers";
+import Locations from "./admin/components/locations/Locations";
 
 const router = createBrowserRouter([
     {path: "/", element: <Home/>, errorElement: <Error/>,},
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
     {path: "/vehicle-categories", element: <VehicleCategories/>},
     {path: "/vehicles", element: <Vehicles/>},
     {path: "/customers", element: <Customers/>},
+    {path: "/locations", element: <Locations/>},
 ]);
 
 const App = () => {
@@ -36,7 +38,7 @@ const App = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
         }
-    }, [dispatch])
+    }, [])
 
     return (
         <Fragment>

@@ -2,13 +2,16 @@ import {ItemManager, RequiredProperty, SortProperty} from "./ItemManager";
 import {ResultPage} from "../model/ResultPage";
 import {ListPage} from "../model/ListPage";
 import _ from "lodash";
-import {EmbeddedCustomers} from "../model/EmbeddedCustomers";
+import {EmbeddedCustomers} from "../model/embedded/EmbeddedCustomers";
 import {Customer} from "../model/Customer";
 
 export class CustomerManager extends ItemManager<EmbeddedCustomers, Customer> {
 
     getSortProperties(): SortProperty[] {
-        return [{type: "string", name: "name", label: "Name"}];
+        return [
+            {type: "string", name: "name", label: "Name"},
+            {type: "string", name: "disabled", label: "Disabled"},
+        ];
     }
 
     convert(resultPage: ResultPage<EmbeddedCustomers>): ListPage<Customer> {
@@ -38,11 +41,7 @@ export class CustomerManager extends ItemManager<EmbeddedCustomers, Customer> {
     }
 
     getListColumn(item: Customer): string {
-        return item.name;
-    }
-
-    getListExtraColumn(item: Customer): string {
-        return "";
+        return item.name + (item.disabled ? " (Disabled)" : "");
     }
 
     getHeading(item: Customer): string {

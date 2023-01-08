@@ -1,10 +1,9 @@
 import {BaseItem} from "./BaseItem";
 import {Link} from "./Link";
+import {NamedItem} from "./NamedItem";
 
-export interface Customer extends BaseItem {
+export interface Customer extends NamedItem {
 
-    name: string;
-    description?: string;
     disabled: boolean;
     _links: CustomerLinks | undefined;
 }

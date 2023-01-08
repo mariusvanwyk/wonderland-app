@@ -1,30 +1,30 @@
 import React, {ReactNode} from 'react';
 import Container from "react-bootstrap/Container";
-import ItemDetails from "../common/ItemDetails";
-import ItemsListPanel from "../common/ItemsListPanel";
-import {useAppSelector} from "../../redux/hooks";
-import {getCustomerSelectionState} from "../../redux/SelectionSlice";
+import ItemDetails from "../../common/ItemDetails";
+import ItemsListPanel from "../../common/ItemsListPanel";
+import {useAppSelector} from "../../../redux/hooks";
+import {getVehicleSelectionState} from "../../../redux/SelectionSlice";
 
-import {ItemType} from "../model/BaseItem";
-import {CustomerServices} from "./CustomerServices";
-import {CustomerManager} from "../managers/CustomerManager";
+import {ItemType} from "../../model/BaseItem";
+import {VehicleServices} from "./VehicleServices";
+import {VehicleManager} from "../../managers/VehicleManager";
 
 type Properties = {
     itemType: ItemType,
-    services: CustomerServices,
-    converter: CustomerManager,
+    services: VehicleServices,
+    converter: VehicleManager,
     form: ReactNode
 }
 
-const CustomersSmall = ({itemType, services, converter, form}: Properties) => {
+const VehiclesSmall = ({itemType, services, converter, form}: Properties) => {
     // @ts-ignore
-    const state = useAppSelector(getCustomerSelectionState);
+    const state = useAppSelector(getVehicleSelectionState);
 
     return (
         <Container fluid className={"h-100"}>
             {!state.selectedItem &&
                 <ItemsListPanel
-                    name={"Customers"}
+                    name={"Vehicles"}
                     itemType={itemType}
                     services={services}
                     state={state}
@@ -40,4 +40,4 @@ const CustomersSmall = ({itemType, services, converter, form}: Properties) => {
     );
 }
 
-export default CustomersSmall;
+export default VehiclesSmall;

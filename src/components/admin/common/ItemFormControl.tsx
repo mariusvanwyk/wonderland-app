@@ -15,11 +15,23 @@ type Properties = {
     required: boolean,
     as?: "input" | "textarea",
     type?: "string" | "number" | "date" | "color",
-    hideClear? : boolean
+    hideClear?: boolean
+    maxLength?: number
 
 }
 
-const ItemFormControl = ({itemType, state, label, property, value, required, as, type, hideClear}: Properties) => {
+const ItemFormControl = ({
+                             itemType,
+                             state,
+                             label,
+                             property,
+                             value,
+                             required,
+                             as,
+                             type,
+                             hideClear,
+                             maxLength
+                         }: Properties) => {
     const dispatch = useAppDispatch();
     const [localValue, setLocalValue] = useState<any>("");
 
@@ -55,7 +67,7 @@ const ItemFormControl = ({itemType, state, label, property, value, required, as,
             }
             case "date": {
                 const date: Date = new Date(value);
-                updated[property] =  getDateAsString(date);
+                updated[property] = getDateAsString(date);
                 break;
             }
             default: {
@@ -94,8 +106,10 @@ const ItemFormControl = ({itemType, state, label, property, value, required, as,
                               required={required}
                               value={localValue}
                               onChange={(event: ChangeEvent<HTMLInputElement>) => handleChange(event.target.value)}
-                              isInvalid={isInvalid()}/>
-                {!hideClear && <Button variant="outline-secondary" onClick={() => clearValue()}><i className={"bi bi-x"}/></Button>}
+                              isInvalid={isInvalid()}
+                              maxLength={maxLength ? maxLength : 255}/>
+                {!hideClear && <Button variant="outline-secondary" onClick={() => clearValue()}><i
+                    className={"bi bi-x"}/></Button>}
             </InputGroup>
         </Form.Group>
     )
