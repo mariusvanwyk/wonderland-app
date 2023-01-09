@@ -13,12 +13,22 @@ const converter: VehicleCategoryManager = new VehicleCategoryManager();
 const category: ItemType = "category";
 
 type Properties = {
-    services: VehicleCategoriesServices
+    initialServices?: VehicleCategoriesServices
 }
 
-const VehicleCategories = ({services}: Properties) => {
+const VehicleCategories = ({initialServices}: Properties) => {
+    const [services, setServices] = useState<VehicleCategoriesServices | undefined>();
     const mobile = useAppSelector(isMobile);
     const state = useAppSelector(getCategoriesSelectionState);
+
+    useEffect(() => {
+        if (initialServices) {
+            setServices(initialServices);
+        } else {
+            setServices(new VehicleCategoriesServices());
+        }
+    },[initialServices])
+
     const categoryForm = () => {
         return (
             <VehicleCategoryForm state={state} itemType={category}/>

@@ -103,7 +103,7 @@ const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) 
                     <SearchPanel itemType={itemType} searchText={state.searchText}/>
                     <div className={"d-flex justify-content-between mb-2 flex-wrap"}>
                         <div>
-                            <Button variant="outline-secondary" title={"Refresh"}
+                            <Button variant="outline-secondary" title={"Refresh"} data-testid={"refresh-list-button"}
                                     size={"sm"}
                                     onClick={() => refresh()}>
                                 <i className={"bi bi-arrow-clockwise"}></i>

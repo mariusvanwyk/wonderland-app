@@ -131,6 +131,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                             {(state.selectedItem.id !== undefined) &&
                                 <>
                                     <Button variant="primary" type="button" className={"me-1"}
+                                            data-testid={"update-item-button"}
                                             onClick={() => handleSaved()}>
                                         Update
                                     </Button>
