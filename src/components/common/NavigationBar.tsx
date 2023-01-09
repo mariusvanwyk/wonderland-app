@@ -20,6 +20,8 @@ const NavigationBar = () => {
                                 <NavDropdown.Divider/>
                                 <NavDropdown.Item href="/customers">Customers</NavDropdown.Item>
                                 <NavDropdown.Item href="/locations">Locations</NavDropdown.Item>
+                                <NavDropdown.Divider/>
+                                <NavDropdown.Item href="/drivers">Drivers</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     }

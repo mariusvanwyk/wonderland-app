@@ -1,13 +1,13 @@
 import {FormSelect} from "react-bootstrap";
 import React, {ChangeEvent} from "react";
-import {SelectionState, setItemsPageSize} from "../../../redux/SelectionSlice";
+import {AdminState, setItemsPageSize} from "../../features/AdminSlice";
 import {ItemType} from "../../model/base/BaseItem";
 import {useAppDispatch} from "../../../redux/hooks";
 import {getDateTimeAsString} from "../../../common/DateUtils";
 
 type Properties = {
     itemType: ItemType,
-    state: SelectionState<any>
+    state: AdminState<any>
 }
 const PageSizeSelect = ({itemType, state}: Properties) => {
     const dispatch = useAppDispatch();

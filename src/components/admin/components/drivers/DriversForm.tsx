@@ -11,7 +11,7 @@ type Properties = {
     state: AdminState<any>,
 }
 
-const CustomersForm = ({itemType, state}: Properties) => {
+const DriversForm = ({itemType, state}: Properties) => {
 
     return (
         <Form noValidate>
@@ -47,4 +47,4 @@ const CustomersForm = ({itemType, state}: Properties) => {
     )
 }
 
-export default CustomersForm
+export default DriversForm

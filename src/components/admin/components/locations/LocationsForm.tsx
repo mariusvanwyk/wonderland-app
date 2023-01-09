@@ -1,13 +1,13 @@
 import React from 'react';
 import {Col, Form, Row} from "react-bootstrap";
 import {ItemType} from "../../model/base/BaseItem";
-import {SelectionState} from "../../../redux/SelectionSlice";
+import {AdminState} from "../../features/AdminSlice";
 import ItemFormControl from "../common/ItemFormControl";
 import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
 
 type Properties = {
     itemType: ItemType,
-    state: SelectionState<any>,
+    state: AdminState<any>,
 }
 
 const LocationsForm = ({itemType, state}: Properties) => {

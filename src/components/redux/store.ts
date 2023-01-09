@@ -1,8 +1,8 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
-import SelectionSlice from "./SelectionSlice";
+import adminSlice from "../admin/features/AdminSlice";
 
 const rootReducer = combineReducers({
-    selections: SelectionSlice,
+    administration: adminSlice,
 })
 
 export function setupStore() {
@@ -15,5 +15,4 @@ export const store = setupStore();
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-
 export type AppStore = ReturnType<typeof setupStore>

@@ -1,7 +1,7 @@
 import React, {Fragment, ReactNode, useEffect, useState} from 'react';
 import {Button, Card, CloseButton, Modal, Toast, ToastContainer} from "react-bootstrap";
 import {useAppDispatch} from "../../../redux/hooks";
-import {itemAdded, itemClosed, itemDeleted, itemSaved, SelectionState,} from "../../../redux/SelectionSlice";
+import {AdminState, itemAdded, itemClosed, itemDeleted, itemSaved,} from "../../features/AdminSlice";
 import {ItemType} from "../../model/base/BaseItem";
 import {ItemManager} from "../../managers/ItemManager";
 import {Services} from "../../services/Services";
@@ -14,7 +14,7 @@ type Properties = {
     itemType: ItemType,
     services: Services<any, any>,
     converter: ItemManager<any, any>,
-    state: SelectionState<any>,
+    state: AdminState<any>,
     itemForm: ReactNode
 }
 
@@ -37,7 +37,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
     const handleDelete = () => {
         closeFeedBack();
         services.deleteItem(state.selectedItem)
-            .then((response) => {
+            .then(() => {
                 dispatch(itemDeleted({itemType: itemType}));
                 setShowDeleteModal(false);
             })
@@ -127,7 +127,6 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                             {itemForm}
                         </Card.Body>
                         <Card.Footer className={"d-flex justify-content-center"}>
-                            {/* eslint-disable-next-line jsx-a11y/no-access-key */}
                             {(state.selectedItem.id !== undefined) &&
                                 <>
                                     <Button variant="primary" type="button" className={"me-1"}

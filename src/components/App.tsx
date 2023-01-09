@@ -13,10 +13,11 @@ import UserService from "../services/UserService";
 import _debounce from 'lodash.debounce'
 import VehicleCategories from "./admin/components/categories/VehicleCategories";
 import {useAppDispatch} from "./redux/hooks";
-import {setIsMobile} from "./redux/SelectionSlice";
+import {setIsMobile} from "./admin/features/AdminSlice";
 import Vehicles from "./admin/components/vehicles/Vehicles";
 import Customers from "./admin/components/customers/Customers";
 import Locations from "./admin/components/locations/Locations";
+import Drivers from "./admin/components/drivers/Drivers";
 
 const router = createBrowserRouter([
     {path: "/", element: <Home/>, errorElement: <Error/>,},
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
     {path: "/vehicles", element: <Vehicles/>},
     {path: "/customers", element: <Customers/>},
     {path: "/locations", element: <Locations/>},
+    {path: "/drivers", element: <Drivers/>},
 ]);
 
 const App = () => {

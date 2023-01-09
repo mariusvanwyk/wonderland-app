@@ -1,6 +1,6 @@
 import React from 'react';
 import {Page} from "../../model/base/Page";
-import {SelectionState, setItemsCurrentPage} from "../../../redux/SelectionSlice";
+import {AdminState, setItemsCurrentPage} from "../../features/AdminSlice";
 import {ItemType} from "../../model/base/BaseItem";
 import {useAppDispatch} from "../../../redux/hooks";
 
@@ -8,7 +8,7 @@ type Properties = {
     page: Page,
     recordCount: number,
     itemType: ItemType,
-    state: SelectionState<any>
+    state: AdminState<any>
     onPaging: (pageNumber: number) => void,
 }
 

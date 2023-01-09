@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
 import {Col, Form, Row, Tab, Tabs} from "react-bootstrap";
 import {ItemType} from "../../model/base/BaseItem";
-import {SelectionState} from "../../../redux/SelectionSlice";
+import {AdminState} from "../../features/AdminSlice";
 import ItemFormControl from "../common/ItemFormControl";
 import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
 import VehiclesList from "../vehicles/VehiclesList";
 
 type Properties = {
     itemType: ItemType,
-    state: SelectionState<any>,
+    state: AdminState<any>,
 }
 
-const VehicleCategoryForm = ({itemType, state}: Properties) => {
+const VehicleCategoriesForm = ({itemType, state}: Properties) => {
 
     const [key, setKey] = useState<string>("details");
 
@@ -144,4 +144,4 @@ const VehicleCategoryForm = ({itemType, state}: Properties) => {
     )
 }
 
-export default VehicleCategoryForm
+export default VehicleCategoriesForm

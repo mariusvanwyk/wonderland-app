@@ -1,7 +1,7 @@
 import React from 'react';
 import {Col, Form, Row} from "react-bootstrap";
 import {ItemType} from "../../model/base/BaseItem";
-import {SelectionState, setItem} from "../../../redux/SelectionSlice";
+import {AdminState, setItem} from "../../features/AdminSlice";
 import ItemFormControl from "../common/ItemFormControl";
 import {useAppDispatch} from "../../../redux/hooks";
 import _ from "lodash";
@@ -10,10 +10,10 @@ import ItemTechnicalDetails from "../common/ItemTechnicalDetails";
 
 type Properties = {
     itemType: ItemType,
-    state: SelectionState<any>,
+    state: AdminState<any>,
 }
 
-const VehicleForm = ({itemType, state}: Properties) => {
+const VehiclesForm = ({itemType, state}: Properties) => {
     const dispatch = useAppDispatch();
 
     const onCategoryChange = (categoryId: number | undefined) => {
@@ -99,4 +99,4 @@ const VehicleForm = ({itemType, state}: Properties) => {
     )
 }
 
-export default VehicleForm
+export default VehiclesForm

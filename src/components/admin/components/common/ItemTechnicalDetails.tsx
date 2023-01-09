@@ -1,11 +1,11 @@
 import {Accordion, Col, Form, Row} from "react-bootstrap";
 import React from "react";
-import {SelectionState} from "../../../redux/SelectionSlice";
+import {AdminState} from "../../features/AdminSlice";
 import ReactJson from "react-json-view";
 import {getDateTimeAsString} from "../../../common/DateUtils";
 
 type Properties = {
-    state: SelectionState<any>,
+    state: AdminState<any>,
 }
 const ItemTechnicalDetails = ({state}: Properties) => {
 

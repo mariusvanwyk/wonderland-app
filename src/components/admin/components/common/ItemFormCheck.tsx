@@ -1,13 +1,13 @@
 import {Form,} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import _ from "lodash";
-import {SelectionState, setItem} from "../../../redux/SelectionSlice";
+import {AdminState, setItem} from "../../features/AdminSlice";
 import {ItemType} from "../../model/base/BaseItem";
 import {useAppDispatch} from "../../../redux/hooks";
 
 type Properties = {
     itemType: ItemType,
-    state: SelectionState<any>,
+    state: AdminState<any>,
     label: string,
     property: string,
     value: boolean,

@@ -4,16 +4,16 @@ import Paging from "./Paging";
 
 import {useAppDispatch} from "../../../redux/hooks";
 import {
+    AdminState,
     clearItemsFetchError,
     refreshItems,
-    SelectionState,
     setFetchingItems,
     setFetchingItemsComplete,
     setItem,
     setItemsCurrentPage,
     setItemsFetchError,
     setItemsResultPage
-} from "../../../redux/SelectionSlice";
+} from "../../features/AdminSlice";
 import SearchPanel from "./SearchPanel";
 import SortDropDown from "./SortDropDown";
 import PageSizeSelect from "./PageSizeSelect";
@@ -27,7 +27,7 @@ type Properties = {
     name: string,
     itemType: ItemType,
     services: Services<any, any>,
-    state: SelectionState<any>,
+    state: AdminState<any>,
     manager: ItemManager<any, any>,
 }
 
@@ -115,7 +115,7 @@ const ItemsListPanel = ({name, itemType, services, state, manager}: Properties) 
                                 onPaging={(pageNumber) => onPaging(pageNumber)}/>
                         <SortDropDown itemType={itemType} state={state} sortProperties={manager.getSortProperties()}/>
                     </div>
-                    {state.listPage.items.length < 1 && <div className={"d-flex justify-content-center mt-3 mb-3"}>There are no items</div>}
+                    {state.listPage.items.length < 1 && <div className={"d-flex justify-content-center mt-3 mb-3"}>There are no {name.toLowerCase()}</div>}
                     {state.listPage.items.length > 0 &&
                         <ListGroup>
                             {

@@ -1,4 +1,4 @@
-export type ItemType = "category" | "vehicle" | "customer" | "location"
+export type ItemType = "category" | "vehicle" | "customer" | "location" | "driver"
 
 export interface BaseItem {
     id: number | undefined;
