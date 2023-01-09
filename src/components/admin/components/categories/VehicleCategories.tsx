@@ -8,7 +8,6 @@ import {getCategoriesSelectionState, isMobile} from "../../../redux/SelectionSli
 import VehicleCategoriesLarge from "./VehicleCategoriesLarge";
 import VehicleCategoriesSmall from "./VehicleCategoriesSmall";
 
-// const services: VehicleCategoriesServices = new VehicleCategoriesServices();
 const converter: VehicleCategoryManager = new VehicleCategoryManager();
 const category: ItemType = "category";
 
@@ -25,7 +24,7 @@ const VehicleCategories = ({initialServices}: Properties) => {
         if (initialServices) {
             setServices(initialServices);
         } else {
-            setServices(new VehicleCategoriesServices());
+            setServices(VehicleCategoriesServices.getInstance());
         }
     },[initialServices])
 

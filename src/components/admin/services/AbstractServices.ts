@@ -40,9 +40,9 @@ export abstract class AbstractServices<E, T extends BaseItem> implements Service
         return HttpService.getAxiosClient().post<T>(`${this.getBaseUrl()}`, item);
     }
 
-    protected _getPageArguments(currentPage: number | undefined, pageSize: number | undefined, sortedBy: string | undefined, sortedAscending: boolean) {
+    protected _getPageArguments(currentPage: number | undefined, pageSize: number | undefined, sortedBy?: string | undefined, sortedAscending?: boolean) {
         const direction = sortedAscending ? "asc" : "desc";
-        return `page=${currentPage ? currentPage : 0}&size=${pageSize ? pageSize : 5}&sort=${sortedBy},${direction}`;
+        return `page=${currentPage ? currentPage : 0}&size=${pageSize ? pageSize : 5}` + (sortedBy ? `&sort=${sortedBy},${direction}` : ``);
     }
 
     // getAssociations(item: T): Promise<AxiosResponse<T>>[] {

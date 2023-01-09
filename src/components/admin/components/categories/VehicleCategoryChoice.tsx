@@ -1,9 +1,7 @@
 import {Form} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {VehicleCategory} from "../../model/VehicleCategory";
-import HttpService from "../../../../services/HttpService";
-import {ResultPage} from "../../model/base/ResultPage";
-import {EmbeddedVehicleCategories} from "../../model/embedded/EmbeddedVehicleCategories";
+import {VehicleCategoriesServices} from "../../services/VehicleCategoriesServices";
 
 type Properties = {
     categoryId: number | undefined,
@@ -15,7 +13,7 @@ const VehicleCategoryChoice = ({categoryId, onChange}: Properties) => {
     const [error, setError] = useState<String>();
 
     useEffect(() => {
-        HttpService.getAxiosClient().get<ResultPage<EmbeddedVehicleCategories>>("/api/v1/vehicleCategories")
+        VehicleCategoriesServices.getInstance().getItems(0, Number.MAX_SAFE_INTEGER)
             .then((response) => {
                 setVehicleCategories(response.data._embedded.vehicleCategories);
             })
