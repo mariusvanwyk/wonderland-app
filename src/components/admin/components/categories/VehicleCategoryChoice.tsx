@@ -10,7 +10,6 @@ type Properties = {
 const VehicleCategoryChoice = ({categoryId, onChange}: Properties) => {
     const [vehicleCategories, setVehicleCategories] = useState<VehicleCategory[]>();
     const [fetching, setFetching] = useState<boolean>(true);
-    const [error, setError] = useState<String>();
 
     useEffect(() => {
         VehicleCategoriesServices.getInstance().getItems(0, Number.MAX_SAFE_INTEGER)
@@ -19,7 +18,6 @@ const VehicleCategoryChoice = ({categoryId, onChange}: Properties) => {
             })
             .catch((error) => {
                 console.debug("Error", error);
-                setError(JSON.stringify(error.response.status))
             })
             .finally(() => {
                 setFetching(false);
@@ -38,7 +36,7 @@ const VehicleCategoryChoice = ({categoryId, onChange}: Properties) => {
     }
 
     return (
-        <Form.Group className="mb-3" controlId="vehicle.category">
+        <Form.Group className="mb-3" controlId="vehicle-category-choice">
             <Form.Label>Category</Form.Label>
             <Form.Select required={true} aria-label="Default select example" value={categoryId ? categoryId : ""}
                          disabled={fetching}

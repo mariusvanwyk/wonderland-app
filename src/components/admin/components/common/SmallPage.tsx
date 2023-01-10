@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import Container from "react-bootstrap/Container";
-import ItemDetails from "../common/ItemDetails";
+import ItemDetails, {ItemTab} from "../common/ItemDetails";
 import ItemsListPanel from "../common/ItemsListPanel";
 import {AdminState} from "../../features/AdminSlice";
 
@@ -13,11 +13,12 @@ type Properties = {
     itemType: ItemType,
     services: Services<any, any>
     manager: ItemManager<any, any>,
-    form: ReactNode,
+    itemForm?: ReactNode,
     state: AdminState<any>,
+    itemTabs?: ItemTab[],
 }
 
-const SmallPage = ({label, itemType, services, manager, form, state}: Properties) => {
+const SmallPage = ({label, itemType, services, manager, itemForm, itemTabs, state}: Properties) => {
     return (
         <Container fluid className={"h-100"}>
             {!state.selectedItem &&
@@ -30,10 +31,11 @@ const SmallPage = ({label, itemType, services, manager, form, state}: Properties
             {state.selectedItem &&
                 <ItemDetails
                     state={state}
-                    converter={manager}
+                    manager={manager}
                     itemType={itemType}
-                    itemForm={form}
-                    services={services}/>}
+                    itemForm={itemForm}
+                    services={services}
+                    itemTabs={itemTabs}/>}
         </Container>
     );
 }

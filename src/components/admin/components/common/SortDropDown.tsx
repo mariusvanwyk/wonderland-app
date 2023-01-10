@@ -24,19 +24,19 @@ const SortDropDown = ({itemType, state, sortProperties}: Properties) => {
                     <i className={"bi bi-sort-up"}/>)}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                {sortProperties.map((property, index) => {
+                {sortProperties.map((sort, index) => {
                     return (
                         <Dropdown.Item key={index} className={"d-flex justify-content-between"}
                                        onClick={() => dispatch(setSortItemsBy({
                                            itemType: itemType,
-                                           sortBy: property.name
+                                           sortBy: sort.property
                                        }))}>
                             <div className={"d-flex"}>
-                                <i className={"bi bi-check " + (state.sortedBy === property.name ? "visible" : "invisible")}/>
-                                <div className={"ms-1"}>By {property.label ? property.label : property.name}</div>
+                                <i className={"bi bi-check " + (state.sortedBy === sort.property ? "visible" : "invisible")}/>
+                                <div className={"ms-1"}>By {sort.label ? sort.label : sort.property}</div>
                             </div>
 
-                            {state.sortedBy === property.name ? (state.sortedAscending ?
+                            {state.sortedBy === sort.property ? (state.sortedAscending ?
                                 <i className={"bi bi-arrow-down"}/> :
                                 <i className={"bi bi-arrow-up"}/>) : <div>&nbsp;</div>}
                         </Dropdown.Item>

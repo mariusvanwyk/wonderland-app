@@ -1,4 +1,4 @@
-import {ItemManager, RequiredProperty, SortProperty} from "./ItemManager";
+import {EditableProperty, ItemManager, SortProperty} from "./ItemManager";
 import {ResultPage} from "../model/base/ResultPage";
 import {ListPage} from "../model/base/ListPage";
 import _ from "lodash";
@@ -9,8 +9,8 @@ export class DriverManager extends ItemManager<EmbeddedDrivers, Driver> {
 
     getSortProperties(): SortProperty[] {
         return [
-            {type: "string", name: "name", label: "Name"},
-            {type: "string", name: "disabled", label: "Disabled"},
+            {type: "string", property: "name", label: "Name"},
+            {type: "string", property: "disabled", label: "Disabled"},
         ];
     }
 
@@ -48,9 +48,16 @@ export class DriverManager extends ItemManager<EmbeddedDrivers, Driver> {
         return item.name;
     }
 
-    getRequiredProperties(): RequiredProperty[] {
+    getEditableProperties(): EditableProperty[] {
         return [
-            {type: "string", property: "name", label: "Name"},
+            {type: "string", property: "name", label: "Name", required: true},
+            {type: "boolean", property: "disabled", label: "Disabled", required: true},
+            {type: "text", property: "description", label: "Description", required: false},
+            {type: "string", property: "idNumber", label: "Id Number", required: true},
+            {type: "string", property: "licenceNumber", label: "Licence Number", required: true},
+            {type: "string", property: "phoneNumber", label: "Phone Number", required: true},
+            {type: "number", property: "salary", label: "Salary", required: true},
+            {type: "date", property: "licenceExpiryDate", label: "Licence Expiry Date", required: true},
         ];
     }
 

@@ -87,11 +87,8 @@ const ItemFormControl = ({
 
     const isInvalid = () => {
         if (required) {
-            if (type === "number") {
-                return value === null || Number(value) <= 0
-            } else {
-                return value === null || value === undefined || value.trim() === "";
-            }
+            return value === null || value === undefined ||
+                (type === "number" ? Number(value) <= 0 : value.trim() === "")
         } else {
             return false;
         }

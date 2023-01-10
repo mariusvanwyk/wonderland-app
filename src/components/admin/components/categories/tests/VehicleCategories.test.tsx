@@ -163,12 +163,12 @@ const render = async () => {
     });
     // Check main heading
     await act(() => {
-        const heading = screen.getByText("Vehicle Categories");
+        const heading = screen.getByText("Categories");
         expect(heading).toBeInTheDocument();
     });
-    // Check "There are no items" text
+    // Check "There are no categories" text
     await act(() => {
-        const noItems = screen.getByText("There are no items");
+        const noItems = screen.getByText("There are no categories");
         expect(noItems).toBeInTheDocument();
     });
 }
@@ -258,9 +258,9 @@ const deleteRecord = async () => {
         expect(deleteItemButton).toBeInTheDocument();
         fireEvent.click(deleteItemButton);
     });
-    // Check "There are no items" text
+    // Check "There are no categories" text
     await act(() => {
-        const noItems = screen.getByText("There are no items");
+        const noItems = screen.getByText("There are no categories");
         expect(noItems).toBeInTheDocument();
     });
 }

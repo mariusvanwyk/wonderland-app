@@ -25,13 +25,13 @@ const Vehicles = () => {
 
     return (
         <Fragment>
-            {!mobile && <LargePage form={vehicleForm()}
+            {!mobile && <LargePage itemForm={vehicleForm()}
                                    services={services}
                                    manager={manager}
                                    itemType={vehicle}
                                    label={label}
                                    state={state}/>}
-            {mobile && <SmallPage form={vehicleForm()}
+            {mobile && <SmallPage itemForm={vehicleForm()}
                                   services={services}
                                   manager={manager}
                                   itemType={vehicle}

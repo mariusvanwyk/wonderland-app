@@ -15,11 +15,12 @@ const NavigationBar = () => {
                     {UserService.isAdmin() &&
                         <Nav>
                             <NavDropdown title="Admin" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="/vehicle-categories">Vehicle Categories</NavDropdown.Item>
+                                <NavDropdown.Item href="/vehicle-categories">Categories</NavDropdown.Item>
                                 <NavDropdown.Item href="/vehicles">Vehicles</NavDropdown.Item>
                                 <NavDropdown.Divider/>
                                 <NavDropdown.Item href="/customers">Customers</NavDropdown.Item>
                                 <NavDropdown.Item href="/locations">Locations</NavDropdown.Item>
+                                <NavDropdown.Item href="/routes">Routes</NavDropdown.Item>
                                 <NavDropdown.Divider/>
                                 <NavDropdown.Item href="/drivers">Drivers</NavDropdown.Item>
                             </NavDropdown>

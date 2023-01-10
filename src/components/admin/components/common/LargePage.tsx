@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import {Col, Row} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
-import ItemDetails from "../common/ItemDetails";
+import ItemDetails, {ItemTab} from "../common/ItemDetails";
 import ItemsListPanel from "../common/ItemsListPanel";
 import {AdminState} from "../../features/AdminSlice";
 
@@ -14,13 +14,12 @@ type Properties = {
     itemType: ItemType,
     services: Services<any, any>
     manager: ItemManager<any, any>,
-    form: ReactNode,
+    itemForm?: ReactNode,
+    itemTabs?: ItemTab[],
     state: AdminState<any>,
 
 }
-const LargePage = ({label, itemType, services, manager, form, state}:Properties) => {
-    // @ts-ignore
-
+const LargePage = ({label, itemType, services, manager, itemForm, state, itemTabs}:Properties) => {
     return (
         <Container fluid className={"h-100"}>
             <Row className={"h-100"}>
@@ -36,10 +35,11 @@ const LargePage = ({label, itemType, services, manager, form, state}:Properties)
                     {state.selectedItem &&
                         <ItemDetails
                             state={state}
-                            converter={manager}
+                            manager={manager}
                             itemType={itemType}
                             services={services}
-                            itemForm={form}/>}
+                            itemForm={itemForm}
+                            itemTabs={itemTabs}/>}
                 </Col>
             </Row>
         </Container>

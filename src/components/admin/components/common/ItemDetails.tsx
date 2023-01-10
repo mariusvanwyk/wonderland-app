@@ -1,5 +1,5 @@
 import React, {Fragment, ReactNode, useEffect, useState} from 'react';
-import {Button, Card, CloseButton, Modal, Toast, ToastContainer} from "react-bootstrap";
+import {Button, Card, CloseButton, Col, Modal, Row, Tab, Tabs, Toast, ToastContainer} from "react-bootstrap";
 import {useAppDispatch} from "../../../redux/hooks";
 import {AdminState, itemAdded, itemClosed, itemDeleted, itemSaved,} from "../../features/AdminSlice";
 import {ItemType} from "../../model/base/BaseItem";
@@ -8,17 +8,25 @@ import {Services} from "../../services/Services";
 import {ServiceError} from "../../services/ServiceError";
 import {AxiosError} from "axios";
 import {getDateTimeAsString} from "../../../common/DateUtils";
+import ItemFormControl from "./ItemFormControl";
+import ItemFormCheck from "./ItemFormCheck";
+import ItemTechnicalDetails from "./ItemTechnicalDetails";
 
+export type ItemTab = {
+    label: string,
+    component: ReactNode,
+}
 
 type Properties = {
     itemType: ItemType,
     services: Services<any, any>,
-    converter: ItemManager<any, any>,
+    manager: ItemManager<any, any>,
     state: AdminState<any>,
-    itemForm: ReactNode
+    itemForm?: ReactNode,
+    itemTabs?: ItemTab[],
 }
 
-const ItemDetails = ({itemType, converter, services, state, itemForm}: Properties) => {
+const ItemDetails = ({itemType, manager, services, state, itemForm, itemTabs}: Properties) => {
     const dispatch = useAppDispatch()
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -47,9 +55,8 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
     }
 
     const handleAdd = () => {
-
         closeFeedBack();
-        let validationErrors = converter.validate(state.selectedItem);
+        let validationErrors = manager.validate(state.selectedItem);
         if (validationErrors.length === 0) {
             console.debug("Adding")
             services.addItem(state.selectedItem)
@@ -69,7 +76,7 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
 
     const handleSaved = () => {
         closeFeedBack();
-        let validationErrors = converter.validate(state.selectedItem);
+        let validationErrors = manager.validate(state.selectedItem);
         if (validationErrors.length === 0) {
             services.saveItem(state.selectedItem)
                 .then((response) => {
@@ -102,8 +109,8 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
         setShowServiceErrorFeedBack(false);
     }
 
-    const getHeading = () => {
-        const heading = converter.getHeading(state.selectedItem);
+    const getHeading = (item: any) => {
+        const heading = manager.getHeading(item);
         if (!heading || heading.trim() === "") {
             return "..."
         } else {
@@ -117,14 +124,81 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                 <>
                     <Card className={"h-100"}>
                         <Card.Header className={"d-flex justify-content-between align-items-center"}>
-                            <h3 data-testid={"item-heading"}>{getHeading()}</h3>
+                            <h3 data-testid={"item-heading"}>{getHeading(state.selectedItem)}</h3>
                             <div className={"small text-muted ms-3"}>(Refreshed at: {getDateTimeAsString(Date.now())})
                             </div>
                             <CloseButton aria-label="Close"
                                          onClick={() => dispatch(itemClosed({itemType: itemType}))}/>
                         </Card.Header>
-                        <Card.Body className={"overflow-scroll h-100"}>
-                            {itemForm}
+                        <Card.Body className={"overflow-auto h-100 card-body p-2"}>
+                            <Tabs>
+                                <Tab eventKey={"details"} title={"Details"}>
+                                    <div className={"border-start border-end border-bottom p-2"}>
+                                        <Row>
+                                            {itemForm}
+                                            {manager.getEditableProperties().map((editable, index) => {
+                                                if (editable.hidden) {
+                                                    return <Fragment key={index}></Fragment>
+                                                }
+                                                switch (editable.type) {
+                                                    case "color":
+                                                    case "date":
+                                                    case "number":
+                                                    case "string": {
+                                                        return (
+                                                            <Col sm={12} lg={6} key={index}>
+                                                                <ItemFormControl itemType={itemType}
+                                                                                 state={state}
+                                                                                 value={state.selectedItem[editable.property]}
+                                                                                 property={editable.property}
+                                                                                 required={editable.required}
+                                                                                 label={editable.label}
+                                                                                 type={editable.type}/>
+                                                            </Col>
+                                                        )
+                                                    }
+                                                    case "text": {
+                                                        return (
+                                                            <Col sm={12} key={index}>
+                                                                <ItemFormControl itemType={itemType}
+                                                                                 state={state}
+                                                                                 value={state.selectedItem[editable.property]}
+                                                                                 property={editable.property}
+                                                                                 required={editable.required}
+                                                                                 label={editable.label}
+                                                                                 as={"textarea"}
+                                                                                 hideClear={true}/>
+                                                            </Col>
+                                                        )
+                                                    }
+                                                    case "boolean": {
+                                                        return (
+                                                            <Col sm={12} lg={6} key={index}>
+                                                                <ItemFormCheck itemType={itemType}
+                                                                               state={state}
+                                                                               value={state.selectedItem[editable.property]}
+                                                                               property={editable.property}
+                                                                               label={editable.label}/>
+                                                            </Col>
+                                                        )
+                                                    }
+                                                    default: {
+                                                        return <div key={index}>{editable.type} not supported yet</div>
+                                                    }
+                                                }
+                                            })}
+                                        </Row>
+                                        <ItemTechnicalDetails state={state}/>
+                                    </div>
+                                </Tab>
+                                {itemTabs && itemTabs.map((itemTab, index) => {
+                                    return (
+                                        <Tab eventKey={itemTab.label} title={itemTab.label} key={index}>
+                                            {itemTab.component}
+                                        </Tab>
+                                    )
+                                })}
+                            </Tabs>
                         </Card.Body>
                         <Card.Footer className={"d-flex justify-content-center"}>
                             {(state.selectedItem.id !== undefined) &&
@@ -147,7 +221,8 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                             }
                             {(state.selectedItem.id === undefined) &&
                                 <>
-                                    <Button variant="success" type="button" className={"me-1"} data-testid={"add-item-button"}
+                                    <Button variant="success" type="button" className={"me-1"}
+                                            data-testid={"add-item-button"}
                                             onClick={() => handleAdd()}>
                                         Add
                                     </Button>
@@ -173,7 +248,8 @@ const ItemDetails = ({itemType, converter, services, state, itemForm}: Propertie
                             <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
                                 Close
                             </Button>
-                            <Button variant="danger" onClick={() => handleDelete()} data-testid={"delete-item-confirm-button"}>
+                            <Button variant="danger" onClick={() => handleDelete()}
+                                    data-testid={"delete-item-confirm-button"}>
                                 Delete
                             </Button>
                         </Modal.Footer>

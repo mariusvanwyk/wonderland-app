@@ -1,4 +1,4 @@
-import {ItemManager, RequiredProperty, SortProperty} from "./ItemManager";
+import {EditableProperty, ItemManager, SortProperty} from "./ItemManager";
 import {ResultPage} from "../model/base/ResultPage";
 import {ListPage} from "../model/base/ListPage";
 import _ from "lodash";
@@ -9,7 +9,7 @@ export class LocationManager extends ItemManager<EmbeddedLocations, Location> {
 
     getSortProperties(): SortProperty[] {
         return [
-            {type: "string", name: "name", label: "Name"},
+            {type: "string", property: "name", label: "Name"},
         ];
     }
 
@@ -31,7 +31,6 @@ export class LocationManager extends ItemManager<EmbeddedLocations, Location> {
             createdAt: "",
             createdBy: "",
             currentVersion: 0,
-            description: undefined,
             id: undefined,
             name: "",
             updatedAt: undefined,
@@ -52,12 +51,16 @@ export class LocationManager extends ItemManager<EmbeddedLocations, Location> {
         return item.name;
     }
 
-    getRequiredProperties(): RequiredProperty[] {
+    getEditableProperties(): EditableProperty[] {
         return [
-            {type: "string", property: "name", label: "Name"},
-            {type: "string", property: "address1", label: "Address Line 1"},
-            {type: "string", property: "city", label: "City"},
-            {type: "string", property: "country", label: "Country"},
+            {type: "string", property: "name", label: "Name", required: true},
+            {type: "text", property: "description", label: "Description", required: false},
+            {type: "string", property: "address1", label: "Address 1", required: true},
+            {type: "string", property: "address2", label: "Address 2", required: false},
+            {type: "string", property: "city", label: "City", required: true},
+            {type: "string", property: "zipCode", label: "Zip/Postal Code", required: false},
+            {type: "string", property: "country", label: "Country Code", required: true},
+            {type: "string", property: "coordinates", label: "Coordinates", required: false},
         ];
     }
 

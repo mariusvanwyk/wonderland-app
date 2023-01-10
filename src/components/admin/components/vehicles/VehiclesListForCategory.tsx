@@ -7,13 +7,11 @@ import {ResultPage} from "../../model/base/ResultPage";
 import {EmbeddedVehicles} from "../../model/embedded/EmbeddedVehicles";
 import Fetching from "../common/Fetching";
 import {getDateAsString} from "../../../common/DateUtils";
+import {useAppSelector} from "../../../redux/hooks";
+import {getCategoriesState} from "../../features/AdminSlice";
 
-type Properties = {
-    url: string,
-    visible: boolean
-}
-const VehiclesList = ({url, visible}: Properties) => {
-
+const VehiclesListForCategory = () => {
+    const state = useAppSelector(getCategoriesState);
     const [vehicles, setVehicles] = useState<Vehicle[]>()
     const [showServiceErrorFeedBack, setShowServiceErrorFeedBack] = useState(false);
     const [serviceError, setServiceError] = useState<ServiceError>();
@@ -22,10 +20,10 @@ const VehiclesList = ({url, visible}: Properties) => {
     useEffect(() => {
         setVehicles(undefined);
         setShowServiceErrorFeedBack(false);
-        if (visible) {
-            console.debug("Extracting vehicles for: ", url)
+        if (state.selectedItem?._links) {
+            console.debug("Extracting vehicles for: ", state.selectedItem._links.vehicles.href)
             setFetching(true);
-            HttpService.getAxiosClient().get<ResultPage<EmbeddedVehicles>>(url)
+            HttpService.getAxiosClient().get<ResultPage<EmbeddedVehicles>>(state.selectedItem._links.vehicles.href)
                 .then((response) => {
                     setVehicles(response.data._embedded.vehicles);
                 })
@@ -37,7 +35,7 @@ const VehiclesList = ({url, visible}: Properties) => {
                     setFetching(false);
                 });
         }
-    }, [url, visible]);
+    }, [state.selectedItem]);
 
     const closeFeedBack = () => {
         setServiceError(undefined)
@@ -98,4 +96,4 @@ const VehiclesList = ({url, visible}: Properties) => {
     )
 }
 
-export default VehiclesList
+export default VehiclesListForCategory

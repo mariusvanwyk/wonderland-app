@@ -1,4 +1,4 @@
-import {ItemManager, RequiredProperty, SortProperty} from "./ItemManager";
+import {EditableProperty, ItemManager, SortProperty} from "./ItemManager";
 import {ResultPage} from "../model/base/ResultPage";
 import {ListPage} from "../model/base/ListPage";
 import {EmbeddedVehicles} from "../model/embedded/EmbeddedVehicles";
@@ -8,7 +8,7 @@ import _ from "lodash";
 export class VehicleManager extends ItemManager<EmbeddedVehicles, Vehicle> {
 
     getSortProperties(): SortProperty[] {
-        return [{type: "string", name: "registrationNumber", label: "Registration Number"}];
+        return [{type: "string", property: "registrationNumber", label: "Registration Number"}];
     }
 
     convert(resultPage: ResultPage<EmbeddedVehicles>): ListPage<Vehicle> {
@@ -51,15 +51,16 @@ export class VehicleManager extends ItemManager<EmbeddedVehicles, Vehicle> {
         return item.registrationNumber;
     }
 
-    getRequiredProperties(): RequiredProperty[] {
+    getEditableProperties(): EditableProperty[] {
         return [
-            {type: "string", property: "registrationNumber", label: "Registration Number"},
-            {type: "number", property: "categoryId", label: "Category"},
-            {type: "number", property: "fuelConsumption", label: "Fuel Consumption"},
-            {type: "date", property: "purchasedOn", label: "Purchased On"},
-            {type: "date", property: "roadTaxDueDate", label: "Road Tax Due Date"},
-            {type: "date", property: "motDate", label: "MOT Due Date"},
-            {type: "number", property: "instalment", label: "Instalment"},
+            {type: "string", property: "registrationNumber", label: "Registration Number", required: true},
+            {type: "text", property: "description", label: "Description", required: false},
+            {type: "number", property: "categoryId", label: "Category", required: true, hidden: true},
+            {type: "number", property: "fuelConsumption", label: "Fuel Consumption", required: true},
+            {type: "date", property: "purchasedOn", label: "Purchased On", required: true},
+            {type: "date", property: "roadTaxDueDate", label: "Road Tax Due Date", required: true},
+            {type: "date", property: "motDate", label: "MOT Due Date", required: true},
+            {type: "number", property: "instalment", label: "Instalment", required: true},
         ];
     }
 

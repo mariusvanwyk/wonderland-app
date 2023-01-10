@@ -1,4 +1,4 @@
-import {ItemManager, RequiredProperty, SortProperty} from "./ItemManager";
+import {EditableProperty, ItemManager, SortProperty} from "./ItemManager";
 import {ResultPage} from "../model/base/ResultPage";
 import {ListPage} from "../model/base/ListPage";
 import _ from "lodash";
@@ -9,8 +9,8 @@ export class CustomerManager extends ItemManager<EmbeddedCustomers, Customer> {
 
     getSortProperties(): SortProperty[] {
         return [
-            {type: "string", name: "name", label: "Name"},
-            {type: "string", name: "disabled", label: "Disabled"},
+            {type: "string", property: "name", label: "Name"},
+            {type: "string", property: "disabled", label: "Disabled"},
         ];
     }
 
@@ -48,10 +48,11 @@ export class CustomerManager extends ItemManager<EmbeddedCustomers, Customer> {
         return item.name;
     }
 
-    getRequiredProperties(): RequiredProperty[] {
+    getEditableProperties(): EditableProperty[] {
         return [
-            {type: "string", property: "name", label: "Name"},
+            {type: "string", property: "name", label: "Name", required: true},
+            {type: "boolean", property: "disabled", label: "Disabled", required: false},
+            {type: "text", property: "description", label: "Description", required: false},
         ];
     }
-
 }

@@ -4,14 +4,16 @@ import {BaseItem} from "../model/base/BaseItem";
 
 export type SortProperty = {
     type: "number" | "string",
-    name: string,
+    property: string,
     label?: string,
 }
 
-export type RequiredProperty = {
+export type EditableProperty = {
     label: string,
     property: string,
-    type: "number" | "string" | "date",
+    required: boolean,
+    hidden?: boolean,
+    type: "number" | "string" | "text" | "date" | "boolean" | "color",
 }
 
 export abstract class ItemManager<E, T extends BaseItem> {
@@ -23,31 +25,33 @@ export abstract class ItemManager<E, T extends BaseItem> {
 
     validate(item: T): string[] {
         let errors: string[] = [];
-        this.getRequiredProperties().map((required) => {
-            switch (required.type) {
-                case "number": {
-                    // @ts-ignore
-                    const value: number | null | undefined = item[required.property]
-                    if (!value || value < 0) {
-                        errors = [...errors, (required.label + " must be greater than 0")];
+        this.getEditableProperties().map((editable) => {
+            if (editable.required) {
+                switch (editable.type) {
+                    case "number": {
+                        // @ts-ignore
+                        const value: number | null | undefined = item[editable.property]
+                        if (!value || value < 0) {
+                            errors = [...errors, (editable.label + " must be greater than 0")];
+                        }
+                        break;
                     }
-                    break;
-                }
-                case "string": {
-                    // @ts-ignore
-                    const value: string | null | undefined = item[required.property]
-                    if (!value || value.trim() === "") {
-                        errors = [...errors, (required.label + " is required")];
+                    case "string": {
+                        // @ts-ignore
+                        const value: string | null | undefined = item[editable.property]
+                        if (!value || value.trim() === "") {
+                            errors = [...errors, (editable.label + " is required")];
+                        }
+                        break;
                     }
-                    break;
-                }
-                case "date": {
-                    // @ts-ignore
-                    const value: Date | null | undefined = item[required.property]
-                    if (!value) {
-                        errors = [...errors, (required.label + " must be a date")];
+                    case "date": {
+                        // @ts-ignore
+                        const value: Date | null | undefined = item[editable.property]
+                        if (!value) {
+                            errors = [...errors, (editable.label + " must be a date")];
+                        }
+                        break;
                     }
-                    break;
                 }
             }
             return true;
@@ -61,5 +65,7 @@ export abstract class ItemManager<E, T extends BaseItem> {
 
     abstract getSortProperties(): SortProperty[];
 
-    abstract getRequiredProperties(): RequiredProperty[];
+    getEditableProperties(): EditableProperty[] {
+        return [];
+    };
 }

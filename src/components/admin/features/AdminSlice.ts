@@ -7,6 +7,7 @@ import {Vehicle} from "../model/Vehicle";
 import {Customer} from "../model/Customer";
 import {Location} from "../model/Location";
 import {Driver} from "../model/Driver";
+import {CustomerRoute} from "../model/CustomerRoute";
 
 export interface AdminState<T extends BaseItem> {
     refreshTime: number | null,
@@ -29,6 +30,7 @@ interface AdminStates {
     customersState: AdminState<Customer>,
     locationsState: AdminState<Location>,
     driversState: AdminState<Driver>,
+    routesState: AdminState<CustomerRoute>
 }
 
 const getInitialAdminState = <T extends BaseItem>(sortedBy: string) => {
@@ -55,6 +57,7 @@ const initialState: AdminStates = {
     customersState: getInitialAdminState<Customer>("name"),
     locationsState: getInitialAdminState<Location>("name"),
     driversState: getInitialAdminState<Driver>("name"),
+    routesState: getInitialAdminState<CustomerRoute>("name"),
 }
 
 export interface AdminAction<T extends BaseItem> {
@@ -170,8 +173,10 @@ const getAdminState = (state: Draft<AdminStates>, itemType: ItemType) => {
             return state.categoriesState;
         case "driver":
             return state.driversState;
+        case "route":
+            return state.routesState;
         default:
-            throw new Error("The Type " + itemType + " is not defined in the Administration Slice");
+            throw new Error("The Type " + itemType + " is not defined in the Admin Slice");
     }
 }
 
@@ -200,6 +205,7 @@ export const getVehiclesState = (state: RootState) => state.administration.vehic
 export const getCustomersState = (state: RootState) => state.administration.customersState;
 export const getLocationsState = (state: RootState) => state.administration.locationsState;
 export const getDriversState = (state: RootState) => state.administration.driversState;
+export const getRoutesState = (state: RootState) => state.administration.routesState;
 export const isMobile = (state: RootState) => state.administration.isMobile;
 
 export default adminSlice.reducer

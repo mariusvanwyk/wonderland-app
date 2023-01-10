@@ -13,7 +13,6 @@ export class VehicleCategoriesServices extends AbstractServices<EmbeddedVehicleC
         if (!VehicleCategoriesServices.instance) {
             VehicleCategoriesServices.instance = new VehicleCategoriesServices();
         }
-
         return VehicleCategoriesServices.instance;
     }
 
